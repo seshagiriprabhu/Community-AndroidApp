@@ -94,7 +94,16 @@
 	        android:textColorHint="#bbbbbb"
 	        android:hint="@string/etphone_no"
 	        android:inputType="phone"
-	        android:drawableStart="@drawable/phone" /> 
+	        android:drawableStart="@drawable/phone" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp" />
             
         <Button 
 	       	android:id="@+id/btnSignUp"
