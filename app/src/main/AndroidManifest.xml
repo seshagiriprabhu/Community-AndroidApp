@@ -11,8 +11,27 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <application android:allowBackup="true" android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher" android:theme="@style/AppTheme">
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
+        android:theme="@style/AppTheme">
+        <!-- ORM ActiveAndroid meta data -->
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Organizer.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="3" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="com.project.communityorganizer.sqlite.models.User,
+            com.project.communityorganizer.sqlite.models.Friend,
+            com.project.communityorganizer.sqlite.models.Geofence,
+            com.project.communityorganizer.sqlite.models.Event,
+            com.project.communityorganizer.sqlite.models.EventAttendance,
+            com.project.communityorganizer.sqlite.models.Location,
+            com.project.communityorganizer.sqlite.models.PhoneData" />
         <!-- Main screen -->
         <activity
             android:name="com.project.communityorganizer.MainActivity"

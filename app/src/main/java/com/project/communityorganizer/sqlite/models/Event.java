@@ -1,31 +1,58 @@
 package com.project.communityorganizer.sqlite.models;
 
+/* Android core imports */
+import android.text.format.Time;
+
+/* Active Android imports */
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+/* User defined models */
+import com.project.communityorganizer.sqlite.models.Geofence;
+import com.project.communityorganizer.sqlite.models.Friend;
+
+/* Java imports */
 import java.math.BigInteger;
 
 /**
  * Created by seshagiri on 19/2/15.
  */
-public class Event {
-    private BigInteger event_id;
-    private String event_name;
-    private String event_description;
-    private String event_creator;
-    private String personal_feeling;
-    private String start_time;
-    private String end_time;
-    private BigInteger geofence_id;
-    private String modified_time;
+@Table(name="Event")
+public class Event extends Model{
+    @Column(index = true)
+    public BigInteger event_id;
 
+    @Column(index = true)
+    public String event_name;
+    public String event_description;
+
+    @Column(name="Friend", index = true)
+    public Friend event_creator;
+    public String personal_feeling;
+    public Time start_time;
+    public Time end_time;
+
+    @Column(name="Geofence")
+    public Geofence geofence_id;
+    public Time modified_time;
+
+
+    /* Default Constructor */
+    public Event() { super(); }
+
+    /* Constructor for storing into DB */
     public Event(
             BigInteger event_id,
             String event_name,
             String event_description,
-            String event_creator,
+            Friend event_creator,
             String personal_feeling,
-            String start_time,
-            String end_time,
-            BigInteger geofence_id,
-            String modified_time) {
+            Time start_time,
+            Time end_time,
+            Geofence geofence_id,
+            Time modified_time) {
+        super();
         this.event_id = event_id;
         this.event_name = event_name;
         this.event_description = event_description;
@@ -61,11 +88,7 @@ public class Event {
         this.event_description = event_description;
     }
 
-    public String getEvent_creator() {
-        return event_creator;
-    }
-
-    public void setEvent_creator(String event_creator) {
+    public void setEvent_creator(Friend event_creator) {
         this.event_creator = event_creator;
     }
 
@@ -77,35 +100,35 @@ public class Event {
         this.personal_feeling = personal_feeling;
     }
 
-    public String getStart_time() {
+    public Time getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(String start_time) {
+    public void setStart_time(Time start_time) {
         this.start_time = start_time;
     }
 
-    public String getEnd_time() {
+    public Time getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(String end_time) {
+    public void setEnd_time(Time end_time) {
         this.end_time = end_time;
     }
 
-    public BigInteger getGeofence_id() {
+    public Geofence getGeofence_id() {
         return geofence_id;
     }
 
-    public void setGeofence_id(BigInteger geofence_id) {
+    public void setGeofence_id(Geofence geofence_id) {
         this.geofence_id = geofence_id;
     }
 
-    public String getModified_time() {
+    public Time getModified_time() {
         return modified_time;
     }
 
-    public void setModified_time(String modified_time) {
+    public void setModified_time(Time modified_time) {
         this.modified_time = modified_time;
     }
 }

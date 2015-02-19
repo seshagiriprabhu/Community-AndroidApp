@@ -1,25 +1,41 @@
 package com.project.communityorganizer.sqlite.models;
 
+/* Android core libs */
+import android.text.format.Time;
+
+/* Active Android libs */
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+/* User defined classes */
+import com.project.communityorganizer.sqlite.models.User;
+
+/* Java libraries */
 import java.math.BigDecimal;
 
 /**
  * Created by seshagiri on 19/2/15.
  */
-public class PhoneData {
-    private String email;
-    private String date_time;
-    private String battery_state;
-    private BigDecimal app_power_consumption;
-    private BigDecimal avg_mem_util;
-    private BigDecimal avg_cpu_util;
-    private String last_online_time;
-    private BigDecimal last_online_duration;
-    private String connection_method;
-    private BigDecimal app_data_transfered;
+@Table(name = "PhoneData")
+public class PhoneData extends Model{
+    @Column(name="User")
+    public User email;
+    public Time date_time;
+    public String battery_state;
+    public BigDecimal app_power_consumption;
+    public BigDecimal avg_mem_util;
+    public BigDecimal avg_cpu_util;
+    public String last_online_time;
+    public BigDecimal last_online_duration;
+    public String connection_method;
+    public BigDecimal app_data_transfered;
+
+    public PhoneData() { super(); }
 
     public PhoneData(
-            String email,
-            String date_time,
+            User email,
+            Time date_time,
             String battery_state,
             BigDecimal app_power_consumption,
             BigDecimal avg_mem_util,
@@ -28,6 +44,7 @@ public class PhoneData {
             BigDecimal last_online_duration,
             String connection_method,
             BigDecimal app_data_transfered) {
+        super();
         this.email = email;
         this.date_time = date_time;
         this.battery_state = battery_state;
@@ -40,19 +57,19 @@ public class PhoneData {
         this.app_data_transfered = app_data_transfered;
     }
 
-    public String getEmail() {
+    public User getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(User email) {
         this.email = email;
     }
 
-    public String getDate_time() {
+    public Time getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(String date_time) {
+    public void setDate_time(Time date_time) {
         this.date_time = date_time;
     }
 

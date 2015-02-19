@@ -1,43 +1,52 @@
 package com.project.communityorganizer.sqlite.models;
 
 import android.provider.ContactsContract;
+import android.text.format.Time;
 
+/* Active Android libs */
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+
+/* Java libraries */
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
  * Created by seshagiri on 19/2/15.
  */
-public class Geofence {
-    private BigInteger gid;
-    private String fence_name;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
-    private BigDecimal geofence_radius;
-    private Integer expiration_time;
-    private String date_time;
+@Table(name="Geofence")
+public class Geofence extends Model {
+    @Column(unique = true, notNull = true, index = true)
+    public BigInteger gid;
+    @Column(index = true)
+    public String fence_name;
+    public BigDecimal latitude;
+    public BigDecimal longitude;
+    public BigDecimal geofence_radius;
+    public Integer expiration_time;
 
     /* Default constructor */
-    public Geofence() {}
+    public Geofence() { super(); }
 
-    /* Constructor for storing into DB */
+    /* Constructor for storing in DB */
+
     public Geofence(
             BigInteger gid,
             String fence_name,
             BigDecimal latitude,
             BigDecimal longitude,
             BigDecimal geofence_radius,
-            Integer expiration_time,
-            String date_time) {
+            Integer expiration_time) {
+        super();
         this.gid = gid;
         this.fence_name = fence_name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.geofence_radius = geofence_radius;
         this.expiration_time = expiration_time;
-        this.date_time = date_time;
     }
-
 
     public BigInteger getGid() {
         return gid;
@@ -86,14 +95,5 @@ public class Geofence {
     public void setExpiration_time(Integer expiration_time) {
         this.expiration_time = expiration_time;
     }
-
-    public String getDate_time() {
-        return date_time;
-    }
-
-    public void setDate_time(String date_time) {
-        this.date_time = date_time;
-    }
-
 }
 

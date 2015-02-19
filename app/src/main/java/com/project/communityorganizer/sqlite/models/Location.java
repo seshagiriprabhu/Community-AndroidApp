@@ -1,27 +1,44 @@
 package com.project.communityorganizer.sqlite.models;
 
+/* Active Android libs */
+import android.text.format.Time;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+/* Java libs */
 import java.math.BigDecimal;
+
+/* User defined models */
+import com.project.communityorganizer.sqlite.models.User;
+import com.project.communityorganizer.sqlite.models.Geofence;
+
 
 /**
  * Created by seshagiri on 19/2/15.
  */
-public class Location {
-    private String email;
-    private String date_time;
-    private BigDecimal accuracy;
-    private Integer transition_type;
-    private BigDecimal gid;
+@Table(name="Location")
+public class Location extends Model{
+    @Column(name = "User", index = true)
+    public User email;
+    public Time date_time;
+    public BigDecimal accuracy;
+    public Integer transition_type;
+    @Column(name = "Geofence")
+    public Geofence gid;
 
     /* Default constructor */
-    public Location() {}
+    public Location() { super(); }
 
     /* Storing into local DB */
     public Location(
-            String email,
-            String date_time,
+            User email,
+            Time date_time,
             BigDecimal accuracy,
             Integer transition_type,
-            BigDecimal gid) {
+            Geofence gid) {
+        super();
         this.email = email;
         this.date_time = date_time;
         this.accuracy = accuracy;
@@ -29,19 +46,19 @@ public class Location {
         this.gid = gid;
     }
 
-    public String getEmail() {
+    public User getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(User email) {
         this.email = email;
     }
 
-    public String getDate_time() {
+    public Time getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(String date_time) {
+    public void setDate_time(Time date_time) {
         this.date_time = date_time;
     }
 
@@ -61,11 +78,11 @@ public class Location {
         this.transition_type = transition_type;
     }
 
-    public BigDecimal getGid() {
+    public Geofence getGid() {
         return gid;
     }
 
-    public void setGid(BigDecimal gid) {
+    public void setGid(Geofence gid) {
         this.gid = gid;
     }
 }

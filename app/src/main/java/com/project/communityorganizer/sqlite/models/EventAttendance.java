@@ -1,23 +1,45 @@
 package com.project.communityorganizer.sqlite.models;
 
+/* Active Android libs */
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+/* User defined models */
+import com.project.communityorganizer.sqlite.models.Event;
+import com.project.communityorganizer.sqlite.models.Friend;
+
+/* Java libs */
 import java.math.BigInteger;
 
 /**
  * Created by seshagiri on 19/2/15.
  */
-public class EventAttendance {
-    private BigInteger aid;
-    private BigInteger event_id;
-    private String email;
-    private String display_name;
-    private String status;
+@Table(name="EventAttendance")
+public class EventAttendance extends Model{
+    @Column(unique = true)
+    public BigInteger aid;
+
+    @Column(name="Event")
+    public Event event_id;
+
+    @Column(name="Friend")
+    public Friend email;
+    public String display_name;
+    public String status;
+
+    /* Default Constructor */
+    public EventAttendance() { super(); }
+
+    /* Detailed Constructor */
 
     public EventAttendance(
             BigInteger aid,
-            BigInteger event_id,
-            String email,
+            Event event_id,
+            Friend email,
             String display_name,
             String status) {
+        super();
         this.aid = aid;
         this.event_id = event_id;
         this.email = email;
@@ -33,19 +55,19 @@ public class EventAttendance {
         this.aid = aid;
     }
 
-    public BigInteger getEvent_id() {
+    public Event getEvent_id() {
         return event_id;
     }
 
-    public void setEvent_id(BigInteger event_id) {
+    public void setEvent_id(Event event_id) {
         this.event_id = event_id;
     }
 
-    public String getEmail() {
+    public Friend getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(Friend email) {
         this.email = email;
     }
 

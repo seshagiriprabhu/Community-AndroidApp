@@ -60,17 +60,31 @@
 	        android:hint="@string/etPassagn"
 	        android:inputType="textPassword"
 	        android:drawableStart="@drawable/password"/>
-    	<EditText 
-    	    android:id="@+id/etGender"
-	       	android:layout_width="match_parent"
-	       	android:layout_height="wrap_content"
-	       	android:background="@drawable/edittext_default_bg"
-	       	android:layout_marginTop="-2dp"
-	       	android:inputType="text"
-	        android:padding="10dp"
-	        android:textColorHint="#bbbbbb"
-	        android:hint="@string/etGender"
-	        android:drawableStart="@drawable/user" />
+        <RadioGroup
+            android:id="@+id/radioSex"
+            android:layout_width="match_parent"
+            android:background="@drawable/edittext_bottom_bg"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:layout_above ="@+id/etPassagn">
+
+            <RadioButton
+                android:id="@+id/radioMale"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/etmale"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/radioFemale"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/etfemale" />
+
+        </RadioGroup>
     	<EditText
     	    android:id="@+id/etdob"
     	    android:layout_width="match_parent"

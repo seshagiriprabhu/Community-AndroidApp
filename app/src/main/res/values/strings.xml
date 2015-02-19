@@ -47,6 +47,10 @@
     <string name="fill_both_email_and_password">Please fill both email and password</string>
 	<string name="make_sure_email_and_password_correct">Please make sure that
 	your Email and password correct</string>
+    <string name="fill_email_field">Email field required</string>
+    <string name="fill_display_field">Display field required</string>
+    <string name="fill_password_field">Password field required</string>
+    <string name="fill_repassword_field">Re Enter Password field required</string>
 	<string name="signup_fill_all_fields">Please fill all fields</string>
 	<string name="signup_type_same_password_in_password_fields">Type same password in password fields</string>
 	<string name="signup_failed">Sign up failed because of unknown reason</string>

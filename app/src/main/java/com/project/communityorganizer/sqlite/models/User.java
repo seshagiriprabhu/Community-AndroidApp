@@ -1,37 +1,54 @@
 package com.project.communityorganizer.sqlite.models;
 
+/* Active Android libs */
+import android.text.method.DateTimeKeyListener;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
+/* Java libs */
 import java.math.BigInteger;
+import java.util.Date;
 
 /**
  * Created by seshagiri on 19/2/15.
  */
-public class User {
-    private BigInteger uid;
-    private String display_name;
-    private String email;
-    private String password;
-    private String gender;
-    private String date_of_birth;
-    private String phone_number;
-    private String mobile_os;
-    private String mobile_device;
-    private String phone_uid;
-    private String carrier;
+@Table(name = "User")
+public class User extends Model{
+    public int uid;
+
+    @Column(index = true)
+    public String display_name;
+
+    @Column(unique = true, index = true)
+    public String email;
+
+    @Column(notNull = true)
+    public String password;
+    public String gender;
+    public Date date_of_birth;
+    public String phone_number;
+    public String mobile_os;
+    public String mobile_device;
+    public String phone_uid;
+    public String carrier;
 
     /* Default constructor */
-    public User() {}
+    public User() { super(); }
 
     /* Constructor for JSON data */
     public User(String display_name,
                 String email,
                 String password,
                 String gender,
-                String date_of_birth,
+                Date date_of_birth,
                 String phone_number,
                 String mobile_os,
                 String mobile_device,
                 String phone_uid,
                 String carrier) {
+        super();
         this.display_name = display_name;
         this.email = email;
         this.password = password;
@@ -45,17 +62,18 @@ public class User {
     }
 
     /* Constructor for storing DB */
-    public User(BigInteger uid,
+    public User(int uid,
                 String display_name,
                 String email,
                 String password,
                 String gender,
-                String date_of_birth,
+                Date date_of_birth,
                 String phone_number,
                 String mobile_os,
                 String mobile_device,
                 String phone_uid,
                 String carrier) {
+        super();
         this.uid = uid;
         this.display_name = display_name;
         this.email = email;
@@ -69,11 +87,11 @@ public class User {
         this.carrier = carrier;
     }
 
-    public BigInteger getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(BigInteger uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 
@@ -109,11 +127,11 @@ public class User {
         this.gender = gender;
     }
 
-    public String getDate_of_birth() {
+    public Date getDate_of_birth() {
         return date_of_birth;
     }
 
-    public void setDate_of_birth(String date_of_birth) {
+    public void setDate_of_birth(Date date_of_birth) {
         this.date_of_birth = date_of_birth;
     }
 
