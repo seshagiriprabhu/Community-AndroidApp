@@ -60,7 +60,7 @@ import java.util.Locale;
 
 public class SignUpActivity extends Activity implements OnClickListener{
     private EditText displayNameText, eMailText, passwordText, passwordAgainText;
-    private EditText genderText, DOBText, phoneNumberText;
+    private EditText DOBText, phoneNumberText;
     private Button btnSignUp, btnCancel;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
@@ -138,8 +138,10 @@ public class SignUpActivity extends Activity implements OnClickListener{
         eMailText = (EditText) findViewById(R.id.etEmail);
         passwordText = (EditText) findViewById(R.id.etPass);
         passwordAgainText = (EditText) findViewById(R.id.etPassagn);
-        genderText = (EditText) findViewById(R.id.etGender);
         DOBText = (EditText) findViewById(R.id.etdob);
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+        radioSexButton = (RadioButton) findViewById(selectedId);
         phoneNumberText = (EditText) findViewById(R.id.etphone_no);
         pb=(ProgressBar)findViewById(R.id.progressBar1);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
@@ -186,7 +188,11 @@ public class SignUpActivity extends Activity implements OnClickListener{
                 date = null;
             }
 
-            String gender = genderText.getText().toString();
+            String sex = radioSexButton.getText().toString();
+            String gender = "F";
+            if (sex=="Male") {
+                gender = "M";
+            }
 
             String result = postData(url[0], email, display_name, password, DOB, date, gender,
                     phonenumber, phone_uid, mobile_device, mobile_os, carrier);
@@ -419,8 +425,6 @@ public class SignUpActivity extends Activity implements OnClickListener{
                     Toast.LENGTH_LONG).show();
             return false;
         }
-        else if(genderText.getText().toString().trim().equals(""))
-            return false;
         else if(DOBText.getText().toString().trim().equals(""))
             return false;
         else if(phoneNumberText.getText().toString().trim().equals(""))
