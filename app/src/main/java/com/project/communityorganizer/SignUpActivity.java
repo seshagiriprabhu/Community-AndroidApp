@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 /* User defined classes */
-import com.project.communityorganizer.User;
+import com.project.communityorganizer.sqlite.models.User;
 import com.project.communityorganizer.R;
 import com.project.communityorganizer.SignUpActivity;
 import com.project.communityorganizer.SignInActivity;
@@ -190,7 +190,7 @@ public class SignUpActivity extends Activity {
                 result = "Registration Failed";
             }
         } catch (ClientProtocolException e) {
-            Log.d("Client Protocol Exception", e.getLocalizedMessage());
+            Log.d("Client exception", e.getLocalizedMessage());
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
