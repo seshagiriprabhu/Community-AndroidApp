@@ -19,6 +19,7 @@
     <string name="etphone_no">Phone Number</string>
     <string name="etfemale">Female</string>
     <string name="etGender">Gender</string>
+    <string name="logoDesc">Community Organizer</string>
     <string name="btnSignIn">Sign In</string>
     <string name="Friend_username">Friend Username</string>
     <string name="newfriendUsername">Enter New UserName</string>
@@ -41,7 +42,6 @@
     <string name="Messages:">Enter Event Detials</string>
     <string name="Send">Post</string>
     <string name="event_history">Event History</string>
-    <string name="event_details">Event details</string>
     <string name="not_connected_to_service">Not connected to the service and 
 	this is not supposed to happened so please inform this situation to h.bandari@stud.uni-goettingen.de</string>
     <string name="fill_both_email_and_password">Please fill both email and password</string>
@@ -59,7 +59,14 @@
 	<string name="username_and_password_length_short">Username and password length must be at least 5</string>
 	<string name="request_sent">Your request has been sent</string>
 	<string name="type_friend_username">Please type your friend username</string>
-	
+    <string name="loginError">Error in Login</string>
+    <string name="title">Community Organizer</string>
+    <string name="btn_send">Share</string>
+    <string name="etMessage">Enter Event Details</string>
+    <string name="author_name1">Hari Raghavendar Rao</string>
+    <string name="author_name2">&#169; 2015 Community Organizer</string>
+    <string name="author_name3">By Seshagiri Prabhu</string>
+    <string name="event_details">Describe Event Details to share with other friends</string>
 	
 	
     <style name="DefaultButtonText">

@@ -6,6 +6,7 @@ import android.text.method.DateTimeKeyListener;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 /* Java libs */
 import java.math.BigInteger;
@@ -173,5 +174,12 @@ public class User extends Model{
 
     public void setCarrier(String carrier) {
         this.carrier = carrier;
+    }
+
+    public static User getLoginDetails(String email, String password) {
+        return new Select()
+                .from(User.class)
+                .where("email = ? and password = ?", email, password)
+                .executeSingle();
     }
 }

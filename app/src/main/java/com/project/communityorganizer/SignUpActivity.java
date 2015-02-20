@@ -22,12 +22,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 /* User defined classes */
+import com.activeandroid.ActiveAndroid;
+import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.User;
 import com.project.communityorganizer.R;
 import com.project.communityorganizer.SignUpActivity;
@@ -37,6 +40,7 @@ import com.project.communityorganizer.SignInActivity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -58,14 +62,13 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class SignUpActivity extends Activity implements OnClickListener{
+public class SignUpActivity extends Activity implements OnClickListener {
     private EditText displayNameText, eMailText, passwordText, passwordAgainText;
-    private EditText DOBText, phoneNumberText;
+    private EditText DOBText;
     private Button btnSignUp, btnCancel;
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     private DatePickerDialog DOBDatePicker;
-    private ProgressBar pb;
 
     private SimpleDateFormat dateFormatter;
 
@@ -89,7 +92,6 @@ public class SignUpActivity extends Activity implements OnClickListener{
         setContentView(R.layout.activity_signup);
         setTitle("Sign up");
         findViewsById();
-        pb.setVisibility(View.GONE);
         showConnectivity();
         btnClick();
         setDateTimeField();
@@ -142,8 +144,6 @@ public class SignUpActivity extends Activity implements OnClickListener{
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         radioSexButton = (RadioButton) findViewById(selectedId);
-        phoneNumberText = (EditText) findViewById(R.id.etphone_no);
-        pb=(ProgressBar)findViewById(R.id.progressBar1);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         btnCancel = (Button) findViewById(R.id.btnCancel);
     }
@@ -170,6 +170,25 @@ public class SignUpActivity extends Activity implements OnClickListener{
 
         @Override
         protected Boolean doInBackground(String... url) {
+           if (registerUser(url) == true) {
+               try {
+                   if(fetchFriendList()) {
+                        return true;
+                   } else {
+                       return false;
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               } catch (ParseException e) {
+                   e.printStackTrace();
+               }
+           } else {
+               return false;
+           }
+           return null;
+        }
+
+        private boolean registerUser(String[] url) {
             String email = eMailText.getText().toString();
             String display_name = displayNameText.getText().toString();
             String password = passwordText.getText().toString();
@@ -180,12 +199,12 @@ public class SignUpActivity extends Activity implements OnClickListener{
             String phone_uid = getDeviceId();
             String carrier = getCarrier();
 
-
             Date date = null;
             try {
                 date = dateFormatter.parse(DOB);
             } catch (ParseException e) {
                 date = null;
+                return false;
             }
 
             String sex = radioSexButton.getText().toString();
@@ -202,28 +221,74 @@ public class SignUpActivity extends Activity implements OnClickListener{
                     saveresult(result, password);
                     Toast.makeText(getApplicationContext(), "User Registered",
                             Toast.LENGTH_LONG).show();
+                    return true;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                return false;
             } catch (ParseException e) {
                 e.printStackTrace();
+                return false;
             }
             System.out.println(result);
-            return null;
+            return false;
+
+        }
+
+        private boolean fetchFriendList() throws JSONException, ParseException {
+            String current_user = user.getEmail();
+            String friend_url = friend_listURL + current_user;
+            InputStream inputStream = null;
+            String result = "";
+            try {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpResponse httpResponse = httpclient.execute(new HttpGet(friend_url));
+                inputStream = httpResponse.getEntity().getContent();
+                if(inputStream != null)
+                    result = convertInputStreamToString(inputStream);
+                else
+                    result = "Did not work!";
+
+            } catch (Exception e) {
+                Log.d("InputStream", e.getLocalizedMessage());
+            }
+            if (updateFriendTable(result) == true) {
+                return true;
+            }
+            return false;
+        }
+
+        private boolean updateFriendTable(String result) throws JSONException, ParseException {
+            int uid;
+            String display_name, email, gender, phone_number, dob;
+            Date DOB;
+            JSONArray values = new JSONArray(result);
+            ActiveAndroid.beginTransaction();
+            try {
+                for (int i = 0; i < values.length(); i++) {
+                    JSONObject row = values.getJSONObject(i);
+                    Friend friend = Friend.findOrCreateFromJson(row);
+                    friend.save();
+                }
+                ActiveAndroid.setTransactionSuccessful();
+            } finally {
+                ActiveAndroid.endTransaction();
+            }
+
+            return true;
         }
 
         protected void onPostExecute(Boolean result) {
-            pb.setVisibility(View.GONE);
             Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
             startActivity(i);
             SignUpActivity.this.finish();
         }
 
         protected void onProgressUpdate(Integer... progress){
-            pb.setProgress(progress[0]);
         }
 
     }
+
 
     private void saveresult(String result, String password) throws JSONException, ParseException {
         JSONObject obj = new JSONObject(result);
@@ -427,9 +492,6 @@ public class SignUpActivity extends Activity implements OnClickListener{
         }
         else if(DOBText.getText().toString().trim().equals(""))
             return false;
-        else if(phoneNumberText.getText().toString().trim().equals(""))
-            return false;
-
         if (passwordText.getText().toString().equals(passwordAgainText.getText().toString())) {
             if (displayNameText.length() >= 5 && passwordText.length() >= 5) {
                 return true;

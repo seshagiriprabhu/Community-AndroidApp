@@ -4,9 +4,13 @@ package com.project.communityorganizer.sqlite.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+import com.google.gson.Gson;
 
 /* Java libraries */
-import java.math.BigInteger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 
 /**
@@ -15,7 +19,7 @@ import java.util.Date;
 @Table(name="FriendList")
 public class Friend extends Model{
     @Column(index = true)
-    public BigInteger uid;
+    public int uid;
 
     @Column( index = true)
     public String display_name;
@@ -25,39 +29,18 @@ public class Friend extends Model{
     public String gender;
     public Date date_of_birth;
     public String phone_number;
-    public Boolean phone_owner;
 
     /* Default constructor */
     public Friend() { super(); }
 
-    /* User Registration Constructor */
+    /* Storing into DB */
     public Friend(
-            BigInteger uid,
-            String display_name,
-            String email,
-            String gender,
-            Date date_of_birth,
-            String phone_number,
-            Boolean phone_owner) {
-        super();
-        this.uid = uid;
-        this.display_name = display_name;
-        this.email = email;
-        this.gender = gender;
-        this.date_of_birth = date_of_birth;
-        this.phone_number = phone_number;
-        this.phone_owner = phone_owner;
-    }
-
-    /* Add Friend constructor */
-    public Friend(
-            BigInteger uid,
+            int uid,
             String display_name,
             String email,
             String gender,
             Date date_of_birth,
             String phone_number) {
-        super();
         this.uid = uid;
         this.display_name = display_name;
         this.email = email;
@@ -66,11 +49,11 @@ public class Friend extends Model{
         this.phone_number = phone_number;
     }
 
-    public BigInteger getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(BigInteger uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 
@@ -113,4 +96,20 @@ public class Friend extends Model{
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
+
+    public static Friend findOrCreateFromJson(JSONObject json) throws JSONException {
+        Friend existingFriend =
+                new Select()
+                        .from(Friend.class)
+                        .where("uid = ?", json.getInt("uid"))
+                        .executeSingle();
+        if (existingFriend != null) {
+            return existingFriend;
+        } else {
+            Friend friend = new Gson().fromJson(String.valueOf(json), Friend.class);
+            friend.save();
+            return friend;
+        }
+    }
+
 }
