@@ -17,3 +17,6 @@ When developing an application for Android, you will also need to install:
     - *Note*: On Windows, you need [vendor-specific device drivers](http://developer.android.com/tools/extras/oem-usb.html) 
     to connect to certain devices.
 
+## Screenshots
+[Welcome Screen]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/Welcome.png "Welcome Screen"
+[Login Screen]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/Signin.png "Login Screen"
