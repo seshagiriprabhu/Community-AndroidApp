@@ -7,13 +7,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.activeandroid.ActiveAndroid;
+
+import retrofit.RestAdapter;
+
 public class MainActivity extends Activity implements OnClickListener {
 
 	Button btnSignIn;
 	Button btnSignUp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActiveAndroid.initialize(this);
+
+
         setContentView(R.layout.activity_main);
         
         btnSignIn = (Button) findViewById(R.id.btnSingIn);

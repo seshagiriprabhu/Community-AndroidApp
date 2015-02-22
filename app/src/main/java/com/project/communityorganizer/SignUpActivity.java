@@ -4,15 +4,12 @@ package com.project.communityorganizer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -22,21 +19,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-/* User defined classes */
 import com.activeandroid.ActiveAndroid;
 import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.User;
-import com.project.communityorganizer.R;
-import com.project.communityorganizer.SignUpActivity;
-import com.project.communityorganizer.SignInActivity;
 
-/* Web related libraries */
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -48,43 +38,37 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/* Java libraries */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.client.Response;
+
+import static android.app.AlertDialog.Builder;
 
 public class SignUpActivity extends Activity implements OnClickListener {
+
+    final Context context = this;
     private EditText displayNameText, eMailText, passwordText, passwordAgainText;
     private EditText DOBText;
     private Button btnSignUp, btnCancel;
-    private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     private DatePickerDialog DOBDatePicker;
-
     private SimpleDateFormat dateFormatter;
-
-    private static final int FILL_ALL_FIELDS = 0;
-    protected static final int TYPE_SAME_PASSWORD_IN_PASSWORD_FIELDS = 1;
-    private static final int FILL_EMAIL_FIELD = 2;
-    private static final int FILL_DISPLAY_NAME_FIELD = 3;
-    private static final int FILL_PASSWORD_FIELD = 6;
-    private static final int FILL_REPASSWORD_FIELD = 7;
-    protected static final int USERNAME_AND_PASSWORD_LENGTH_SHORT = 5;
 
     private static String domainURL = "http://134.76.249.227/";
     private static String registerURL = domainURL + "register/";
     private static String friend_listURL = registerURL + "friend_list/";
+    private static String format_json = "/?format=json";
+    private static String userEmail;
 
-    User user = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,7 +125,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
         passwordText = (EditText) findViewById(R.id.etPass);
         passwordAgainText = (EditText) findViewById(R.id.etPassagn);
         DOBText = (EditText) findViewById(R.id.etdob);
-        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+        RadioGroup radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
         int selectedId = radioSexGroup.getCheckedRadioButtonId();
         radioSexButton = (RadioButton) findViewById(selectedId);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
@@ -170,22 +154,16 @@ public class SignUpActivity extends Activity implements OnClickListener {
 
         @Override
         protected Boolean doInBackground(String... url) {
-           if (registerUser(url) == true) {
-               try {
-                   if(fetchFriendList()) {
-                        return true;
-                   } else {
-                       return false;
-                   }
-               } catch (JSONException e) {
-                   e.printStackTrace();
-               } catch (ParseException e) {
-                   e.printStackTrace();
-               }
-           } else {
-               return false;
-           }
-           return null;
+            if (registerUser(url)) {
+                try {
+                    return fetchFriendList();
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                return false;
+            }
+            return null;
         }
 
         private boolean registerUser(String[] url) {
@@ -193,34 +171,23 @@ public class SignUpActivity extends Activity implements OnClickListener {
             String display_name = displayNameText.getText().toString();
             String password = passwordText.getText().toString();
             String DOB = DOBText.getText().toString();
-            String phonenumber = getPhoneNumber();
+            String phoneNumber = getPhoneNumber();
             String mobile_os = android.os.Build.VERSION.RELEASE;
             String mobile_device = android.os.Build.MODEL;
             String phone_uid = getDeviceId();
             String carrier = getCarrier();
 
-            Date date = null;
-            try {
-                date = dateFormatter.parse(DOB);
-            } catch (ParseException e) {
-                date = null;
-                return false;
-            }
-
             String sex = radioSexButton.getText().toString();
             String gender = "F";
-            if (sex=="Male") {
-                gender = "M";
-            }
+            if (sex.equals("Male")) gender = "M";
 
-            String result = postData(url[0], email, display_name, password, DOB, date, gender,
-                    phonenumber, phone_uid, mobile_device, mobile_os, carrier);
+            String result = postData(url[0], email, display_name, password, DOB, gender,
+                    phoneNumber, phone_uid, mobile_device, mobile_os, carrier);
+
             try {
-                if (check_result(result, email, display_name, date, gender, phonenumber, phone_uid,
+                if (check_result(result, email, display_name, DOB, gender, phoneNumber,
                         mobile_device, mobile_os, carrier)) {
-                    saveresult(result, password);
-                    Toast.makeText(getApplicationContext(), "User Registered",
-                            Toast.LENGTH_LONG).show();
+                    saveResult(result, password);
                     return true;
                 }
             } catch (JSONException e) {
@@ -236,52 +203,61 @@ public class SignUpActivity extends Activity implements OnClickListener {
         }
 
         private boolean fetchFriendList() throws JSONException, ParseException {
-            String current_user = user.getEmail();
-            String friend_url = friend_listURL + current_user;
-            InputStream inputStream = null;
-            String result = "";
-            try {
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpResponse httpResponse = httpclient.execute(new HttpGet(friend_url));
-                inputStream = httpResponse.getEntity().getContent();
-                if(inputStream != null)
-                    result = convertInputStreamToString(inputStream);
-                else
-                    result = "Did not work!";
-
-            } catch (Exception e) {
-                Log.d("InputStream", e.getLocalizedMessage());
-            }
-            if (updateFriendTable(result) == true) {
-                return true;
-            }
-            return false;
+            return true;
+            //return updateFriendTable(result);
         }
 
         private boolean updateFriendTable(String result) throws JSONException, ParseException {
-            int uid;
-            String display_name, email, gender, phone_number, dob;
-            Date DOB;
-            JSONArray values = new JSONArray(result);
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray = jsonObject.getJSONArray("email");
             ActiveAndroid.beginTransaction();
             try {
-                for (int i = 0; i < values.length(); i++) {
-                    JSONObject row = values.getJSONObject(i);
-                    Friend friend = Friend.findOrCreateFromJson(row);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject obj = jsonArray.getJSONObject(i);
+                    Friend friend = Friend.findOrCreateFromJson(obj);
                     friend.save();
                 }
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
                 ActiveAndroid.endTransaction();
             }
-
             return true;
         }
 
         protected void onPostExecute(Boolean result) {
-            Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
-            startActivity(i);
-            SignUpActivity.this.finish();
+            if (result) {
+                Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
+                startActivity(i);
+                SignUpActivity.this.finish();
+                Builder alertDialogBuilder = new Builder(
+                        context);
+                alertDialogBuilder.setTitle(R.string.Congrats);
+                alertDialogBuilder
+                        .setMessage(R.string.Congrats)
+                        .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                SignUpActivity.this.finish();
+                            }
+                        })
+                        .create();
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+            else {
+                Builder alertDialogBuilder = new Builder(
+                        context);
+                alertDialogBuilder.setTitle(R.string.registration_failed);
+                alertDialogBuilder
+                        .setMessage(R.string.registration_failed_reason)
+                        .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
         }
 
         protected void onProgressUpdate(Integer... progress){
@@ -290,65 +266,57 @@ public class SignUpActivity extends Activity implements OnClickListener {
     }
 
 
-    private void saveresult(String result, String password) throws JSONException, ParseException {
+    private User saveResult(String result, String password) throws JSONException, ParseException {
         JSONObject obj = new JSONObject(result);
-        user.setUid(obj.getInt("uid"));
-        user.setDisplay_name(obj.getString("display_name"));
-        user.setEmail(obj.getString("email"));
-        user.setPassword(password);
-        user.setGender(obj.getString("gender"));
-        String DOB = obj.getString("date_of_birth");
-        Date date = dateFormatter.parse(DOB);
-        user.setDate_of_birth(date);
-        user.setPhone_number(obj.getString("phone_number"));
-        user.setMobile_device(obj.getString("mobile_device"));
-        user.setMobile_os(obj.getString("mobile_os"));
-        user.setCarrier(obj.getString("carrier"));
+        obj.accumulate("password", password);
+        User user = User.registerNewUser(obj);
+        userEmail = user.getEmail();
+        System.out.println(userEmail);
+        return user;
     }
 
     private boolean check_result(String result, String email, String display_name,
-                                 Date date, String gender, String phonenumber, String phone_uid,
+                                 String dob, String gender, String phonenumber,
                                  String mobile_device, String mobile_os, String carrier)
             throws JSONException, ParseException
     {
 
         final JSONObject obj = new JSONObject(result);
-        String DOB = obj.getString("date_of_birth");
-        Date date_dob = dateFormatter.parse(DOB);
 
-        if (display_name == obj.getString("display_name") &&
-                email == obj.getString("email") &&
-                gender == obj.getString("gender") &&
-                date == date_dob &&
-                phonenumber == obj.getString("phone_number") &&
-                mobile_device == obj.getString("mobile_device") &&
-                mobile_os == obj.getString("mobile_os") &&
-                carrier == obj.getString("carrier"))
+        if (display_name.equals(obj.getString("display_name")) &&
+                email.equals(obj.getString("email")) &&
+                gender.equals(obj.getString("gender")) &&
+                dob.equals(obj.getString("date_of_birth")) &&
+                phonenumber.equals(obj.getString("phone_number")) &&
+                mobile_device.equals(obj.getString("mobile_device")) &&
+                mobile_os.equals(obj.getString("mobile_os")) &&
+                carrier.equals(obj.getString("carrier"))) {
             return true;
-        if (obj.getString("display_name") == "This field must be unique.") {
-            Toast.makeText(getApplicationContext(), "Display name already in use",
-                    Toast.LENGTH_LONG).show();
         }
-        if (obj.getString("email") == "This field must be unique.") {
-            Toast.makeText(getApplicationContext(), "Email already in use",
-                    Toast.LENGTH_LONG).show();
+
+        if ("This field must be unique.".equals(obj.getString("display_name"))) {
+            return false;
+        }
+
+        if (obj.getString("email").equals("This field must be unique.")) {
+            return false;
         }
         return false;
     }
 
     private String postData(String url, String email, String display_name, String password,
-                            String dob, Date date, String gender, String phonenumber,
+                            String dob, String gender, String phonenumber,
                             String phone_uid, String mobile_device, String mobile_os,
                             String carrier)
     {
 
-        InputStream inputStream = null;
+        InputStream inputStream;
         String result = "";
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
 
-            String json = "";
+            String json;
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("display_name", display_name);
             jsonObject.accumulate("email", email);
@@ -368,13 +336,17 @@ public class SignUpActivity extends Activity implements OnClickListener {
             httpPost.setHeader("Content-type", "application/json");
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
-            inputStream = httpResponse.getEntity().getContent();
-            if(inputStream != null) {
-                result = convertInputStreamToString(inputStream);
+            if (httpResponse.getStatusLine().getStatusCode() != 201) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + httpResponse.getStatusLine().getStatusCode());
             }
+
+            inputStream = httpResponse.getEntity().getContent();
+            if(inputStream != null) result = convertInputStreamToString(inputStream);
             else {
                 result = "Registration Failed";
             }
+            httpclient.getConnectionManager().shutdown();
         } catch (ClientProtocolException e) {
             Log.d("Client exception", e.getLocalizedMessage());
         } catch (Exception e) {
@@ -383,89 +355,12 @@ public class SignUpActivity extends Activity implements OnClickListener {
         return result;
     }
 
-    @Override
-	protected Dialog onCreateDialog(int id) 
-	{
-		switch (id) 
-		{
-			case TYPE_SAME_PASSWORD_IN_PASSWORD_FIELDS:			
-				return new AlertDialog.Builder(SignUpActivity.this)       
-				.setMessage(R.string.signup_type_same_password_in_password_fields)
-				.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						/* User clicked OK so do some stuff */
-					}
-				})        
-				.create();			
-			case FILL_ALL_FIELDS:				
-				return new AlertDialog.Builder(SignUpActivity.this)       
-				.setMessage(R.string.signup_fill_all_fields)
-				.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						/* User clicked OK so do some stuff */
-					}
-				})        
-				.create();
-			case USERNAME_AND_PASSWORD_LENGTH_SHORT:
-				return new AlertDialog.Builder(SignUpActivity.this)       
-				.setMessage(R.string.username_and_password_length_short)
-				.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						/* User clicked OK so do some stuff */
-					}
-				})        
-				.create();
-            case FILL_DISPLAY_NAME_FIELD:
-                return new AlertDialog.Builder(SignUpActivity.this)
-                        .setMessage(R.string.fill_display_field)
-                        .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                             }
-                        })
-                        .create();
-            case FILL_EMAIL_FIELD:
-                return new AlertDialog.Builder(SignUpActivity.this)
-                        .setMessage(R.string.fill_email_field)
-                        .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }
-                        })
-                        .create();
-            case FILL_PASSWORD_FIELD:
-                return new AlertDialog.Builder(SignUpActivity.this)
-                        .setMessage(R.string.fill_password_field)
-                        .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }
-                        })
-                        .create();
-            case FILL_REPASSWORD_FIELD:
-                return new AlertDialog.Builder(SignUpActivity.this)
-                        .setMessage(R.string.fill_repassword_field)
-                        .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }
-                        })
-                        .create();
-			default:
-				return null;
-				
-		}
-	}
-
     /* Checks if the device is connected to internet */
     public boolean isConnected(){
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected())
-            return true;
-        else
-            return false;
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 
@@ -511,7 +406,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
     /* Converts the raw stream of data to String */
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
+        String line;
         String result = "";
         while((line = bufferedReader.readLine()) != null)
             result += line;
@@ -522,7 +417,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
 
     /* Returns the Phone UID */
     private String getDeviceId() {
-        String deviceId = "";
+        String deviceId;
         final TelephonyManager mTelephony = (TelephonyManager)
                 getSystemService(Context.TELEPHONY_SERVICE);
         if (mTelephony.getDeviceId() != null) {
@@ -538,16 +433,14 @@ public class SignUpActivity extends Activity implements OnClickListener {
     private String getCarrier() {
         TelephonyManager tManager = (TelephonyManager) getBaseContext()
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        String carrierName = tManager.getNetworkOperatorName();
-        return carrierName;
+        return tManager.getNetworkOperatorName();
     }
 
     /* Retrieves the phone number used by the device */
     private String getPhoneNumber() {
         TelephonyManager tManager = (TelephonyManager) getBaseContext()
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneNumber = tManager.getLine1Number();
-        return phoneNumber;
+        return tManager.getLine1Number();
     }
 
 
