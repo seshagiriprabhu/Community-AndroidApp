@@ -10,7 +10,11 @@ import com.project.communityorganizer.sqlite.models.Event;
 import com.project.communityorganizer.sqlite.models.Friend;
 
 /* Java libs */
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigInteger;
+import java.text.ParseException;
 
 /**
  * Created by seshagiri on 19/2/15.
@@ -18,7 +22,7 @@ import java.math.BigInteger;
 @Table(name="EventAttendance")
 public class EventAttendance extends Model{
     @Column(unique = true)
-    public BigInteger aid;
+    public int aid;
 
     @Column(name="Event")
     public Event event_id;
@@ -32,58 +36,34 @@ public class EventAttendance extends Model{
     public EventAttendance() { super(); }
 
     /* Detailed Constructor */
-
     public EventAttendance(
-            BigInteger aid,
-            Event event_id,
-            Friend email,
+            int aid,
+            int event_id,
+            String email,
             String display_name,
             String status) {
         super();
         this.aid = aid;
-        this.event_id = event_id;
-        this.email = email;
+        Event event = Event.getEventDetails(event_id);
+        this.event_id = event;
+        Friend friend = Friend.getFriendDetails(email);
+        this.email = friend;
         this.display_name = display_name;
         this.status = status;
     }
 
-    public BigInteger getAid() {
-        return aid;
-    }
+    public EventAttendance(JSONObject json) throws JSONException, ParseException {
+        this.aid = json.getInt("aid");
+        int event_id = json.getInt("event_id");
 
-    public void setAid(BigInteger aid) {
-        this.aid = aid;
-    }
+        Event event = Event.getEventDetails(event_id);
+        this.event_id = event;
 
-    public Event getEvent_id() {
-        return event_id;
-    }
+        String email = json.getString("email");
+        Friend friend = Friend.getFriendDetails(email);
+        this.email = friend;
 
-    public void setEvent_id(Event event_id) {
-        this.event_id = event_id;
-    }
-
-    public Friend getEmail() {
-        return email;
-    }
-
-    public void setEmail(Friend email) {
-        this.email = email;
-    }
-
-    public String getDisplay_name() {
-        return display_name;
-    }
-
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+        this.display_name = json.getString("display_name");;
+        this.status = json.getString("status");
     }
 }

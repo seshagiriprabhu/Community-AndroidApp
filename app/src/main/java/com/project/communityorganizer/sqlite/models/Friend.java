@@ -6,21 +6,23 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 /* Java libraries */
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by seshagiri on 19/2/15.
  */
 @Table(name="FriendList")
 public class Friend extends Model{
-    @Column(index = true)
-    public int uid;
-
     @Column( index = true)
     public String display_name;
 
@@ -35,13 +37,11 @@ public class Friend extends Model{
 
     /* Storing into DB */
     public Friend(
-            int uid,
             String display_name,
             String email,
             String gender,
             Date date_of_birth,
             String phone_number) {
-        this.uid = uid;
         this.display_name = display_name;
         this.email = email;
         this.gender = gender;
@@ -49,67 +49,36 @@ public class Friend extends Model{
         this.phone_number = phone_number;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public String getDisplay_name() {
-        return display_name;
-    }
-
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
+    public Friend(JSONObject json) throws JSONException, ParseException {
+        this.display_name = json.getString("display_name");
+        this.email = json.getString("email");
+        String DOB = json.getString("date_of_birth");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date date = format.parse(DOB);
+        this.date_of_birth = date;
+        this.phone_number = json.getString("phone_number");
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Date getDate_of_birth() {
-        return date_of_birth;
-    }
-
-    public void setDate_of_birth(Date date_of_birth) {
-        this.date_of_birth = date_of_birth;
-    }
-
-    public String getPhone_number() {
-        return phone_number;
-    }
-
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
-    }
-
-    public static Friend findOrCreateFromJson(JSONObject json) throws JSONException {
+    public static Friend findOrCreateFromJson(JSONObject json) throws JSONException, ParseException {
         Friend existingFriend =
                 new Select()
                         .from(Friend.class)
-                        .where("uid = ?", json.getInt("uid"))
+                        .where("email = ?", json.getString("email"))
                         .executeSingle();
         if (existingFriend != null) {
             return existingFriend;
         } else {
-            Friend friend = new Gson().fromJson(String.valueOf(json), Friend.class);
+            Friend friend = new Friend(json);
             friend.save();
             return friend;
         }
     }
 
+    public static Friend getFriendDetails(String email) {
+        return new Select().from(Friend.class).where("email = ?", email).executeSingle();
+    }
 }
