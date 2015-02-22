@@ -26,8 +26,10 @@
             android:layout_gravity="top|center"
             android:contentDescription="@string/logoDesc"
             android:background="@mipmap/ic_launcher_organizer"
-            android:minHeight="200sp"
-            android:minWidth="200sp" />
+            android:minHeight="150sp"
+            android:minWidth="150sp"
+            android:theme="@style/ChatAppTheme"
+            android:nestedScrollingEnabled="true" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -41,7 +43,7 @@
             android:singleLine="true"
             android:inputType="textEmailAddress"
             android:drawableStart="@drawable/ic_action_mail"
-        />
+            android:theme="@style/ChatAppTheme" />
     	<EditText
             android:id="@+id/etPass"
             android:layout_width="match_parent"
@@ -52,7 +54,8 @@
             android:hint="@string/etPass"
             android:textColorHint="#000000"
             android:inputType="textPassword"
-            android:drawableStart="@drawable/ic_action_key"/>
+            android:drawableStart="@drawable/ic_action_key"
+            android:theme="@style/ChatAppTheme" />
         <Button
             android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
@@ -64,7 +67,8 @@
             android:padding="12sp"
             android:background="@color/bg_btn_Sign"
             android:textColor="@color/white"
-            android:text="@string/btnSignIn"/>
+            android:text="@string/btnSignIn"
+            android:theme="@style/ChatAppTheme" />
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
@@ -76,7 +80,8 @@
             android:textSize="20sp"
             android:background="@color/bg_btn_Sign"
             android:textColor="@color/white"
-            android:text="@string/btnCancel"/>
+            android:text="@string/btnCancel"
+            android:theme="@style/ChatAppTheme" />
         </LinearLayout>
     <TextView
         android:id="@+id/txtError"

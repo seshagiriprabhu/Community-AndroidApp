@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/ChatAppTheme"
+    android:touchscreenBlocksFocus="false">
 
     <LinearLayout
-
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:layout_alignParentTop="false">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -20,9 +23,9 @@
             android:id="@+id/imageView"
             android:layout_gravity="top|center"
             android:contentDescription="@string/logoDesc"
-            android:background="@mipmap/ic_launcher_organizer"
-            android:minHeight="200sp"
-            android:minWidth="200sp" />
+            android:background="@mipmap/ic_launcher_logo"
+            android:minHeight="150sp"
+            android:minWidth="150sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,7 +34,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/title"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="28sp" />
 
         <Button
             android:id="@+id/btnSingIn"
@@ -69,7 +72,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
