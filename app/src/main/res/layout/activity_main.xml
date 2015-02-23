@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    android:theme="@style/ChatAppTheme"
-    android:touchscreenBlocksFocus="false">
+    android:theme="@style/ChatAppTheme">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -37,7 +36,7 @@
             android:textSize="28sp" />
 
         <Button
-            android:id="@+id/btnSingIn"
+            android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
