@@ -16,7 +16,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by seshagiri on 19/2/15.
+ * Created by
+ * @author Seshagiri on 19/2/15.
  */
 @Table(name = "PhoneData")
 public class PhoneData extends Model{
@@ -32,10 +33,14 @@ public class PhoneData extends Model{
     public String connection_method;
     public Double app_data_transfered;
 
-    /* Default Constructor */
+    /**
+     * Default Constructor
+     */
     public PhoneData() { super(); }
 
-    /* Constructor for storing into DB */
+    /**
+     *  Constructor for storing into DB
+     */
     public PhoneData(
             String email,
             Date date_time,
@@ -48,7 +53,7 @@ public class PhoneData extends Model{
             String connection_method,
             Double app_data_transfered) {
         super();
-        User user = User.getUserDetails(email);
+        User user = User.getUserObject(email);
         this.email = user;
         this.date_time = date_time;
         this.battery_state = battery_state;
