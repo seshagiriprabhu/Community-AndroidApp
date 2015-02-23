@@ -21,7 +21,7 @@ When developing an application for Android, you will also need to install:
 [Welcome Screen]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/Welcome.png "Welcome Screen"
 [Login Screen]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/Signin.png "Login Screen"
 [Sign Up]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/SignUp.png "Registeration"
-![Welcome Screen][Welcome Screen] ![Login Screen] [Login Screen] ![Sign Up] [Registeration]
+![Welcome Screen][Welcome Screen] ![Login Screen] [Login Screen] ![Sign Up] [Sign Up]
 
 ## License
 ### [GNU GPL v2.0](http://choosealicense.com/licenses/gpl-2.0/)
