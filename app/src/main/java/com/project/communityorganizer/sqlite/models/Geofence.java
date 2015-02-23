@@ -8,6 +8,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.project.communityorganizer.JSON.models.GeofenceJSONModel;
 
 
 /* Java libraries */
@@ -53,18 +54,30 @@ public class Geofence extends Model {
         this.expiration_time = expiration_time;
     }
 
-    public Geofence(JSONObject json) throws JSONException, ParseException {
-        this.gid = json.getInt("gid");
-        this.fence_name = json.getString("fence_name");
-        this.latitude = json.getDouble("latitude");
-        this.longitude = json.getDouble("longitude");
-        this.geofence_radius = json.getDouble("geofence_radius");
-        this.expiration_time = json.getInt("expiration_time");
+    public Geofence(GeofenceJSONModel model) {
+        this.gid = model.getGid();
+        this.fence_name = model.getFence_name();
+        this.longitude = model.getLongitude();
+        this.latitude = model.getLatitude();
+        this.geofence_radius = model.getGeofence_radius();
+        this.expiration_time = model.getExpiration_time();
     }
 
     public static Geofence getGeofenceDetails(int gid) {
         return new Select().from(Geofence.class).where("gid = ?", gid).executeSingle();
     }
 
+    public static Geofence findOrCreateFromModel(GeofenceJSONModel model) {
+        Geofence existingGeofence = new Select().from(Geofence.class)
+                .where("gid = ?", model.getGid()).executeSingle();
+        if (existingGeofence != null ) {
+            return existingGeofence;
+        } else {
+            Geofence geofence = new Geofence(model);
+            geofence.save();
+            return geofence;
+        }
+
+    }
 }
 

@@ -5,21 +5,15 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.project.communityorganizer.JSON.models.FriendJSONModel;
 
 /* Java libraries */
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
- * Created by seshagiri on 19/2/15.
+ * Created by
+ * @author seshagiri on 19/2/15.
  */
 @Table(name="FriendList")
 public class Friend extends Model{
@@ -49,33 +43,34 @@ public class Friend extends Model{
         this.phone_number = phone_number;
     }
 
-    public Friend(JSONObject json) throws JSONException, ParseException {
-        this.display_name = json.getString("display_name");
-        this.email = json.getString("email");
-        String DOB = json.getString("date_of_birth");
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        Date date = format.parse(DOB);
-        this.date_of_birth = date;
-        this.phone_number = json.getString("phone_number");
+
+    public Friend(FriendJSONModel model)  throws ParseException {
+        this.display_name = model.getDisplay_name();
+        this.email = model.getEmail();
+        this.date_of_birth = model.date_of_birth;
+        this.gender = model.getGender();
+        this.phone_number = model.getPhone_number();
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public static Friend findOrCreateFromJson(JSONObject json) throws JSONException, ParseException {
+    public static Friend findOrCreateFromModel(FriendJSONModel model) throws ParseException {
         Friend existingFriend =
                 new Select()
                         .from(Friend.class)
-                        .where("email = ?", json.getString("email"))
+                        .where("email = ?", model.getEmail())
                         .executeSingle();
         if (existingFriend != null) {
             return existingFriend;
         } else {
-            Friend friend = new Friend(json);
+            Friend friend = new Friend(model);
             friend.save();
             return friend;
+
         }
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public static Friend getFriendDetails(String email) {

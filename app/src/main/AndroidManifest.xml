@@ -1,21 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.project.communityorganizer"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="com.project.communityorganizer">
 
-    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="21" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme">
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
         <!-- ORM ActiveAndroid meta data -->
         <meta-data
             android:name="AA_DB_NAME"
@@ -26,15 +28,15 @@
         <meta-data
             android:name="AA_MODELS"
             android:value="com.project.communityorganizer.sqlite.models.User,
-            com.project.communityorganizer.sqlite.models.Friend,
-            com.project.communityorganizer.sqlite.models.Geofence,
-            com.project.communityorganizer.sqlite.models.Event,
-            com.project.communityorganizer.sqlite.models.EventAttendance,
-            com.project.communityorganizer.sqlite.models.Location,
-            com.project.communityorganizer.sqlite.models.PhoneData" />
+             com.project.communityorganizer.sqlite.models.Friend,
+             com.project.communityorganizer.sqlite.models.Geofence,
+             com.project.communityorganizer.sqlite.models.Event,
+             com.project.communityorganizer.sqlite.models.EventAttendance,
+             com.project.communityorganizer.sqlite.models.Location,
+             com.project.communityorganizer.sqlite.models.PhoneData" />
         <!-- Main screen -->
         <activity
-            android:name="com.project.communityorganizer.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen" >
@@ -46,7 +48,7 @@
         </activity>
         <!-- Sign up activity -->
         <activity
-            android:name="com.project.communityorganizer.SignUpActivity"
+            android:name=".SignUpActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.DeviceDefault" >
             <intent-filter>
@@ -57,10 +59,10 @@
         </activity>
         <!-- Signin activity -->
         <activity
-            android:name="com.project.communityorganizer.SignInActivity"
+            android:name=".SignInActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.SignInActivity" />
 
@@ -69,11 +71,20 @@
         </activity>
         <!-- Friend list -->
         <activity
-            android:name="com.project.communityorganizer.Listview"
+            android:name=".Listview"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.Menu" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:label= "@string/title_activity_home" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

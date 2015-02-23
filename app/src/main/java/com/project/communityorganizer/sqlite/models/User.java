@@ -4,21 +4,15 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
-import com.google.gson.Gson;
+import com.project.communityorganizer.JSON.models.UserJSONModel;
 
 /* Java libs */
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigInteger;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
- * Created by seshagiri on 19/2/15.
+ * Created by
+ * @author seshagiri on 19/2/15.
  */
 @Table(name = "User")
 public class User extends Model{
@@ -41,43 +35,17 @@ public class User extends Model{
     /* Default constructor */
     public User() { super(); }
 
-    /* Constructor for storing DB */
-    public User(String display_name,
-                String email,
-                String password,
-                String gender,
-                Date date_of_birth,
-                String phone_number,
-                String mobile_os,
-                String mobile_device,
-                String phone_uid,
-                String carrier) {
-        super();
-        this.display_name = display_name;
-        this.email = email;
-        this.password = password;
-        this.gender = gender;
-        this.date_of_birth = date_of_birth;
-        this.phone_number = phone_number;
-        this.mobile_os = mobile_os;
-        this.mobile_device = mobile_device;
-        this.phone_uid = phone_uid;
-        this.carrier = carrier;
-    }
-
-
-    public User(JSONObject json) throws JSONException, ParseException {
-        this.display_name = json.getString("display_name");
-        this.email = json.getString("email");
-        this.password = json.getString("password");
-        String DOB = json.getString("date_of_birth");
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        Date date = format.parse(DOB);
-        this.date_of_birth = date;
-        this.phone_number = json.getString("phone_number");
-        this.mobile_os = json.getString("mobile_os");
-        this.mobile_device = json.getString("mobile_device");
-        this.carrier = json.getString("carrier");
+    public User(UserJSONModel model)  throws ParseException {
+        this.display_name = model.getDisplay_name();
+        this.email = model.getEmail();
+        this.password = model.getPassword();
+        this.date_of_birth = model.date_of_birth;
+        this.gender = model.getGender();
+        this.phone_number = model.getPhone_number();
+        this.mobile_device = model.getMobile_device();
+        this.mobile_os = model.getMobile_os();
+        this.phone_uid = model.getPhone_uid();
+        this.carrier = model.getCarrier();
     }
 
     public String getEmail() {
@@ -101,33 +69,32 @@ public class User extends Model{
         return user.getEmail().equals(email) && user.getPassword().equals(password);
     }
 
-    public static User findOrCreateFromJson(JSONObject json) throws JSONException, ParseException {
+    public static User findOrCreateFromJson(UserJSONModel model) throws ParseException {
         User existingFriend =
                 new Select()
                         .from(User.class)
-                        .where("email = ?", json.getString("email"))
+                        .where("email = ?", model.getEmail())
                         .executeSingle();
         if (existingFriend != null) {
             return existingFriend;
         } else {
-            User user= new User(json);
+            User user= new User(model);
             user.save();
             return user;
         }
     }
 
-    public static User registerNewUser(JSONObject json) throws JSONException, ParseException {
-        User user= new User(json);
-        user.save();
-        return user;
+
+    public static String getRegisteredUserEmail() {
+        return String.valueOf(new Select("email")
+                .from(User.class)
+                .execute());
     }
 
-    public static String getAll(String email) {
-        return String.valueOf(new Select(email)
-                .from(User.class)
-                .where("email = ?", email)
-                .executeSingle());
-
+    public static String getRegisteredUserDisplayName(){
+        return String.valueOf(new Select("display_name")
+        .from(User.class)
+        .execute());
     }
 
     public static User getUserDetails(String email) {

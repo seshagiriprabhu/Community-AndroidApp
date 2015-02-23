@@ -55,6 +55,7 @@
 	<string name="signup_type_same_password_in_password_fields">Type same password in password fields</string>
 	<string name="signup_failed">Sign up failed because of unknown reason</string>
 	<string name="signup_username_crashed">Your username have been already taken, please try another username</string>
+    <string name="success">Success!</string>
 	<string name="signup_successfull">Your registration is completed successfully,\n you can login now </string>
 	<string name="username_and_password_length_short">Username and password length must be at least 5</string>
 	<string name="request_sent">Your request has been sent</string>
@@ -72,7 +73,9 @@
     <string name="registration_failed">Registration Failed</string>
     <string name="registration_failed_reason">Registration failed due to various reasons</string>
     <string name="server_address">http://134.76.249.227/</string>
-	
+    <string name="error">Error</string>
+    <string name="server_error">Something wrong with server</string>
+
 	
     <style name="DefaultButtonText">
 	   <item name="android:layout_width">fill_parent</item>
@@ -87,5 +90,6 @@
 	    <item name="android:shadowDy">1</item>
 	    <item name="android:shadowRadius">1</item>
 	</style>
+    <string name="title_activity_home">App Home</string>
 
 </resources>
