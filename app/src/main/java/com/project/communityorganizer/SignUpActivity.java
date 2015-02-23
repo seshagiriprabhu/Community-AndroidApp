@@ -2,10 +2,9 @@ package com.project.communityorganizer;
 
 /* Android in-build libs and apps */
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
+import android.app.DatePickerDialog;;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -36,16 +35,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static android.app.AlertDialog.Builder;
-import static com.project.communityorganizer.services.SaveSharedPreference.*;
-
 public class SignUpActivity extends Activity implements OnClickListener {
-
     final Context context = this;
     private EditText displayNameText, eMailText, passwordText, passwordAgainText;
     private EditText DOBText;
@@ -68,6 +62,9 @@ public class SignUpActivity extends Activity implements OnClickListener {
         setDateTimeField();
     }
 
+    /**
+     * A function to handle Button click events
+     */
     private void btnClick() {
         btnSignUp.setOnClickListener(new OnClickListener() {
             @Override
@@ -76,7 +73,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
                 if (!validate()) {
                     Toast.makeText(getBaseContext(), "Enter some data!", Toast.LENGTH_LONG).show();
                 } else {
-                    new JSONAsyncTask().execute();
+                    new JSONAsyncTask(context).execute();
                 }
             }
         });
@@ -136,10 +133,19 @@ public class SignUpActivity extends Activity implements OnClickListener {
      * Asynchronous task to register, fetch friend list and geofence list
      */
     private class JSONAsyncTask extends AsyncTask<String, Integer, Boolean> {
+        ProgressDialog dialog = new ProgressDialog(SignUpActivity.this);
+        Context context;
+        private JSONAsyncTask(Context context){
+            this.context = context.getApplicationContext();
+            dialog.setCancelable(false);
+            dialog.setTitle("Please wait");
+            dialog.setMessage("Registration in progress");
+            dialog.show();
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
@@ -152,101 +158,89 @@ public class SignUpActivity extends Activity implements OnClickListener {
             return null;
         }
 
-        /**
-         * Handles user registration
-         * @return boolean
-         * @throws ParseException
-         * @throws JSONException
-         * @throws NoSuchAlgorithmException
-         */
-        private boolean registerUser() throws ParseException, JSONException, NoSuchAlgorithmException {
-            final UserJSONModel userJSONModel = new UserJSONModel();
-            userJSONModel.setEmail(eMailText.getText().toString());
-            userJSONModel.setDisplay_name(displayNameText.getText().toString());
-            String plainText = passwordText.getText().toString();
-            passwordHash hash = new passwordHash();
-            String password = hash.findHash(plainText);
-            userJSONModel.setPassword(password);
-            String DOB = DOBText.getText().toString();
-            Date date = dateFormatter.parse(DOB);
-            userJSONModel.setDate_of_birth(date);
-            userJSONModel.setPhone_number(getPhoneNumber());
-            userJSONModel.setMobile_os(android.os.Build.VERSION.RELEASE);
-            userJSONModel.setMobile_device(android.os.Build.MODEL);
-            userJSONModel.setPhone_uid(getDeviceId());
-            userJSONModel.setCarrier(getCarrier());
-
-            String sex = radioSexButton.getText().toString();
-            String gender = "F";
-            if (sex.equals("Male")) gender = "M";
-
-            userJSONModel.setGender(gender);
-            final RestService restService = new RestService();
-            RestService.CommunityAppWebService appWebService = restService.getService();
-            appWebService.registerUser(userJSONModel,
-                    new Callback<UserJSONModel>() {
-                        @Override
-                        public void success(UserJSONModel model, Response response) {
-                            if (response.getStatus() == 201) {
-                                try {
-                                    User user = User.findOrCreateFromJson(model);
-                                    user.save();
-                                    SaveSharedPreference
-                                            .setUserEmail(SignUpActivity.this,
-                                                    model.getEmail());
-                                    SaveSharedPreference
-                                            .setUserName(SignUpActivity.this,
-                                                    model.getDisplay_name());
-                                    restService.fetchFriendList(model.getEmail());
-                                    restService.fetchGeofenceList();
-                                    REGISTRATION_TITLE = "Success";
-                                    REGISTRATION_DETAILS = "User Registered!";
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            }else {
-                                    REGISTRATION_TITLE = "Error";
-                                    REGISTRATION_DETAILS = "Something wrong in the server side";
-                            }
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            // TODO error verbose
-                            REGISTRATION_TITLE = "Registration Failed";
-                            REGISTRATION_DETAILS ="Email/Display already in use";
-                        }
-                    });
-            return true;
-        }
-
+        @Override
         protected void onPostExecute(Boolean result) {
-            if (result) postRegistrationDialog();
-        }
+            super.onPostExecute(result);
 
+            if (dialog.isShowing())
+                dialog.dismiss();
+
+            if (result) {
+                Toast toast = Toast.makeText(context, REGISTRATION_TITLE, Toast.LENGTH_LONG);
+                toast.show();
+                context.startActivity(new Intent(context, SignInActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                SignUpActivity.this.finish();
+            }
+        }
     }
-    /**
-     * Dialog to be shown after the registration
-     */
-    public void  postRegistrationDialog() {
-        if (!getUserEmail(SignUpActivity.this).equals("[]")) {
-            startActivity(new Intent(this, SignInActivity.class));
-            SignUpActivity.this.finish();
-        }
 
-        Builder alertDialogBuilder = new Builder(
-                context);
-        alertDialogBuilder.setTitle(REGISTRATION_TITLE);
-        alertDialogBuilder
-                .setMessage(REGISTRATION_DETAILS)
-                .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
+    /**
+     * Handles user registration
+     * @return boolean
+     * @throws ParseException
+     * @throws JSONException
+     * @throws NoSuchAlgorithmException
+     */
+    private boolean registerUser() throws ParseException, JSONException, NoSuchAlgorithmException {
+        final UserJSONModel userJSONModel = new UserJSONModel();
+        userJSONModel.setEmail(eMailText.getText().toString());
+        userJSONModel.setDisplay_name(displayNameText.getText().toString());
+        String plainText = passwordText.getText().toString();
+        passwordHash hash = new passwordHash();
+        String password = hash.findHash(plainText);
+        userJSONModel.setPassword(password);
+        String DOB = DOBText.getText().toString();
+        Date date = dateFormatter.parse(DOB);
+        userJSONModel.setDate_of_birth(date);
+        userJSONModel.setPhone_number(getPhoneNumber());
+        userJSONModel.setMobile_os(android.os.Build.VERSION.RELEASE);
+        userJSONModel.setMobile_device(android.os.Build.MODEL);
+        userJSONModel.setPhone_uid(getDeviceId());
+        userJSONModel.setCarrier(getCarrier());
+
+        String sex = radioSexButton.getText().toString();
+        String gender = "F";
+        if (sex.equals("Male")) gender = "M";
+
+        userJSONModel.setGender(gender);
+        final RestService restService = new RestService();
+        RestService.CommunityAppWebService appWebService = restService.getService();
+        appWebService.registerUser(userJSONModel,
+                new Callback<UserJSONModel>() {
+                    @Override
+                    public void success(UserJSONModel model, Response response) {
+                        if (response.getStatus() == 201) {
+                            try {
+                                User user = User.findOrCreateFromJson(model);
+                                user.save();
+                                SaveSharedPreference
+                                        .setUserEmail(SignUpActivity.this,
+                                                model.getEmail());
+                                SaveSharedPreference
+                                        .setUserName(SignUpActivity.this,
+                                                model.getDisplay_name());
+                                restService.fetchFriendList(model.getEmail());
+                                restService.fetchGeofenceList();
+                                REGISTRATION_TITLE = "Success";
+                                REGISTRATION_DETAILS = "User Registered!";
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            REGISTRATION_TITLE = "Error";
+                            REGISTRATION_DETAILS = "Something wrong in the server side";
+                        }
                     }
-                })
-                .create();
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        // TODO error verbose
+                        REGISTRATION_TITLE = "Registration Failed";
+                        REGISTRATION_DETAILS ="Email/Display already in use";
+                    }
+                });
+        return true;
     }
 
     /**

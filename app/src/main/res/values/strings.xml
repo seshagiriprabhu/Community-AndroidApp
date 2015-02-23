@@ -75,6 +75,7 @@
     <string name="server_address">http://134.76.249.227/</string>
     <string name="error">Error</string>
     <string name="server_error">Something wrong with server</string>
+    <string name="registering">Registration: Please Wait</string>
 
 	
     <style name="DefaultButtonText">

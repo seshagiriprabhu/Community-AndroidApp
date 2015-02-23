@@ -1,9 +1,10 @@
 package com.project.communityorganizer.JSON.models;
-
+import com.project.communityorganizer.sqlite.models.User;
 import java.util.Date;
 
 /**
- * Created by seshagiri on 22/2/15.
+ * Created by
+ * @author seshagiri on 22/2/15.
  */
 public class UserJSONModel {
     public String display_name;
@@ -17,33 +18,29 @@ public class UserJSONModel {
     public String phone_uid;
     public String carrier;
 
+    /**
+     * Default constructor
+     */
     public UserJSONModel() {
         super();
     }
 
-    public UserJSONModel(
-            String display_name,
-            String email,
-            String password,
-            String gender,
-            Date date_of_birth,
-            String phone_number,
-            String mobile_os,
-            String mobile_device,
-            String phone_uid,
-            String carrier)
-    {
+    /**
+     * Constructor for creating model from User model
+     * @param user
+     */
+    public UserJSONModel(User user) {
         super();
-        this.display_name = display_name;
-        this.email = email;
-        this.password = password;
-        this.gender = gender;
-        this.date_of_birth = date_of_birth;
-        this.phone_number = phone_number;
-        this.mobile_os = mobile_os;
-        this.mobile_device = mobile_device;
-        this.phone_uid = phone_uid;
-        this.carrier = carrier;
+        this.display_name = user.getDisplay_name();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.gender = user.getGender();
+        this.date_of_birth = user.getDate_of_birth();
+        this.phone_number = user.getPhone_number();
+        this.mobile_device = user.getMobile_device();
+        this.mobile_os = user.getMobile_os();
+        this.phone_uid = user.getPhone_uid();
+        this.carrier = user.getCarrier();
     }
 
     public String getDisplay_name() {
