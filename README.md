@@ -25,8 +25,9 @@ When developing an application for Android, you will also need to install:
 [Login Screen]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/Signin.png "Login Screen"
 [Sign Up]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/SignUp.png "Registeration"
 [Home Page]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/Home.png "Home Page"
+[Location]: https://github.com/seshagiriprabhu/Community-AndroidApp/blob/master/docs/Images/Screenshots/Geofence.png "Location"
 ![Welcome Screen][Welcome Screen] ![Login Screen] [Login Screen] ![Sign Up] [Sign Up]
-![Home Page][Home Page]
+![Home Page][Home Page] ![Location] [Location]
 
 ## License
 ### [GNU GPL v2.0](http://choosealicense.com/licenses/gpl-2.0/)
