@@ -1,0 +1,12 @@
+---
+layout: default
+modal-id: 4
+date: 2015-02-25
+img: Home.png
+alt: Home Page
+project-date: Feb 2015
+client: Start Bootstrap
+category: Web Development
+description: The home page of the app after a successful user login
+
+---

@@ -1,0 +1,12 @@
+---
+layout: default
+modal-id: 5
+date: 2015-02-25
+img: Geofence.png
+alt: Location Activity
+project-date: Feb 2015
+client: Start Bootstrap
+category: Web Development
+description: Displays the user location activity in a map
+
+---

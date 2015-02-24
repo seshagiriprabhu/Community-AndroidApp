@@ -17,3 +17,10 @@ coverage
 tmp/*
 .jekyll-metadata
 /vendor
+
+.gradle/
+.idea/
+Community-AndroidApp.iml
+app/
+build/
+local.properties
