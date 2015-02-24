@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 
 public class Location extends Activity {
@@ -18,6 +20,10 @@ public class Location extends Activity {
             actionBar.setTitle("Your Locations");
             actionBar.setLogo(R.drawable.ic_action_light_geofence);
         }
+        WebView webView = (WebView) findViewById(R.id.webView);
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("http://134.76.249.227/data_analysis/map/");
     }
 
 
