@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Community Organizer</title>
+    <description>Implementation of location based decentralized community app for research purpose</description>
+    <link>http://seshagiriprabhu.github.io/Community-AndroidApp//</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Tue, 24 Feb 2015 13:00:41 +0100</pubDate>
+    <lastBuildDate>Tue, 24 Feb 2015 13:00:41 +0100</lastBuildDate>
+    <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Project 3</title>
+        <description>User login activity page</description>
+        <pubDate>Tue, 24 Feb 2015 00:00:00 +0100</pubDate>
+        <link>http://seshagiriprabhu.github.io/Community-AndroidApp//web%20development/2015/02/24/project-3/</link>
+        <guid isPermaLink="true">http://seshagiriprabhu.github.io/Community-AndroidApp//web%20development/2015/02/24/project-3/</guid>
+        
+        
+        <category>web development</category>
+        
+      </item>
+    
+      <item>
+        <title>Project 2</title>
+        <description>User registration activity page</description>
+        <pubDate>Tue, 24 Feb 2015 00:00:00 +0100</pubDate>
+        <link>http://seshagiriprabhu.github.io/Community-AndroidApp//web%20development/2015/02/24/project-2/</link>
+        <guid isPermaLink="true">http://seshagiriprabhu.github.io/Community-AndroidApp//web%20development/2015/02/24/project-2/</guid>
+        
+        
+        <category>web development</category>
+        
+      </item>
+    
+      <item>
+        <title>Project 1</title>
+        <description>Welcome screen of the app</description>
+        <pubDate>Tue, 24 Feb 2015 00:00:00 +0100</pubDate>
+        <link>http://seshagiriprabhu.github.io/Community-AndroidApp//web%20development/2015/02/24/project-1/</link>
+        <guid isPermaLink="true">http://seshagiriprabhu.github.io/Community-AndroidApp//web%20development/2015/02/24/project-1/</guid>
+        
+        
+        <category>web development</category>
+        
+      </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,48 @@
+# Site settings
+title: Community Organizer
+email: seshagiriprabhu@gmail.com
+url: http://seshagiriprabhu.github.io/Community-AndroidApp/
+description: "Implementation of location based decentralized community app for research purpose"
+
+# Contact form: comment the line below if you want to stick with the default PHP contact form
+contact: static
+
+# Color settings (hex-codes without the leading hash-tag)
+color:
+  primary: 18bc9c #80B3FF
+  secondary: 2c3e50 #FD6E8A
+  secondary-dark: 233140 #A2122F
+
+# Footer settings
+footer:
+  copyright: Community Organizer
+  author1: Hari Raghavendra Bandari
+  author1-home: 
+  author2: Seshagiri Prabhu
+  author2-home: https://seshagiriprabhu.wordpress.com/
+  location: Location
+  social: Around the Web
+  credits: supervisor
+
+supervisor: 
+    name: David Koll
+    url: http://user.informatik.uni-goettingen.de/~dkoll/  
+      
+# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
+social:
+  - title: github
+    url: https://github.com/seshagiriprabhu/Community-AndroidApp
+
+# Postal address (add as many lines as necessary)
+address:
+  - line: Informatics Department
+  - line: Georg-August-University
+  - line: Gottingen, Germany
+
+address-details:
+    name: Computer Networks Group
+    url: https://wiki.net.informatik.uni-goettingen.de/
+
+# Build settings
+markdown: kramdown
+permalink: pretty

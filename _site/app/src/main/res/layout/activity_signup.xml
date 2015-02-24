@@ -1,0 +1,183 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#3cb879"
+        android:touchscreenBlocksFocus="false"
+        android:transitionGroup="false"
+        android:padding="10sp"
+        android:theme="@style/ChatAppTheme">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:cacheColorHint="@android:color/transparent"
+            android:fadingEdge="none"
+            android:persistentDrawingCache="scrolling"
+            android:smoothScrollbar="true"
+            android:id="@+id/linearLayout">
+
+            <EditText
+                android:id="@+id/etUserName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/etUserName"
+                android:drawableStart="@drawable/ic_action_user"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginTop="5sp"
+                android:ems="20"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme">
+                <requestFocus />
+                </EditText>
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/etEmail"
+                android:inputType="textEmailAddress"
+                android:drawableStart="@drawable/ic_action_mail"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginTop="5sp"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme">
+
+            </EditText>
+            <EditText
+                android:id="@+id/etPass"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/etPass"
+                android:inputType="textPassword"
+                android:drawableStart="@drawable/ic_action_key"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginTop="5sp"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme" />
+            <EditText
+                android:id="@+id/etPassagn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/etPassagn"
+                android:inputType="textPassword"
+                android:padding="12sp"
+                android:drawableStart="@drawable/ic_action_key"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginTop="5sp"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme" />
+
+            <RadioGroup
+                android:id="@+id/radioSex"
+                android:layout_width="fill_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginTop="5sp"
+                android:textColor="@android:color/secondary_text_light">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/etGender"
+                    android:id="@+id/textView2"
+                    android:textSize="18sp"                
+                    android:layout_marginLeft="15sp"
+                    android:layout_marginRight="15sp"
+                    android:layout_marginTop="5sp"
+                    android:textColorHint="@android:color/secondary_text_light"
+                    android:layout_weight="1"
+                    android:theme="@style/ChatAppTheme" />
+
+                <RadioButton
+                    android:id="@+id/radioMale"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/etmale"
+                    android:checked="true"
+                    android:layout_marginTop="5sp"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:theme="@style/AppBaseTheme"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/radioFemale"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/etfemale"
+                    android:layout_marginTop="5sp"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:theme="@style/AppBaseTheme"
+                    android:textSize="18sp" />
+
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/etdob"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_action_calandar"
+                android:inputType="date"
+                android:hint="@string/etdob"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginTop="5sp"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="50sp"
+                android:layout_marginBottom="10sp"
+                android:layout_gravity="bottom">
+
+                <Button
+                    android:id="@+id/btnSignUp"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btnSignUp"
+                    android:background="@color/bg_btn_Sign"
+                    android:textSize="20sp"
+                    android:padding="10sp"
+                    android:textColor="@color/white"
+                    android:clickable="false"
+                    android:layout_marginEnd="5sp"
+                    style="@style/ChatAppTheme"
+                    android:theme="@style/ChatAppTheme"
+                    android:layout_marginBottom="5sp" />
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="0sp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bg_btn_Sign"
+                    android:textSize="20sp"
+                    android:padding="10sp"
+                    android:textColor="@color/white"
+                    android:text="@string/btnCancel"
+                    android:layout_marginStart="5sp"
+                    style="@style/ChatAppTheme"
+                    android:theme="@style/ChatAppTheme"
+                    android:layout_marginBottom="5sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
