@@ -1,56 +1,65 @@
 package com.project.communityorganizer;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.ActionBar;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.project.communityorganizer.types.CustomListAdapter;
 
-
-public class HomeActivity extends ActionBarActivity {
-
+public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final String[] itemName = new String[]{
+                "Friends",
+                "Events",
+                "Location",
+                "Settings"
+        };
+
+        final String[] itemDescription = new String[]{
+                "View friend list",
+                "Create and view events",
+                "See the recent locations you've visited",
+                "App settings"
+        };
+
+        final Integer[] imgId = new Integer[]{
+                R.drawable.ic_action_friend,
+                R.drawable.ic_action_event,
+                R.drawable.ic_action_geofence,
+                R.drawable.ic_action_settings
+        };
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                new String[] {"Event", "Friend", "Location", "Settings"}));
+        ListView listView = (ListView) findViewById(android.R.id.list);
+        CustomListAdapter adapter = new CustomListAdapter(this, itemName, imgId, itemDescription);
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-                        Toast.LENGTH_SHORT).show();
+                if (position == 0) {
+                    Intent intent = new Intent(HomeActivity.this, FriendList.class);
+                    startActivity(intent);
+                } else if (position == 1) {
+                    Intent intent = new Intent(HomeActivity.this, EventList.class);
+                    startActivity(intent);
+                } else if (position == 2) {
+                    Intent intent = new Intent(HomeActivity.this, Location.class);
+                    startActivity(intent);
+                } else if (position == 3) {
+                    Intent intent = new Intent(HomeActivity.this, Settings.class);
+                    startActivity(intent);
+                }
             }
         });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Community Organizer");
+            actionBar.setLogo(R.drawable.ic_action_logo);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

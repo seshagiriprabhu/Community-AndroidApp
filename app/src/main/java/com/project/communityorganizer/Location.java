@@ -2,22 +2,21 @@ package com.project.communityorganizer;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class FriendList extends Activity {
+public class Location extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_list);
+        setContentView(R.layout.activity_location);
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Friend List");
-            actionBar.setLogo(R.drawable.ic_action_light_friend);
+            actionBar.setTitle("Your Locations");
+            actionBar.setLogo(R.drawable.ic_action_light_geofence);
         }
     }
 
@@ -25,7 +24,7 @@ public class FriendList extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_friend_list, menu);
+        getMenuInflater().inflate(R.menu.menu_location, menu);
         return true;
     }
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">CommunityOrganizer</string>
     <string name="hello_Community">Welcome to Community Organizer</string>
     <string name="hello_world">Hello world!</string>
@@ -30,11 +29,11 @@
     <string name="desc">Contact Image</string>
     <string name="local_service_started">App service started</string>
     <string name="local_service_stopped">App service stopped</string>
-	<string name="local_service_connected">local_service_connected</string>
-	<string name="new_friend_request_exist">New friend request</string>
-	<string name="approve_selected_friends">Approve Selecteds and Discard Others</string>
-	<string name="not_connected_to_network">There is no available connected network</string>
-	<string name="message_cannot_be_sent">Message was not been able to sent</string>
+    <string name="local_service_connected">local_service_connected</string>
+    <string name="new_friend_request_exist">New friend request</string>
+    <string name="approve_selected_friends">Approve Selecteds and Discard Others</string>
+    <string name="not_connected_to_network">There is no available connected network</string>
+    <string name="message_cannot_be_sent">Message was not been able to sent</string>
     <string name="add_new_friend">Add new friend</string>
     <string name="exit_application">Exit</string>
     <string name="OK">OK</string>
@@ -42,8 +41,6 @@
     <string name="Messages:">Enter Event Detials</string>
     <string name="Send">Post</string>
     <string name="event_history">Event History</string>
-    <string name="not_connected_to_service">Not connected to the service and 
-	this is not supposed to happened so please inform this situation to h.bandari@stud.uni-goettingen.de</string>
     <string name="fill_both_email_and_password">Please fill both email and password</string>
 	<string name="make_sure_email_and_password_correct">Please make sure that
 	your Email and password correct</string>
@@ -51,15 +48,20 @@
     <string name="fill_display_field">Display field required</string>
     <string name="fill_password_field">Password field required</string>
     <string name="fill_repassword_field">Re Enter Password field required</string>
-	<string name="signup_fill_all_fields">Please fill all fields</string>
-	<string name="signup_type_same_password_in_password_fields">Type same password in password fields</string>
-	<string name="signup_failed">Sign up failed because of unknown reason</string>
-	<string name="signup_username_crashed">Your username have been already taken, please try another username</string>
+    <string name="signup_fill_all_fields">Please fill all fields</string>
+    <string name="signup_type_same_password_in_password_fields">
+        Type same password in password fields
+    </string>
+    <string name="signup_failed">Sign up failed because of unknown reason</string>
     <string name="success">Success!</string>
-	<string name="signup_successfull">Your registration is completed successfully,\n you can login now </string>
-	<string name="username_and_password_length_short">Username and password length must be at least 5</string>
-	<string name="request_sent">Your request has been sent</string>
-	<string name="type_friend_username">Please type your friend username</string>
+    <string name="signup_successfull">
+        Your registration is completed successfully,\n you can login now
+    </string>
+    <string name="username_and_password_length_short">
+        Username and password length must be at least 5
+    </string>
+    <string name="request_sent">Your request has been sent</string>
+    <string name="type_friend_username">Please type your friend username</string>
     <string name="loginError">Error in Login</string>
     <string name="title">Community Organizer</string>
     <string name="btn_send">Share</string>
@@ -76,21 +78,32 @@
     <string name="error">Error</string>
     <string name="server_error">Something wrong with server</string>
     <string name="registering">Registration: Please Wait</string>
+    <string name="main_view">Main view</string>
+    <string name="tables">com.project.communityorganizer.sqlite.models.User,
+    com.project.communityorganizer.sqlite.models.Friend,
+    com.project.communityorganizer.sqlite.models.Geofence,
+    com.project.communityorganizer.sqlite.models.Event,
+    com.project.communityorganizer.sqlite.models.EventAttendance,
+    com.project.communityorganizer.sqlite.models.Location,
+    com.project.communityorganizer.sqlite.models.PhoneData
+    </string>
 
-	
     <style name="DefaultButtonText">
-	   <item name="android:layout_width">fill_parent</item>
-	    <item name="android:layout_height">wrap_content</item>
-	    <item name="android:textColor">#979797</item>
-	    <item name="android:gravity">center</item>
-	    <item name="android:layout_margin">3dp</item>
-	    <item name="android:textStyle">normal</item>
-	    <item name="android:textSize">20sp</item>
-	    <item name="android:shadowColor">#f9f9f9</item>
-	    <item name="android:shadowDx">1</item>
-	    <item name="android:shadowDy">1</item>
-	    <item name="android:shadowRadius">1</item>
-	</style>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#979797</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:shadowColor">#f9f9f9</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
     <string name="title_activity_home">App Home</string>
-
+    <string name="main_list_view" />
+    <string name="title_activity_event_list">EventList</string>
+    <string name="title_activity_location">Location</string>
+    <string name="title_activity_friend_list">FriendList</string>
 </resources>

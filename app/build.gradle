@@ -39,4 +39,5 @@ dependencies {
     compile 'com.squareup.okio:okio:1.1.+'
     compile 'com.squareup.okhttp:okhttp:2.1.+'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.+'
+    compile 'com.android.support:support-v4:21.0.3'
 }

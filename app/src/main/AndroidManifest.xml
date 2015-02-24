@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.project.communityorganizer">
+    package="com.project.communityorganizer" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -27,13 +26,7 @@
             android:value="3" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.project.communityorganizer.sqlite.models.User,
-             com.project.communityorganizer.sqlite.models.Friend,
-             com.project.communityorganizer.sqlite.models.Geofence,
-             com.project.communityorganizer.sqlite.models.Event,
-             com.project.communityorganizer.sqlite.models.EventAttendance,
-             com.project.communityorganizer.sqlite.models.Location,
-             com.project.communityorganizer.sqlite.models.PhoneData" />
+            android:value="@string/tables"/>
         <!-- Main screen -->
         <activity
             android:name=".MainActivity"
@@ -50,10 +43,9 @@
         <activity
             android:name=".SignUpActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.DeviceDefault" >
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SignUpActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -65,17 +57,52 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.SignInActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- Friend list -->
         <activity
             android:name=".HomeActivity"
-            android:label= "@string/title_activity_home" >
+            android:label="@string/title_activity_home"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EventList"
+            android:label="@string/title_activity_event_list"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Location"
+            android:label="@string/title_activity_location"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".FriendList"
+            android:label="@string/title_activity_friend_list"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
