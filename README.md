@@ -3,8 +3,8 @@ The client side (Android) app of Community Organizer.
 Official [website](https://seshagiriprabhu.github.io/Community-AndroidApp/)
 
 ## App specifications
-*Minimum*: Android 4.0.3
-*Maximum*: Android 5
+**Minimum**: [Android Jelly Bean](http://en.wikipedia.org/wiki/Android_Jelly_Bean)(API level 17)
+**Maximum**: [Lollipop](http://en.wikipedia.org/wiki/Android_Lollipop)(API level 21)
 
 ## Requirements
 ### Targeting Android
