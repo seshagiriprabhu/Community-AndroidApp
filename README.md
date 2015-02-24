@@ -1,5 +1,6 @@
 # Community App
-The client side (Android) app of Community Organizer.
+The client side (Android) app of Community Organizer. 
+Official [website](https://seshagiriprabhu.github.io/Community-AndroidApp/)
 
 ## App specifications
 *Minimum*: Android 4.0.3
