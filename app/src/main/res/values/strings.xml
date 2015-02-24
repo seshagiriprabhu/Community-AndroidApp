@@ -69,7 +69,7 @@
     <string name="author_name1">Hari Raghavendar Rao</string>
     <string name="author_name2">&#169; 2015 Community Organizer</string>
     <string name="author_name3">By Seshagiri Prabhu</string>
-    <string name="event_details">Describe Event Details to share with other friends</string>
+    <string name="event_details">Describe Event Details</string>
     <string name="display_already_in_use">Display name already in use</string>
     <string name="email_already_in_use">Display name already in use</string>
     <string name="registration_failed">Registration Failed</string>
@@ -87,6 +87,10 @@
     com.project.communityorganizer.sqlite.models.Location,
     com.project.communityorganizer.sqlite.models.PhoneData
     </string>
+    <string name="eteventname"> Event Title Name </string>
+    <string name="eteventcreator"> Display Name</string>
+    <string name="etpersonfeelings"> Reason--Happy sad alone etc</string>
+    <string name="etstatus">Status</string>
 
     <style name="DefaultButtonText">
         <item name="android:layout_width">fill_parent</item>
@@ -106,4 +110,6 @@
     <string name="title_activity_event_list">EventList</string>
     <string name="title_activity_location">Location</string>
     <string name="title_activity_friend_list">FriendList</string>
+    <string name="title_activity_event_attendance">EventAttendance</string>
+    <string name="title_activity_event_creation">EventCreation</string>
 </resources>
