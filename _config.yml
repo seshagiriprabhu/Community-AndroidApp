@@ -3,6 +3,7 @@ title: Community Organizer
 email: seshagiriprabhu@gmail.com
 url: https://seshagiriprabhu.github.io/Community-AndroidApp
 description: "Implementation of location based decentralized community app for research purpose"
+baseurl: "/Community-AndroidApp"
 
 # Contact form: comment the line below if you want to stick with the default PHP contact form
 contact: static
@@ -43,6 +44,8 @@ address-details:
     name: Computer Networks Group
     url: https://wiki.net.informatik.uni-goettingen.de/
 
+
 # Build settings
+name: Community Organizer
 markdown: kramdown
 permalink: pretty
