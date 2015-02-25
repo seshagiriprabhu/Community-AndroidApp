@@ -34,16 +34,26 @@ public class Event extends Model{
 
     @Column(index = true)
     public String event_name;
+
+    @Column(name="event_description")
     public String event_description;
 
     @Column(name="Friend", index = true)
     public Friend event_creator;
+
+    @Column(name="personal_feeling")
     public String personal_feeling;
+
+    @Column(name="start_time")
     public Date start_time;
+
+    @Column(name="end_time")
     public Date end_time;
 
     @Column(name="Geofence")
     public Geofence geofence_id;
+
+    @Column(name="modified_time")
     public Date modified_time;
 
 

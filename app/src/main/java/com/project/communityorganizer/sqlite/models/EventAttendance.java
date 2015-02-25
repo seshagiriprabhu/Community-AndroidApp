@@ -29,7 +29,11 @@ public class EventAttendance extends Model{
 
     @Column(name="Friend")
     public Friend email;
+
+    @Column(name="display_name")
     public String display_name;
+
+    @Column(name="status")
     public String status;
 
     /* Default Constructor */

@@ -14,20 +14,34 @@ import java.util.Date;
  */
 @Table(name = "User")
 public class User extends Model{
-    @Column(index = true)
+    @Column(name="display_name", index = true)
     public String display_name;
 
-    @Column(unique = true, index = true)
+    @Column(name="email", unique = true, index = true)
     public String email;
 
-    @Column(notNull = true)
+    @Column(name="password", notNull = true)
     public String password;
+
+    @Column(name="gender")
     public String gender;
+
+    @Column(name="date_of_birth")
     public Date date_of_birth;
+
+    @Column(name="phone_number")
     public String phone_number;
+
+    @Column(name="mobile_os")
     public String mobile_os;
+
+    @Column(name="mobile_device")
     public String mobile_device;
+
+    @Column(name = "phone_uid")
     public String phone_uid;
+
+    @Column(name = "carrier")
     public String carrier;
 
     /**
@@ -122,15 +136,29 @@ public class User extends Model{
      * @throws ParseException
      */
     public static User findOrCreateFromJson(UserJSONModel model) throws ParseException {
-        User existingFriend =
+        User existingUser =
                 new Select()
                         .from(User.class)
                         .where("email = ?", model.getEmail())
                         .executeSingle();
-        if (existingFriend != null) {
-            return existingFriend;
-        } else {
+        // If a user doesn't exist in the local db
+        if (existingUser == null) {
             User user= new User(model);
+            user.save();
+            return user;
+        }
+        // if the user exist check if the details are up-to-date
+        if((existingUser.getEmail().equals(model.getEmail())) &&
+                (existingUser.getDisplay_name().equals(model.getDisplay_name())) &&
+                (existingUser.getGender().equals(model.getGender())) &&
+                (existingUser.getPhone_number().equals(model.getPhone_number()))) {
+            return existingUser;
+        } else {
+            User user = new User();
+            user.display_name = model.getDisplay_name();
+            user.date_of_birth = model.getDate_of_birth();
+            user.phone_number = model.getPhone_number();
+            user.gender = model.getGender();
             user.save();
             return user;
         }

@@ -24,13 +24,22 @@ import java.text.ParseException;
  */
 @Table(name="Geofence")
 public class Geofence extends Model {
-    @Column(index = true)
+    @Column(name="gid",  index = true)
     public int gid;
-    @Column(index = true)
+
+    @Column(name="fence_name", index = true)
     public String fence_name;
+
+    @Column(name="latitude")
     public Double latitude;
+
+    @Column(name="longitude")
     public Double longitude;
+
+    @Column(name="geofence_radius")
     public Double geofence_radius;
+
+    @Column(name = "expiration_time")
     public int expiration_time;
 
     /* Default constructor */

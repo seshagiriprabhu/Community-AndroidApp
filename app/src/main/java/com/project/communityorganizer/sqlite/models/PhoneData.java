@@ -23,14 +23,32 @@ import java.util.Date;
 public class PhoneData extends Model{
     @Column(name="User")
     public User email;
+
+    @Column(name="date_time")
     public Date date_time;
+
+    @Column(name="battery_state")
     public String battery_state;
+
+    @Column(name="app_power_consumption")
     public Double app_power_consumption;
+
+    @Column(name="avg_mem_util")
     public Double avg_mem_util;
+
+    @Column(name="avg_cpu_util")
     public Double avg_cpu_util;
+
+    @Column(name="last_online_time")
     public String last_online_time;
+
+    @Column(name="last_online_duration")
     public Double last_online_duration;
+
+    @Column(name="connection_method")
     public String connection_method;
+
+    @Column(name="app_data_transfered")
     public Double app_data_transfered;
 
     /**

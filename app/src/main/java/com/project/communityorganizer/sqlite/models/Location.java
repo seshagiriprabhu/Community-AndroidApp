@@ -24,9 +24,16 @@ import com.project.communityorganizer.sqlite.models.Geofence;
 public class Location extends Model{
     @Column(name = "User", index = true)
     public User email;
+
+    @Column(name="date_time")
     public Date date_time;
+
+    @Column(name="accuracy")
     public Double accuracy;
+
+    @Column(name="transition_type")
     public int transition_type;
+
     @Column(name = "Geofence")
     public Geofence gid;
 
