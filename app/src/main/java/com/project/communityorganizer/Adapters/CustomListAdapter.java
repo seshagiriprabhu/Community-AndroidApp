@@ -1,4 +1,4 @@
-package com.project.communityorganizer.types;
+package com.project.communityorganizer.Adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

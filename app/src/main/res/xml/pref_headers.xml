@@ -2,14 +2,14 @@
 
     <!-- These settings headers are only used on tablets. -->
 
-    <header android:fragment="com.project.communityorganizer.Settings$GeneralPreferenceFragment"
+    <header android:fragment="com.project.communityorganizer.Activities.Settings$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="com.project.communityorganizer.Settings$NotificationPreferenceFragment"
+        android:fragment="com.project.communityorganizer.Activities.Settings$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications" />
 
-    <header android:fragment="com.project.communityorganizer.Settings$DataSyncPreferenceFragment"
+    <header android:fragment="com.project.communityorganizer.Activities.Settings$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync" />
 
 </preference-headers>

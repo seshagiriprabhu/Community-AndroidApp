@@ -112,4 +112,5 @@
     <string name="title_activity_friend_list">FriendList</string>
     <string name="title_activity_event_attendance">EventAttendance</string>
     <string name="title_activity_event_creation">EventCreation</string>
+    <string name="friend_image">Friend image</string>
 </resources>

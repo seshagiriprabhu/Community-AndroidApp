@@ -1,30 +1,26 @@
-package com.project.communityorganizer;
+package com.project.communityorganizer.Activities;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.project.communityorganizer.R;
 
-public class EventList extends Activity {
+
+public class EventCreation extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_list);
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("Event List");
-            actionBar.setLogo(R.drawable.ic_action_light_event);
-        }
+        setContentView(R.layout.activity_event_creation);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_event_list, menu);
+        getMenuInflater().inflate(R.menu.menu_event_creation, menu);
         return true;
     }
 

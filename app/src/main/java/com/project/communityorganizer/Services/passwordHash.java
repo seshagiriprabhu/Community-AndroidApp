@@ -1,4 +1,4 @@
-package com.project.communityorganizer.services;
+package com.project.communityorganizer.Services;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

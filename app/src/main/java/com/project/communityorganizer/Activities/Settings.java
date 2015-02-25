@@ -1,4 +1,4 @@
-package com.project.communityorganizer;
+package com.project.communityorganizer.Activities;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -18,6 +18,8 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 
+
+import com.project.communityorganizer.R;
 
 import java.util.List;
 

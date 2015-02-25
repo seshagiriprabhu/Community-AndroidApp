@@ -1,4 +1,4 @@
-package com.project.communityorganizer;
+package com.project.communityorganizer.Activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.project.communityorganizer.R;
 
 
 public class Location extends Activity {

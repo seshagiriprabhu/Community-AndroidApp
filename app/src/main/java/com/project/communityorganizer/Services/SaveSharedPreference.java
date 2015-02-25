@@ -1,10 +1,8 @@
-package com.project.communityorganizer.services;
+package com.project.communityorganizer.Services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
-import com.activeandroid.ActiveAndroid;
 
 /**
  * Created by

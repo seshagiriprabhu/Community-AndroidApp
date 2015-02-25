@@ -1,4 +1,4 @@
-package com.project.communityorganizer;
+package com.project.communityorganizer.Activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.project.communityorganizer.types.CustomListAdapter;
+import com.project.communityorganizer.Adapters.CustomListAdapter;
+import com.project.communityorganizer.R;
 
 public class HomeActivity extends Activity {
     @Override

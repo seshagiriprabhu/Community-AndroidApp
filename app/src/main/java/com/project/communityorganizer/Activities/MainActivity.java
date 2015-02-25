@@ -1,4 +1,4 @@
-package com.project.communityorganizer;
+package com.project.communityorganizer.Activities;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.activeandroid.ActiveAndroid;
-import com.project.communityorganizer.services.SaveSharedPreference;
+import com.project.communityorganizer.R;
+import com.project.communityorganizer.Services.SaveSharedPreference;
 
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -19,6 +20,7 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_main);
+        SaveSharedPreference.setUserEmail(MainActivity.this, "[]");
         if (!SaveSharedPreference.getUserEmail(MainActivity.this).equals("[]")) {
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);

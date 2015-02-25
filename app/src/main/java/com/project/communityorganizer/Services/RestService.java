@@ -1,15 +1,13 @@
-package com.project.communityorganizer.services;
+package com.project.communityorganizer.Services;
 
 import com.activeandroid.ActiveAndroid;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
 import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.JSON.models.GeofenceJSONModel;
 import com.project.communityorganizer.JSON.models.UserJSONModel;
 import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.Geofence;
-import com.project.communityorganizer.sqlite.models.User;
 
 import java.text.ParseException;
 import java.util.List;
@@ -114,8 +112,10 @@ public class RestService {
                         ActiveAndroid.beginTransaction();
                         try {
                             for (FriendJSONModel friendJSONModel : friendJSONModels) {
-                                Friend friend = Friend.findOrCreateFromModel(friendJSONModel);
-                                friend.save();
+                                if (friendJSONModel != null) {
+                                    Friend friend = Friend.findOrCreateFromModel(friendJSONModel);
+                                    friend.save();
+                                }
                             }
                             ActiveAndroid.setTransactionSuccessful();
                         } catch (ParseException e) {
@@ -151,7 +151,6 @@ public class RestService {
                             ActiveAndroid.endTransaction();
                         }
                     }
-
                     @Override
                     public void failure(RetrofitError error) {
 
@@ -177,5 +176,6 @@ public class RestService {
             return cause;
         }
     }
+
 
 }
