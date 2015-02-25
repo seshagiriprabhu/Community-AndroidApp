@@ -40,6 +40,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+/**
+ * Created by
+ * @author seshagiri on 19/2/15.
+ */
 public class SignUpActivity extends Activity implements OnClickListener {
     final Context context = this;
     private EditText displayNameText, eMailText, passwordText, passwordAgainText;
