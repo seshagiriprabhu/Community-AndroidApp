@@ -1,7 +1,13 @@
 package com.project.communityorganizer.JSON.models;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.project.communityorganizer.sqlite.models.Friend;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by
@@ -76,5 +82,14 @@ public class FriendJSONModel {
 
     public String getPhone_number() {
         return phone_number;
+    }
+
+    public void setDate_of_birth(String date_of_birth) throws ParseException {
+       this.date_of_birth = new Date(Long.parseLong(date_of_birth));
+    }
+
+    public String getDate_of_birth_as_string() {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        return dateFormatter.format(date_of_birth);
     }
 }

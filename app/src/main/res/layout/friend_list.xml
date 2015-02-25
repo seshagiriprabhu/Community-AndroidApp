@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/friend_icon"
-        android:layout_width="60sp"
-        android:layout_height="60sp"
-        android:padding="5sp"
-        android:contentDescription="@string/friend_image" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/friend_icon"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:padding="5sp"
+            android:contentDescription="@string/friend_image" />
 
-    <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/displayName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginStart="10sp"
-            android:layout_marginTop="5sp"
-            android:padding="2sp"
-            android:textColor="#33CC33"
-            android:focusableInTouchMode="false"
-            android:clickable="false"
-            android:focusable="false"/>
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10sp"
-            android:focusableInTouchMode="false"
-            android:clickable="false"
-            android:focusable="false"/>
+            <TextView
+                android:id="@+id/displayName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:padding="2sp"
+                android:textColor="#33CC33"
+                android:focusableInTouchMode="false"
+                android:clickable="false"
+                android:focusable="false"/>
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:focusableInTouchMode="false"
+                android:clickable="false"
+                android:focusable="false"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+    <!-- Rightend Arrow -->
+    <ImageView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_next"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+</RelativeLayout>

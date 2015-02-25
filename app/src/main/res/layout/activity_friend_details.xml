@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -6,7 +6,139 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.project.communityorganizer.Activities.FriendDetailsActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <!-- Profile picture and display name -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/friend_profile_image"
+                android:layout_width="200sp"
+                android:layout_height="200sp"
+                android:layout_marginBottom="10sp"
+                android:contentDescription="@string/displayName" />
+
+            <TextView
+                android:id="@id/friendName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:textColor="#33CC33"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+
+        <!-- EMAIL -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/EMAIL"
+            android:textColor="#EE0000"
+            android:layout_marginBottom="5sp"
+            android:id="@+id/textView"
+            android:textSize="30sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"/>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#0000EE"
+                android:textSize="18sp"
+                android:id="@+id/friendEmail" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_mail"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/EMAIL" />
+        </RelativeLayout>
+
+
+        <!-- PHONE Number -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/PHONE"
+            android:textColor="#EE0000"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:id="@+id/textView2"
+            android:textSize="30sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"/>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:id="@+id/friendPhone" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_phone"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/PHONE"
+                android:layout_gravity="right" />
+        </RelativeLayout>
+
+
+        <!-- Date of birth-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/DOB"
+            android:textColor="#EE0000"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="5sp"
+            android:id="@+id/textView3"
+            android:textSize="30sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"/>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30sp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:id="@+id/friendDOB" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_calandar"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/DOB"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

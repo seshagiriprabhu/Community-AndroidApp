@@ -118,6 +118,11 @@
             android:label="@string/title_activity_event_creation"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         </activity>
+        <activity
+            android:name=".Activities.FriendDetailsActivity"
+            android:label="@string/title_activity_friend_details"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+        </activity>
     </application>
 
 </manifest>

@@ -113,4 +113,11 @@
     <string name="title_activity_event_attendance">EventAttendance</string>
     <string name="title_activity_event_creation">EventCreation</string>
     <string name="friend_image">Friend image</string>
+    <string name="title_activity_friend_details">FriendDetailsActivity</string>
+    <string name="email">Email</string>
+    <string name="EMAIL">EMAIL</string>
+    <string name="PHONE">PHONE</string>
+    <string name="date_of_birth">DATE OF BIRTH</string>
+    <string name="DOB">DATE OF BIRTH</string>
+    <string name="displayName">Display Name</string>
 </resources>
