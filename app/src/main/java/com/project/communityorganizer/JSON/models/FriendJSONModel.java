@@ -1,10 +1,7 @@
 package com.project.communityorganizer.JSON.models;
-
-import java.text.DateFormat;
+import com.project.communityorganizer.sqlite.models.Friend;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by
@@ -17,10 +14,22 @@ public class FriendJSONModel {
     public Date date_of_birth;
     public String phone_number;
 
+    /**
+     * Default Constructor
+     */
     public FriendJSONModel() {
         super();
     }
 
+    /**
+     * Friend Constructor with params
+     * @param display_name
+     * @param email
+     * @param gender
+     * @param date_of_birth
+     * @param phone_number
+     * @throws ParseException
+     */
     public FriendJSONModel(
             String display_name,
             String email,
@@ -34,6 +43,20 @@ public class FriendJSONModel {
         this.date_of_birth = date_of_birth;
         this.phone_number = phone_number;
     }
+
+    /**
+     * Constructor with Friend object
+     * @param friend
+     */
+    public FriendJSONModel(Friend friend){
+        super();
+        this.display_name = friend.getDisplay_name();
+        this.email = friend.getEmail();
+        this.date_of_birth = friend.getDate_of_birth();
+        this.gender = friend.getGender();
+        this.phone_number = friend.getPhone_number();
+    }
+
 
     public String getDisplay_name() {
         return display_name;
