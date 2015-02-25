@@ -10,25 +10,31 @@ contact: static
 
 # Color settings (hex-codes without the leading hash-tag)
 color:
-  primary: 18bc9c #80B3FF
-  secondary: 2c3e50 #FD6E8A
-  secondary-dark: 233140 #A2122F
+    primary: 18bc9c #80B3FF
+    secondary: 2c3e50 #FD6E8A
+    secondary-dark: 233140 #A2122F
+
 
 # Footer settings
 footer:
-  copyright: Community Organizer
-  author1: Hari Raghavendra Bandari
-  author1-home: 
-  author2: Seshagiri Prabhu
-  author2-home: https://seshagiriprabhu.wordpress.com/
-  location: Location
-  social: Around the Web
-  credits: supervisor
+    copyright: Community Organizer
+
+author1: 
+    name: Hari Raghavendar
+    url:
+    image: "img/images/hari.jpg"
+
+author2:
+    name: Seshagiri Prabhu
+    url: https://seshagiriprabhu.wordpress.com/
+    image: "img/images/giri.jpg"
 
 supervisor: 
-    name: David Koll
-    url: http://user.informatik.uni-goettingen.de/~dkoll/  
-      
+    name: Dr. David Koll
+    url: http://user.informatik.uni-goettingen.de/~dkoll/
+    image: "img/images/david.jpg"  
+
+
 # Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
 social:
   - title: github
@@ -36,9 +42,9 @@ social:
 
 # Postal address (add as many lines as necessary)
 address:
-  - line: Informatics Department
-  - line: Georg-August-University
-  - line: Gottingen, Germany
+    - line: Informatics Department
+    - line: Georg-August-University
+    - line: Gottingen, Germany
 
 address-details:
     name: Computer Networks Group

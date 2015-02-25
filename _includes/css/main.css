@@ -23,6 +23,7 @@ a:active,
 a.active {
     outline: 0;
     color: #{{ site.color.primary }};
+    text-decoration: none;
 }
 
 h1,
@@ -448,4 +449,40 @@ footer .footer-below {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.circle-image-david {
+    width:200px;
+    height:200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius:50%;
+    background-image:url("img/images/david.jpg");
+    display:block;
+    background-size: 100%;
+}
+
+.circle-image-giri {
+    width:200px;
+    height:200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius:50%;
+    background-image:url("img/images/giri.jpg");
+    display:block;
+    background-size: 100%;
+    background-position-y:20%; 
+}
+
+.circle-image-hari {
+    width:200px;
+    height:200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius:50%;
+    background-image:url("img/images/hari.jpg");
+    display:block;
+    background-size: 300%;
+    background-position-x:58%; 
+    background-position-y:60%; 
 }
