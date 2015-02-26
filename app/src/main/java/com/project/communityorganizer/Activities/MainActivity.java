@@ -40,11 +40,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		if (id == R.id.btnSignIn) {
 			i = new Intent(this,SignInActivity.class);
             startActivity(i);
-            MainActivity.this.finish();
 		} else if (id == R.id.btnSignUp) {
             i = new Intent(this, SignUpActivity.class);
             startActivity(i);
-            MainActivity.this.finish();
         }
 	}
     

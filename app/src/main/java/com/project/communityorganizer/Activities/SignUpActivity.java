@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.NavUtils;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -85,7 +86,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
         btnCancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                NavUtils.navigateUpFromSameTask(SignUpActivity.this);
             }
         });
     }

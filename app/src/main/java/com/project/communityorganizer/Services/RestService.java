@@ -79,7 +79,7 @@ public class RestService {
          * @param userJSONModel
          * @param callback
          */
-        @POST("/register/")
+        @POST("/register")
         public void registerUser(
                 @Body UserJSONModel userJSONModel,
                 Callback<UserJSONModel> callback);
