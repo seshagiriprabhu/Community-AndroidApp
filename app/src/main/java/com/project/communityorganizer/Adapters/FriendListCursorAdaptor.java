@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.R;
 
-import java.text.ParseException;
-
 /**
  * Created by
  * @author seshagiri on 25/2/15.

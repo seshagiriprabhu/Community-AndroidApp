@@ -30,7 +30,7 @@ import retrofit.http.Path;
  * @author Seshagiri on 21/2/15.
  */
 public class RestService {
-    private static final String SERVER = "http://192.168.1.75:8000/";
+    private static final String SERVER = "http://134.76.249.227/";
     private final CommunityAppWebService mCommunityAppWebService;
 
     /**

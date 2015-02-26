@@ -84,9 +84,15 @@ public class FriendJSONModel {
         return phone_number;
     }
 
-    public void setDate_of_birth(String date_of_birth) throws ParseException {
+    public void set_Date_of_birth_from_epoch(String date_of_birth) throws ParseException {
        this.date_of_birth = new Date(Long.parseLong(date_of_birth));
     }
+
+    public void setDate_of_birth_from_utc(String date_of_birth_from_utc) throws ParseException {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        this.date_of_birth = dateFormatter.parse(date_of_birth_from_utc);
+    }
+
 
     public String getDate_of_birth_as_string() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
