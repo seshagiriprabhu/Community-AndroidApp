@@ -3,7 +3,6 @@ package com.project.communityorganizer.Activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -56,21 +55,25 @@ public class FriendList extends Activity {
                 Intent intent;
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
                 FriendJSONModel friendJSONModel = new FriendJSONModel();
-                String display_name = cursor.getString(
+                friendJSONModel.display_name = cursor.getString(
                         cursor.getColumnIndexOrThrow("display_name"));
-                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
-                String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-                String phone_number = cursor.getString(
+                friendJSONModel.email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                friendJSONModel.gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
+                friendJSONModel.phone_number = cursor.getString(
                         cursor.getColumnIndexOrThrow("phone_number"));
-                String date_of_birth = cursor.getString(
-                        cursor.getColumnIndexOrThrow("date_of_birth"));
+                try {
+                    friendJSONModel.set_Date_of_birth_from_epoch(cursor.getString(
+                            cursor.getColumnIndexOrThrow("date_of_birth")));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 intent = new Intent(FriendList.this, FriendDetailsActivity.class);
-                intent.putExtra("display_name", display_name);
-                intent.putExtra("email", email);
-                intent.putExtra("gender", gender);
-                intent.putExtra("phone_number", phone_number);
-                intent.putExtra("date_of_birth", date_of_birth);
+                intent.putExtra("display_name", friendJSONModel.getDisplay_name());
+                intent.putExtra("email", friendJSONModel.getEmail());
+                intent.putExtra("gender", friendJSONModel.getGender());
+                intent.putExtra("phone_number", friendJSONModel.getPhone_number());
+                intent.putExtra("date_of_birth", friendJSONModel.getDate_of_birth_as_string());
                 startActivity(intent);
             }
         });
@@ -86,25 +89,12 @@ public class FriendList extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    // This activity is NOT part of this app's task, so create a new task
-                    // when navigating up, with a synthesized back stack.
-                    TaskStackBuilder.create(this)
-                            // Add all of this activity's parents to the back stack
-                            .addNextIntentWithParentStack(upIntent)
-                                    // Navigate up to the closest parent
-                            .startActivities();
-                } else {
-                    // This activity is part of this app's task, so simply
-                    // navigate up to the logical parent activity.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     /**

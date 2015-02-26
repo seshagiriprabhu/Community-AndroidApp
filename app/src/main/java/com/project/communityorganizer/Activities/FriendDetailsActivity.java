@@ -2,8 +2,6 @@ package com.project.communityorganizer.Activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.TaskStackBuilder;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -12,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.R;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by
@@ -39,7 +35,6 @@ public class FriendDetailsActivity extends Activity {
         setContentView(R.layout.activity_friend_details);
         findViewsById();
         FriendJSONModel friendJSONModel = new FriendJSONModel();
-        String DOB = null;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -50,7 +45,7 @@ public class FriendDetailsActivity extends Activity {
                 friendJSONModel.gender = extras.getString("gender");
                 friendJSONModel.phone_number = extras.getString("phone_number");
                 try {
-                    friendJSONModel.setDate_of_birth(extras.getString("date_of_birth"));
+                    friendJSONModel. setDate_of_birth_from_utc(extras.getString("date_of_birth"));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -63,7 +58,8 @@ public class FriendDetailsActivity extends Activity {
             friendJSONModel.phone_number = (String) savedInstanceState
                     .getSerializable("phone_number");
             try {
-                friendJSONModel.setDate_of_birth((String) savedInstanceState.getSerializable("date_of_birth"));
+                friendJSONModel.setDate_of_birth_from_utc(
+                        (String) savedInstanceState.getSerializable("date_of_birth"));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -113,24 +109,11 @@ public class FriendDetailsActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    // This activity is NOT part of this app's task, so create a new task
-                    // when navigating up, with a synthesized back stack.
-                    TaskStackBuilder.create(this)
-                            // Add all of this activity's parents to the back stack
-                            .addNextIntentWithParentStack(upIntent)
-                                    // Navigate up to the closest parent
-                            .startActivities();
-                } else {
-                    // This activity is part of this app's task, so simply
-                    // navigate up to the logical parent activity.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

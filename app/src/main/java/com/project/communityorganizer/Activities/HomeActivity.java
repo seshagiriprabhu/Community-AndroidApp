@@ -46,7 +46,7 @@ public class HomeActivity extends Activity {
                     Intent intent = new Intent(HomeActivity.this, FriendList.class);
                     startActivity(intent);
                 } else if (position == 1) {
-                    Intent intent = new Intent(HomeActivity.this, EventList.class);
+                    Intent intent = new Intent(HomeActivity.this, EventCreation.class);
                     startActivity(intent);
                 } else if (position == 2) {
                     Intent intent = new Intent(HomeActivity.this, Location.class);

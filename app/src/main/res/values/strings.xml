@@ -120,4 +120,5 @@
     <string name="date_of_birth">DATE OF BIRTH</string>
     <string name="DOB">DATE OF BIRTH</string>
     <string name="displayName">Display Name</string>
+    <string name="Create">Create</string>
 </resources>
