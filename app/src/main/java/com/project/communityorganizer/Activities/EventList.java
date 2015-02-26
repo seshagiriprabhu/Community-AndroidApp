@@ -8,7 +8,10 @@ import android.view.MenuItem;
 
 import com.project.communityorganizer.R;
 
-
+/**
+ * Created by
+ * @author Seshagiri on 25/2/15.
+ */
 public class EventList extends Activity {
 
     @Override

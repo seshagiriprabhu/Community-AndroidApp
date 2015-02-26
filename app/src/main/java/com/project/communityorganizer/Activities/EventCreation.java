@@ -9,7 +9,10 @@ import android.view.MenuItem;
 
 import com.project.communityorganizer.R;
 
-
+/**
+ * Created by
+ * @author Seshagiri on 26/2/15.
+ */
 public class EventCreation extends Activity {
 
     @Override

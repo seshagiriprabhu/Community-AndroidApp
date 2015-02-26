@@ -10,6 +10,10 @@ import android.widget.ListView;
 import com.project.communityorganizer.Adapters.CustomListAdapter;
 import com.project.communityorganizer.R;
 
+/**
+ * Created by
+ * @author Seshagiri on 22/2/15.
+ */
 public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

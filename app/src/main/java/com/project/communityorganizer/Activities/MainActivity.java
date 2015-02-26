@@ -9,7 +9,10 @@ import com.activeandroid.ActiveAndroid;
 import com.project.communityorganizer.R;
 import com.project.communityorganizer.Services.SaveSharedPreference;
 
-
+/**
+ * Created by
+ * @author Seshagiri on 19/2/15.
+ */
 public class MainActivity extends Activity implements OnClickListener {
 
 	Button btnSignIn;

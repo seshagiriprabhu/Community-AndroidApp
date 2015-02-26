@@ -11,7 +11,10 @@ import android.webkit.WebViewClient;
 
 import com.project.communityorganizer.R;
 
-
+/**
+ * Created by
+ * @author Seshagiri on 24/2/15.
+ */
 public class Location extends Activity {
 
     @Override

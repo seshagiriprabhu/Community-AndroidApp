@@ -21,7 +21,10 @@ import com.project.communityorganizer.Services.passwordHash;
 import java.security.NoSuchAlgorithmException;
 import static com.project.communityorganizer.sqlite.models.User.checkCredentials;
 
-
+/**
+ * Created by
+ * @author Seshagiri on 19/2/15.
+ */
 public class SignInActivity extends Activity  implements OnClickListener {
 	private EditText eMailText, passwordText;
     private Button btnCancel, btnSign;
