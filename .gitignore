@@ -24,3 +24,7 @@ Community-AndroidApp.iml
 app/
 build/
 local.properties
+
+gradle/
+gradlew
+*.bat
