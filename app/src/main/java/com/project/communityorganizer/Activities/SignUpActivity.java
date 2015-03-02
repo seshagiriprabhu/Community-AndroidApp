@@ -2,9 +2,11 @@ package com.project.communityorganizer.Activities;
 
 /* Android in-build libs and apps */
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,11 +24,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.project.communityorganizer.Constants;
+import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.JSON.models.UserJSONModel;
 import com.project.communityorganizer.R;
 import com.project.communityorganizer.Services.RestService;
 import com.project.communityorganizer.Services.SaveSharedPreference;
 import com.project.communityorganizer.Services.passwordHash;
+import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.User;
 
 import org.json.JSONException;
@@ -35,7 +40,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -55,6 +59,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
     private SimpleDateFormat dateFormatter;
     public static String REGISTRATION_TITLE;
     public static String REGISTRATION_DETAILS;
+    public static boolean registration_status = false;
 
 
     @Override
@@ -75,12 +80,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
         btnSignUp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO user input validation
-                if (!validate()) {
-                    Toast.makeText(getBaseContext(), "Enter some data!", Toast.LENGTH_LONG).show();
-                } else {
-                    new JSONAsyncTask(context).execute();
-                }
+                if (validate()) new JSONAsyncTask(context).execute();
             }
         });
         btnCancel.setOnClickListener(new OnClickListener() {
@@ -97,11 +97,10 @@ public class SignUpActivity extends Activity implements OnClickListener {
      */
     private void showConnectivity() {
         Context context = getApplicationContext();
-        CharSequence notConnected = "You're not connected to internet";
         int duration = Toast.LENGTH_SHORT;
 
         if (!isConnected()) {
-            Toast toast = Toast.makeText(context, notConnected, duration);
+            Toast toast = Toast.makeText(context, Constants.NOT_CONNECTED, duration);
             toast.show();
         }
     }
@@ -125,7 +124,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == DOBText) {
-            dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            dateFormatter = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.US);
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH);
@@ -140,7 +139,9 @@ public class SignUpActivity extends Activity implements OnClickListener {
      */
     private class JSONAsyncTask extends AsyncTask<String, Integer, Boolean> {
         ProgressDialog dialog = new ProgressDialog(SignUpActivity.this);
+        AlertDialog.Builder alertDialog;
         Context context;
+
         private JSONAsyncTask(Context context){
             this.context = context.getApplicationContext();
             dialog.setCancelable(false);
@@ -151,6 +152,7 @@ public class SignUpActivity extends Activity implements OnClickListener {
 
         @Override
         protected void onPreExecute() {
+
             super.onPreExecute();
         }
 
@@ -171,13 +173,33 @@ public class SignUpActivity extends Activity implements OnClickListener {
             if (dialog.isShowing())
                 dialog.dismiss();
 
-            if (result) {
-                Toast toast = Toast.makeText(context, REGISTRATION_TITLE, Toast.LENGTH_LONG);
-                toast.show();
-                context.startActivity(new Intent(context, SignInActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                SignUpActivity.this.finish();
+            alertDialog = new AlertDialog.Builder(SignUpActivity.this);
+            alertDialog.setTitle(REGISTRATION_TITLE);
+            alertDialog.setMessage(REGISTRATION_DETAILS);
+            if (registration_status) {
+                alertDialog.setIcon(R.drawable.ic_action_done);
+                alertDialog.setPositiveButton(R.string.OK,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                SignUpActivity.this.finish();
+                            }
+                        });
+            } else {
+                alertDialog.setIcon(R.drawable.ic_action_delete);
+                alertDialog.setPositiveButton(R.string.OK,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
             }
+            AlertDialog alertDialog1 = alertDialog.create();
+            alertDialog1.show();
         }
     }
 
@@ -190,15 +212,18 @@ public class SignUpActivity extends Activity implements OnClickListener {
      */
     private boolean registerUser() throws ParseException, JSONException, NoSuchAlgorithmException {
         final UserJSONModel userJSONModel = new UserJSONModel();
+        final FriendJSONModel friendJSONModel = new FriendJSONModel();
+
         userJSONModel.setEmail(eMailText.getText().toString());
         userJSONModel.setDisplay_name(displayNameText.getText().toString());
+        friendJSONModel.display_name = userJSONModel.getDisplay_name();
+
         String plainText = passwordText.getText().toString();
         passwordHash hash = new passwordHash();
         String password = hash.findHash(plainText);
         userJSONModel.setPassword(password);
-        String DOB = DOBText.getText().toString();
-        Date date = dateFormatter.parse(DOB);
-        userJSONModel.setDate_of_birth(date);
+
+        userJSONModel.setDate_of_birth_from_utc(DOBText.getText().toString());
         userJSONModel.setPhone_number(getPhoneNumber());
         userJSONModel.setMobile_os(android.os.Build.VERSION.RELEASE);
         userJSONModel.setMobile_device(android.os.Build.MODEL);
@@ -208,8 +233,8 @@ public class SignUpActivity extends Activity implements OnClickListener {
         String sex = radioSexButton.getText().toString();
         String gender = "F";
         if (sex.equals("Male")) gender = "M";
-
         userJSONModel.setGender(gender);
+
         final RestService restService = new RestService();
         RestService.CommunityAppWebService appWebService = restService.getService();
         appWebService.registerUser(userJSONModel,
@@ -217,19 +242,30 @@ public class SignUpActivity extends Activity implements OnClickListener {
                     @Override
                     public void success(UserJSONModel model, Response response) {
                         if (response.getStatus() == 201) {
+                            friendJSONModel.setEmail(model.getEmail());
+                            friendJSONModel.setDisplay_name(model.getDisplay_name());
+                            friendJSONModel.setDate_of_birth(model.getDate_of_birth());
+                            friendJSONModel.setGender(model.getGender());
+                            friendJSONModel.setPhone_number(model.getPhone_number());
                             try {
                                 User user = User.findOrCreateFromJson(model);
                                 user.save();
+
+                                Friend friend = Friend.registerNewUser(friendJSONModel);
+                                friend.save();
+
                                 SaveSharedPreference
                                         .setUserEmail(SignUpActivity.this,
-                                                model.getEmail());
+                                        model.getEmail());
                                 SaveSharedPreference
                                         .setUserName(SignUpActivity.this,
                                                 model.getDisplay_name());
+
                                 restService.fetchFriendList(model.getEmail());
                                 restService.fetchGeofenceList();
                                 REGISTRATION_TITLE = "Success";
                                 REGISTRATION_DETAILS = "User Registered!";
+                                registration_status = true;
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

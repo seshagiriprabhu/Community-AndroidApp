@@ -1,6 +1,12 @@
 package com.project.communityorganizer.JSON.models;
+import com.project.communityorganizer.Constants;
 import com.project.communityorganizer.sqlite.models.User;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by
@@ -123,4 +129,12 @@ public class UserJSONModel {
         this.carrier = carrier;
     }
 
+    public void set_Date_of_birth_from_epoch(String date_of_birth) throws ParseException {
+        this.date_of_birth = new Date(Long.parseLong(date_of_birth));
+    }
+
+    public void setDate_of_birth_from_utc(String date_of_birth_from_utc) throws ParseException {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.US);
+        this.date_of_birth = dateFormatter.parse(date_of_birth_from_utc);
+    }
 }

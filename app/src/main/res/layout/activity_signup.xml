@@ -8,8 +8,7 @@
         android:layout_height="wrap_content"
         android:touchscreenBlocksFocus="false"
         android:transitionGroup="false"
-        android:padding="10sp"
-        android:theme="@style/ChatAppTheme">
+        android:padding="10sp">
 
         <LinearLayout
             android:orientation="vertical"

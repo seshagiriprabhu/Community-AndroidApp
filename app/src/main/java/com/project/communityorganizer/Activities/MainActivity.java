@@ -14,7 +14,6 @@ import com.project.communityorganizer.Services.SaveSharedPreference;
  * @author Seshagiri on 19/2/15.
  */
 public class MainActivity extends Activity implements OnClickListener {
-
 	Button btnSignIn;
 	Button btnSignUp;
 
@@ -23,7 +22,6 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_main);
-        SaveSharedPreference.setUserEmail(MainActivity.this, "[]");
         if (!SaveSharedPreference.getUserEmail(MainActivity.this).equals("[]")) {
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
@@ -33,7 +31,6 @@ public class MainActivity extends Activity implements OnClickListener {
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         btnSignIn.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
-
     }
 
 	@Override

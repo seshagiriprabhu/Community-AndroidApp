@@ -19,10 +19,7 @@ import com.project.communityorganizer.R;
 public class FriendListCursorAdaptor extends CursorAdapter {
     FriendJSONModel friendJSONModel;
 
-    public FriendListCursorAdaptor(Context context, Cursor c) {
-        super(context, c, 0);
-        // TODO Auto-generated constructor stub
-    }
+    public FriendListCursorAdaptor(Context context, Cursor c) { super(context, c, 0); }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
