@@ -152,10 +152,14 @@ public class Friend extends Model{
 
     }
 
+    public static Friend getFriendIdDetails(Long id) {
+        return new Select().from(Friend.class).where("Id = ?", id).executeSingle();
+    }
+
     public static Cursor fetchResultCursor() {
         String tableName = Cache.getTableInfo(Friend.class).getTableName();
-        String resultRecords = new Select(tableName + ".*, " + tableName + ".Id as _id").
-                from(Friend.class)
+        String resultRecords = new Select(tableName + ".*, " + tableName + ".Id as _id")
+                .from(Friend.class)
                 .where(Constants.IF_NOT_PHONE_OWNER)
                 .toSql();
         return Cache.openDatabase().rawQuery(resultRecords, null);

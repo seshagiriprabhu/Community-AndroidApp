@@ -121,4 +121,19 @@
     <string name="DOB">DATE OF BIRTH</string>
     <string name="displayName">Display Name</string>
     <string name="Create">Create</string>
+    <string name="end_time">To: </string>
+    <string name="start_time">From: </string>
+    <string name="event_details_link">Event Details</string>
+    <string name="creator_name">Created by: </string>
+    <string name="you">(you)</string>
+    <string name="title_activity_event_details">EventDetailsActivity</string>
+    <string name="friend_list">Friend List</string>
+    <string name="event_description">Event Description</string>
+    <string name="created_by">Created By</string>
+    <string name="time">Time</string>
+    <string name="starting_at">Starting at:</string>
+    <string name="location">Location</string>
+    <string name="creator">Creator</string>
+    <string name="ending_at">Ending at:</string>
+    <string name="personal_feeling">Personal Feeling:</string>
 </resources>

@@ -1,31 +1,25 @@
 package com.project.communityorganizer.sqlite.models;
 
 /* Android core imports */
-import android.text.format.Time;
+import android.database.Cursor;
 
 /* Active Android imports */
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 /* User defined models */
 import com.activeandroid.query.Select;
-import com.project.communityorganizer.sqlite.models.Geofence;
-import com.project.communityorganizer.sqlite.models.Friend;
+import com.project.communityorganizer.JSON.models.EventJSONModel;
 
 /* Java imports */
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigInteger;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
- * Created by seshagiri on 19/2/15.
+ * Created by
+ * @author seshagiri on 19/2/15.
  */
 @Table(name="Event")
 public class Event extends Model{
@@ -53,69 +47,105 @@ public class Event extends Model{
     @Column(name="Geofence")
     public Geofence geofence_id;
 
-    @Column(name="modified_time")
-    public Date modified_time;
-
 
     /* Default Constructor */
     public Event() { super(); }
 
-    /* Constructor for storing into DB */
-    public Event(
-            int event_id,
-            String event_name,
-            String event_description,
-            String event_creator,
-            String personal_feeling,
-            Date start_time,
-            Date end_time,
-            int geofence_id,
-            Date modified_time) {
-        super();
-        this.event_id = event_id;
-        this.event_name = event_name;
-        this.event_description = event_description;
-        Friend friend = Friend.getFriendDetails(event_creator);
-        this.event_creator = friend;
-        this.personal_feeling = personal_feeling;
-        this.start_time = start_time;
-        this.end_time = end_time;
-        Geofence geofence = Geofence.getGeofenceDetails(geofence_id);
-        this.geofence_id = geofence;
-        this.modified_time = modified_time;
+    public int getEvent_id() {
+        return event_id;
     }
 
-    public Event(JSONObject json) throws JSONException, ParseException {
-        this.event_id = json.getInt("event_id");
-        this.event_name = json.getString("event_name");
-        this.event_description = json.getString("event_description");
-        String email = json.getString("event_creator");
-        Friend friend = Friend.getFriendDetails(email);
-        this.event_creator = friend;
-        this.personal_feeling = json.getString("personal_feeling");
+    public String getEvent_name() {
+        return event_name;
+    }
 
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+    public String getEvent_description() {
+        return event_description;
+    }
 
-        String string_start_time = json.getString("start_time");
-        Date start_time = formatter.parse(string_start_time);
+    public Friend getEvent_creator() {
+        return event_creator;
+    }
 
-        String string_end_time = json.getString("end_time");
-        Date end_time = formatter.parse(string_end_time);
+    public String getPersonal_feeling() {
+        return personal_feeling;
+    }
 
-        String string_modified_time = json.getString("modified_time");
-        Date modified_time = formatter.parse(string_modified_time);
+    public Date getStart_time() {
+        return start_time;
+    }
 
-        this.start_time = start_time;
-        this.end_time = end_time;
-        this.modified_time = modified_time;
+    public Date getEnd_time() {
+        return end_time;
+    }
 
-        int gid = json.getInt("gid");
-        Geofence geofence = Geofence.getGeofenceDetails(gid);
-        this.geofence_id = geofence;
+    public Geofence getGeofence_id() {
+        return geofence_id;
+    }
+
+    public Event(EventJSONModel eventJSONModel) throws ParseException {
+        this.event_id = eventJSONModel.getEvent_id();
+        this.event_name = eventJSONModel.getEvent_name();
+        this.event_description = eventJSONModel.getEvent_description();
+        this.event_creator = Friend.getFriendDetails(eventJSONModel.getEvent_creator());
+        this.personal_feeling = eventJSONModel.getPersonal_feeling();
+        this.start_time = eventJSONModel.getStart_time();
+        this.end_time = eventJSONModel.getEnd_time();
+        int gid = eventJSONModel.getGeofence_id();
+        this.geofence_id = Geofence.getGeofenceDetails(gid);
+    }
+
+    public static Event findOrCreateFromModel(EventJSONModel model) throws ParseException {
+        Event existingEvent =
+                new Select()
+                        .from(Event.class)
+                        .where("event_id =?", model.getEvent_id())
+                        .executeSingle();
+        // If the friend is not there in the local db
+        if (existingEvent == null) {
+            Event event = new Event(model);
+            event.save();
+            return event;
+        }
+        // If the friend already exists in local db
+        if((existingEvent.getEvent_id() == model.getEvent_id()) &&
+                existingEvent.getEvent_description().equals(model.getEvent_description()) &&
+                existingEvent.getEvent_creator() ==
+                        Friend.getFriendDetails(model.getEvent_creator()) &&
+                existingEvent.getEvent_name().equals(model.getEvent_name()) &&
+                existingEvent.getStart_time().equals(model.getStart_time()) &&
+                existingEvent.getEnd_time().equals(model.getEnd_time()) &&
+                existingEvent.getGeofence_id() ==
+                        Geofence.getGeofenceDetails(model.getGeofence_id()) &&
+                existingEvent.getPersonal_feeling().equals(model.getPersonal_feeling())) {
+            return existingEvent;
+        } else  {
+            Event event = Event.load(Event.class, existingEvent.getId());
+            event.event_id = model.getEvent_id();
+            event.event_name = model.getEvent_name();
+            event.event_description = model.getEvent_description();
+            event.event_creator = Friend.getFriendDetails(model.getEvent_creator());
+            event.personal_feeling = model.getPersonal_feeling();
+            event.start_time = model.getStart_time();
+            event.end_time = model.getEnd_time();
+            int gid = model.getGeofence_id();
+            event.geofence_id = Geofence.getGeofenceDetails(gid);
+            return event;
+        }
     }
 
     public static Event getEventDetails(int event_id) {
-        return new Select().from(Event.class).where("event_id = ?", event_id).executeSingle();
+        return new Select()
+                .from(Event.class)
+                .where("event_id = ?", event_id)
+                .executeSingle();
+    }
+
+    public static Cursor fetchResultCursor() {
+        String tableName = Cache.getTableInfo(Event.class).getTableName();
+        String resultRecords = new Select(tableName + ".*, " + tableName + ".Id as _id")
+                .from(Event.class)
+                .toSql();
+        return Cache.openDatabase().rawQuery(resultRecords, null);
     }
 }

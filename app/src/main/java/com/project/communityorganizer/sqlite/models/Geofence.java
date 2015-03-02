@@ -1,26 +1,16 @@
 package com.project.communityorganizer.sqlite.models;
 
-import android.provider.ContactsContract;
-import android.text.format.Time;
-
 /* Active Android libs */
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.project.communityorganizer.Constants;
 import com.project.communityorganizer.JSON.models.GeofenceJSONModel;
 
-
-/* Java libraries */
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.ParseException;
-
 /**
- * Created by seshagiri on 19/2/15.
+ * Created by
+ * @author seshagiri on 19/2/15.
  */
 @Table(name="Geofence")
 public class Geofence extends Model {
@@ -45,24 +35,6 @@ public class Geofence extends Model {
     /* Default constructor */
     public Geofence() { super(); }
 
-    /* Constructor for storing in DB */
-
-    public Geofence(
-            int gid,
-            String fence_name,
-            Double latitude,
-            Double longitude,
-            Double geofence_radius,
-            int expiration_time) {
-        super();
-        this.gid = gid;
-        this.fence_name = fence_name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.geofence_radius = geofence_radius;
-        this.expiration_time = expiration_time;
-    }
-
     public Geofence(GeofenceJSONModel model) {
         this.gid = model.getGid();
         this.fence_name = model.getFence_name();
@@ -72,21 +44,65 @@ public class Geofence extends Model {
         this.expiration_time = model.getExpiration_time();
     }
 
+    public int getGid() {
+        return gid;
+    }
+
+    public String getFence_name() {
+        return fence_name;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public Double getGeofence_radius() {
+        return geofence_radius;
+    }
+
+    public int getExpiration_time() {
+        return expiration_time;
+    }
+
     public static Geofence getGeofenceDetails(int gid) {
-        return new Select().from(Geofence.class).where("gid = ?", gid).executeSingle();
+        return new Select()
+                .from(Geofence.class)
+                .where("gid = ?", gid)
+                .executeSingle();
     }
 
     public static Geofence findOrCreateFromModel(GeofenceJSONModel model) {
-        Geofence existingGeofence = new Select().from(Geofence.class)
-                .where("gid = ?", model.getGid()).executeSingle();
-        if (existingGeofence != null ) {
-            return existingGeofence;
-        } else {
+        Geofence existingGeofence = new Select()
+                .from(Geofence.class)
+                .where("gid = ?", model.getGid())
+                .executeSingle();
+        if (existingGeofence == null) {
             Geofence geofence = new Geofence(model);
             geofence.save();
             return geofence;
         }
 
+        if (existingGeofence.getGid() == model.getGid() &&
+                existingGeofence.getFence_name().equals(model.getFence_name()) &&
+                existingGeofence.getGeofence_radius().equals(model.getGeofence_radius()) &&
+                existingGeofence.getExpiration_time() == model.getExpiration_time() &&
+                existingGeofence.getLatitude().equals(model.getLatitude()) &&
+                existingGeofence.getLongitude().equals(model.getLongitude())) {
+            return existingGeofence;
+        } else {
+            Geofence geofence = Geofence.load(Geofence.class, existingGeofence.getId());
+            geofence.geofence_radius = model.getGeofence_radius();
+            geofence.fence_name = model.getFence_name();
+            geofence.longitude = model.getLongitude();
+            geofence.latitude = model.getLatitude();
+            geofence.expiration_time = model.getExpiration_time();
+            geofence.save();
+            return geofence;
+        }
     }
 }
 

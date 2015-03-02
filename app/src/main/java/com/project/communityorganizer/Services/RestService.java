@@ -3,9 +3,12 @@ package com.project.communityorganizer.Services;
 import com.activeandroid.ActiveAndroid;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.project.communityorganizer.Constants;
+import com.project.communityorganizer.JSON.models.EventJSONModel;
 import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.JSON.models.GeofenceJSONModel;
 import com.project.communityorganizer.JSON.models.UserJSONModel;
+import com.project.communityorganizer.sqlite.models.Event;
 import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.Geofence;
 
@@ -30,7 +33,6 @@ import retrofit.http.Path;
  * @author Seshagiri on 21/2/15.
  */
 public class RestService {
-    private static final String SERVER = "http://134.76.249.227/";
     private final CommunityAppWebService mCommunityAppWebService;
 
     /**
@@ -38,11 +40,11 @@ public class RestService {
      */
     public RestService() {
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
+                .setDateFormat(Constants.DATE_FORMAT)
                 .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(SERVER)
+                .setEndpoint(Constants.SERVER2)
                 .setErrorHandler(new myErrorHandler())
                 .setConverter(new GsonConverter(gson))
                 .setRequestInterceptor(new SessionRequestInterceptor())
@@ -79,7 +81,7 @@ public class RestService {
          * @param userJSONModel
          * @param callback
          */
-        @POST("/register")
+        @POST(Constants.URL_REGISTER)
         public void registerUser(
                 @Body UserJSONModel userJSONModel,
                 Callback<UserJSONModel> callback);
@@ -87,7 +89,7 @@ public class RestService {
         /**
          * Friend list fetcher
          */
-        @GET("/register/friend_list/{email}/")
+        @GET(Constants.URL_FRIEND_LIST)
         public void fetchFriendList(
                 @Path("email") String email,
                 Callback<List<FriendJSONModel>> callback);
@@ -95,9 +97,22 @@ public class RestService {
         /**
          *  Geofence list fetcher
          */
-        @GET("/geofence/list")
-        public void fetchGeofenceList(
-                Callback<List <GeofenceJSONModel>> callback);
+        @GET(Constants.URL_GEOFENCE_LIST)
+        public void fetchGeofenceList(Callback<List <GeofenceJSONModel>> callback);
+
+        /**
+         * Event Creator
+         */
+        @GET(Constants.URL_CREATE_EVENT)
+        public void createEvent(
+                @Body EventJSONModel eventJSONModel,
+                Callback<EventJSONModel> callback);
+
+        /**
+         * Event list fetcher
+         */
+        @GET(Constants.URL_EVENT_OPEN_LIST)
+        public void fetchOpenEventList(Callback<List <EventJSONModel>> callback);
     }
 
     /**
@@ -133,7 +148,7 @@ public class RestService {
     }
 
     /**
-     * function to fetch the list of geofence
+     * Function to fetch the list of geofence
      */
     public void fetchGeofenceList() {
         mCommunityAppWebService.fetchGeofenceList(
@@ -143,14 +158,48 @@ public class RestService {
                         ActiveAndroid.beginTransaction();
                         try {
                             for (GeofenceJSONModel geofenceJSONModel : geofenceJSONModels) {
-                                Geofence geofence = Geofence.findOrCreateFromModel(geofenceJSONModel);
-                                geofence.save();
+                                if (geofenceJSONModel != null) {
+                                    Geofence geofence = Geofence.findOrCreateFromModel(geofenceJSONModel);
+                                    geofence.save();
+                                }
                             }
                             ActiveAndroid.setTransactionSuccessful();
                         } finally {
                             ActiveAndroid.endTransaction();
                         }
                     }
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                }
+        );
+    }
+
+    /**
+     * Function to fetch the event list
+     */
+    public void fetchOpenEventList() {
+        mCommunityAppWebService.fetchOpenEventList(
+                new Callback<List<EventJSONModel>>() {
+                    @Override
+                    public void success(List<EventJSONModel> eventJSONModels, Response response) {
+                        ActiveAndroid.beginTransaction();
+                        try {
+                            for(EventJSONModel eventJSONModel : eventJSONModels) {
+                                if (eventJSONModel != null) {
+                                    Event event = Event.findOrCreateFromModel(eventJSONModel);
+                                    event.save();
+                                }
+                            }
+                            ActiveAndroid.setTransactionSuccessful();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        } finally {
+                            ActiveAndroid.endTransaction();
+                        }
+                    }
+
                     @Override
                     public void failure(RetrofitError error) {
 
@@ -176,6 +225,4 @@ public class RestService {
             return cause;
         }
     }
-
-
 }
