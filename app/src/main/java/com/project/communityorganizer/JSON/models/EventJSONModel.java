@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by
@@ -60,15 +59,6 @@ public class EventJSONModel {
         this.start_time = new Date(Long.parseLong(start_time_from_epoch));
     }
 
-    public void setStart_time(String start_time) throws ParseException {
-        DateFormat formatter = new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US);
-        try {
-            this.start_time = formatter.parse(start_time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void setStart_time2(String start_time) throws ParseException {
         DateFormat formatter = new SimpleDateFormat(Constants.DATE_TIME_FORMAT2, Locale.US);
         try {
@@ -90,16 +80,6 @@ public class EventJSONModel {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(
                 Constants.DATE_TIME_FORMAT2, Locale.US);
         return dateFormatter.format(end_time);
-    }
-
-    public void setEnd_time(String end_time) throws ParseException {
-        DateFormat formatter = new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US);
-        //formatter.setTimeZone(TimeZone.getTimeZone(Constants.TIME_ZONE));
-        try {
-            this.end_time = formatter.parse(end_time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     public void setEnd_time2(String end_time) throws ParseException {

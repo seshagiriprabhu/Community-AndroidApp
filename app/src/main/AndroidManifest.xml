@@ -13,7 +13,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -27,9 +27,9 @@
         <meta-data
             android:name="AA_MODELS"
             android:value="@string/tables" />
-        <!-- Main screen -->
+        <!-- Welcome screen -->
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="com.project.communityorganizer.Activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen" >
@@ -41,7 +41,7 @@
         </activity>
         <!-- Sign up activity -->
         <activity
-            android:name=".Activities.SignUpActivity"
+            android:name="com.project.communityorganizer.Activities.SignUpActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <meta-data
@@ -54,9 +54,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!-- Signin activity -->
+        <!-- Sign in activity -->
         <activity
-            android:name=".Activities.SignInActivity"
+            android:name="com.project.communityorganizer.Activities.SignInActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
@@ -70,9 +70,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!-- Friend list -->
+        <!-- Home Activity -->
         <activity
-            android:name=".Activities.HomeActivity"
+            android:name="com.project.communityorganizer.Activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <intent-filter>
@@ -81,49 +81,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <!-- Friend List Activity -->
         <activity
-            android:name=".Activities.EventList"
-            android:label="@string/title_activity_event_list"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.HomeActivity" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Activities.Location"
-            android:label="@string/title_activity_location"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.HomeActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Activities.Settings"
-            android:label="@string/title_activity_settings"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.HomeActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Activities.FriendList"
+            android:name="com.project.communityorganizer.Activities.FriendList"
             android:label="@string/title_activity_friend_list"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <meta-data
@@ -136,16 +96,68 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <!-- Event list Activity -->
         <activity
-            android:name=".Activities.EventCreation"
+            android:name="com.project.communityorganizer.Activities.EventList"
+            android:label="@string/title_activity_event_list"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.HomeActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- Location Activity -->
+        <activity
+            android:name="com.project.communityorganizer.Activities.Location"
+            android:label="@string/title_activity_location"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.HomeActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- Settings Activity -->
+        <activity
+            android:name="com.project.communityorganizer.Activities.Settings"
+            android:label="@string/title_activity_settings"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.HomeActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- Event Creation Activity -->
+        <activity
+            android:name="com.project.communityorganizer.Activities.EventCreation"
             android:label="@string/title_activity_event_creation"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.HomeActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
+        <!-- Friend Details Activity -->
         <activity
-            android:name=".Activities.FriendDetailsActivity"
+            android:name="com.project.communityorganizer.Activities.FriendDetailsActivity"
             android:label="@string/title_activity_friend_details"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <meta-data
@@ -158,8 +170,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <!-- Event Details Activity -->
         <activity
-            android:name=".Activities.EventDetailsActivity"
+            android:name="com.project.communityorganizer.Activities.EventDetailsActivity"
             android:label="@string/title_activity_event_details"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
             <meta-data
@@ -173,5 +186,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
