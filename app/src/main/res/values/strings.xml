@@ -136,4 +136,9 @@
     <string name="creator">Creator</string>
     <string name="ending_at">Ending at:</string>
     <string name="personal_feeling">Personal Feeling:</string>
+    <string name="event_search">event search</string>
+    <string name="friend_search">Friend search</string>
+    <string name="create_event">Create Event</string>
+    <string name="refresh_event_list">refresh event list</string>
+    <string name="refresh_friend_list">refresh friend list</string>
 </resources>

@@ -31,25 +31,36 @@ import java.text.ParseException;
  */
 public class FriendList extends Activity {
     private ProgressDialog progressDialog;
-
+    private Cursor cursor;
+    private FriendListCursorAdaptor listCursorAdaptor;
+    /**
+     * {@inheritDoc}
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("Friend List");
-            actionBar.setLogo(R.drawable.ic_action_light_friend);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        setActionBar();
+        initFriendList();
+    }
 
-        if (isConnected()) new FriendListUpdateTask().execute();
-
+    /**
+     * Initial friend list
+     */
+    private void initFriendList() {
         ListView listView = (ListView) findViewById(R.id.listView);
-        final Cursor cursor = Friend.fetchResultCursor();
-        FriendListCursorAdaptor listCursorAdaptor = new FriendListCursorAdaptor(this, cursor);
+        cursor = Friend.fetchResultCursor();
+        listCursorAdaptor = new FriendListCursorAdaptor(this, cursor);
         listView.setAdapter(listCursorAdaptor);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * {@inheritDoc}
+             * @param parent
+             * @param view
+             * @param position
+             * @param id
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent;
@@ -79,6 +90,23 @@ public class FriendList extends Activity {
         });
     }
 
+    /**
+     * Sets action bar
+     */
+    private void setActionBar() {
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Friends");
+            actionBar.setLogo(R.drawable.ic_action_light_friend);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -86,11 +114,19 @@ public class FriendList extends Activity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.refresh_friend_list:
+                if (isConnected()) new FriendListUpdateTask().execute();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,12 +137,20 @@ public class FriendList extends Activity {
      * Asynchronous task to fetch any new friends
      */
     private class FriendListUpdateTask extends AsyncTask<String, Integer, Boolean> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = ProgressDialog.show(FriendList.this, "Wait", "Updating Friend List");
         }
 
+        /**
+         * {@inheritDoc}
+         * @param params
+         * @return
+         */
         @Override
         protected Boolean doInBackground(String... params) {
             final RestService restService = new RestService();
@@ -114,10 +158,15 @@ public class FriendList extends Activity {
             return true;
         }
 
+        /**
+         * {@inheritDoc}
+         * @param result
+         */
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) progressDialog.dismiss();
-
+            cursor = Friend.fetchResultCursor();
+            listCursorAdaptor = new FriendListCursorAdaptor(FriendList.this, cursor);
         }
     }
 

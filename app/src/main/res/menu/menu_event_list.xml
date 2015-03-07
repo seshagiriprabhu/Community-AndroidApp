@@ -2,6 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.project.communityorganizer.Activities.EventList">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/event_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:orderInCategory="100"
+        android:title="@string/event_search"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <item android:id="@+id/create_event"
+        android:icon="@drawable/ic_action_plus"
+        android:title="@string/create_event"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/refresh_event_list"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/refresh_event_list"
+        app:showAsAction="ifRoom"/>
 </menu>

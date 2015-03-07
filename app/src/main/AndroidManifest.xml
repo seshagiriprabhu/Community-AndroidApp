@@ -100,10 +100,11 @@
         <activity
             android:name="com.project.communityorganizer.Activities.EventList"
             android:label="@string/title_activity_event_list"
+            android:parentActivityName="com.project.communityorganizer.Activities.HomeActivity"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.HomeActivity" />
+                android:name="android.app.searchable"
+                android:value="@xml/searchable" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -147,7 +148,7 @@
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activities.HomeActivity" />
+                android:value=".Activities.EventList" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

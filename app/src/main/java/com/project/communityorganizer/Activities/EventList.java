@@ -30,25 +30,49 @@ import java.text.ParseException;
  */
 public class EventList extends Activity {
     private ProgressDialog progressDialog;
+    private Cursor cursor;
+    private EventListCursorAdaptor eventListCursorAdaptor;
 
+    /**
+     * {@inheritDoc}
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+        setActionBar();
+        initEventList();
+    }
+
+    /**
+     * Set action bar for the activity
+     */
+    private void setActionBar() {
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Event List");
             actionBar.setLogo(R.drawable.ic_action_light_event);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
 
-        if (isConnected()) new EventListUpdatetask().execute();
-
+    /**
+     * Initialize event list
+     */
+    private void initEventList() {
         ListView listView = (ListView) findViewById(R.id.eventList);
-        final Cursor cursor = Event.fetchResultCursor();
-        EventListCursorAdaptor eventListCursorAdaptor = new EventListCursorAdaptor(this, cursor);
+        cursor = Event.fetchResultCursor();
+        eventListCursorAdaptor = new EventListCursorAdaptor(this, cursor);
         listView.setAdapter(eventListCursorAdaptor);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * {@inheritDoc}
+             * @param parent
+             * @param view
+             * @param position
+             * @param id
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent;
@@ -85,6 +109,11 @@ public class EventList extends Activity {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -92,11 +121,19 @@ public class EventList extends Activity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.refresh_event_list:
+                if (isConnected()) new EventListUpdatetask().execute();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -113,6 +150,11 @@ public class EventList extends Activity {
             progressDialog = ProgressDialog.show(EventList.this, "Wait", "Updating Event List");
         }
 
+        /**
+         * {@inheritDoc}
+         * @param params
+         * @return
+         */
         @Override
         protected Boolean doInBackground(String... params) {
             final RestService restService = new RestService();
@@ -120,10 +162,15 @@ public class EventList extends Activity {
             return true;
         }
 
+        /**
+         * {@inheritDoc}
+         * @param result
+         */
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) progressDialog.dismiss();
-
+            cursor = Event.fetchResultCursor();
+            eventListCursorAdaptor = new EventListCursorAdaptor(EventList.this, cursor);
         }
     }
 
