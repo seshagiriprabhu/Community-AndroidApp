@@ -71,18 +71,69 @@
             android:ems="20"
             android:textColorHint="@android:color/secondary_text_light"
             android:theme="@style/ChatAppTheme"/>
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/create_start_date"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:inputType="datetime"
+                android:drawableEnd="@drawable/ic_action_calandar"
+                android:hint="@string/starting_date"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme" />
+            <EditText
+                android:id="@+id/create_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="datetime"
+                android:drawableEnd="@drawable/ic_action_clock"
+                android:hint="@string/starting_time"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/create_end_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/ic_action_calandar"
+                android:inputType="datetime"
+                android:hint="@string/ending_date"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme" />
+            <EditText
+                android:id="@+id/create_end_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/ic_action_clock"
+                android:inputType="datetime"
+                android:hint="@string/ending_time"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:theme="@style/ChatAppTheme" />
+        </LinearLayout>
+        <Spinner
+            android:id="@+id/eventCreationGeofenceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <Button
-            android:id="@+id/btn_send"
+            android:id="@+id/btn_create_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
+            android:layout_marginTop="20sp"
+            android:padding="10sp"
+            android:layout_marginBottom="60sp"
             android:background="@color/bg_btn_Sign"
-            android:paddingLeft="25sp"
-            android:paddingRight="25sp"
-            android:textSize="18sp"
-            android:padding="5sp"
-            android:text="@string/Create"
+            android:text="@string/btnCreateEvent"
             android:textColor="@color/white"
             />
     </LinearLayout>

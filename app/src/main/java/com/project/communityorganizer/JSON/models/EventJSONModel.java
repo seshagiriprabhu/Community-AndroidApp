@@ -49,6 +49,38 @@ public class EventJSONModel {
         return start_time;
     }
 
+    public void setEvent_id(int event_id) {
+        this.event_id = event_id;
+    }
+
+    public void setEvent_name(String event_name) {
+        this.event_name = event_name;
+    }
+
+    public void setEvent_description(String event_description) {
+        this.event_description = event_description;
+    }
+
+    public void setEvent_creator(String event_creator) {
+        this.event_creator = event_creator;
+    }
+
+    public void setPersonal_feeling(String personal_feeling) {
+        this.personal_feeling = personal_feeling;
+    }
+
+    public void setStart_time(Date start_time) {
+        this.start_time = start_time;
+    }
+
+    public void setEnd_time(Date end_time) {
+        this.end_time = end_time;
+    }
+
+    public void setGeofence_id(int geofence_id) {
+        this.geofence_id = geofence_id;
+    }
+
     public String getStart_time_as_String() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(
                 Constants.DATE_TIME_FORMAT2, Locale.US);

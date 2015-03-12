@@ -8,7 +8,9 @@ public class Constants {
     public static final String TIME_ZONE = "UTC";
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final String DATE_TIME_FORMAT2 = "E yyyy.MM.dd 'at' hh:mm a zzz";
+    public static final String DATE_TIME_FORMAT3 = "yyyy-MM-ddHH:mm";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String TIME_FORMAT = "HH:mm";
 
     public static final String SERVER = "http://192.168.1.75:8000/";
     public static final String SERVER2 = "http://10.10.72.137:8000/";

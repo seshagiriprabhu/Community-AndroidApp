@@ -34,6 +34,7 @@ import retrofit.http.Path;
  */
 public class RestService {
     private final CommunityAppWebService mCommunityAppWebService;
+    private final CommunityAppWebService mCommunityAppWebService2;
 
     /**
      * A service to REST-ful client operations
@@ -52,6 +53,20 @@ public class RestService {
                 .build();
 
         mCommunityAppWebService = restAdapter.create(CommunityAppWebService.class);
+
+        Gson gson2 = new GsonBuilder()
+                .setDateFormat(Constants.DATE_TIME_FORMAT)
+                .create();
+
+        RestAdapter restAdapter2 = new RestAdapter.Builder()
+                .setEndpoint(Constants.SERVER2)
+                .setErrorHandler(new myErrorHandler())
+                .setConverter(new GsonConverter(gson2))
+                .setRequestInterceptor(new SessionRequestInterceptor())
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+
+        mCommunityAppWebService2 = restAdapter2.create(CommunityAppWebService.class);
     }
 
     /**
@@ -71,6 +86,12 @@ public class RestService {
     public CommunityAppWebService getService() {
         return mCommunityAppWebService;
     }
+
+    /**
+     * A function to return the service running with different date time format
+     * @return
+     */
+    public CommunityAppWebService getService2() { return mCommunityAppWebService2; }
 
     /**
      * Community App Web interface
@@ -103,7 +124,7 @@ public class RestService {
         /**
          * Event Creator
          */
-        @GET(Constants.URL_CREATE_EVENT)
+        @POST(Constants.URL_CREATE_EVENT)
         public void createEvent(
                 @Body EventJSONModel eventJSONModel,
                 Callback<EventJSONModel> callback);
@@ -180,7 +201,7 @@ public class RestService {
      * Function to fetch the event list
      */
     public void fetchOpenEventList() {
-        mCommunityAppWebService.fetchOpenEventList(
+        mCommunityAppWebService2.fetchOpenEventList(
                 new Callback<List<EventJSONModel>>() {
                     @Override
                     public void success(List<EventJSONModel> eventJSONModels, Response response) {

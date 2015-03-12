@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.activeandroid.ActiveAndroid;
 import com.project.communityorganizer.Adapters.EventListCursorAdaptor;
 import com.project.communityorganizer.JSON.models.EventJSONModel;
 import com.project.communityorganizer.R;
@@ -62,8 +63,16 @@ public class EventList extends Activity {
      */
     private void initEventList() {
         ListView listView = (ListView) findViewById(R.id.eventList);
-        cursor = Event.fetchResultCursor();
-        eventListCursorAdaptor = new EventListCursorAdaptor(this, cursor);
+
+        ActiveAndroid.beginTransaction();
+        try {
+            cursor = Event.fetchResultCursor();
+            eventListCursorAdaptor = new EventListCursorAdaptor(this, cursor);
+            ActiveAndroid.setTransactionSuccessful();
+        } finally {
+            ActiveAndroid.endTransaction();
+        }
+
         listView.setAdapter(eventListCursorAdaptor);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
@@ -133,7 +142,11 @@ public class EventList extends Activity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.refresh_event_list:
-                if (isConnected()) new EventListUpdatetask().execute();
+                if (isConnected()) new EventListUpdateTask().execute();
+                return true;
+            case R.id.create_event:
+                Intent intent = new Intent(EventList.this, EventCreation.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -143,7 +156,7 @@ public class EventList extends Activity {
     /**
      * Asynchronous task to fetch any new events
      */
-    public class EventListUpdatetask extends AsyncTask<String, Integer, Boolean> {
+    public class EventListUpdateTask extends AsyncTask<String, Integer, Boolean> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -169,8 +182,14 @@ public class EventList extends Activity {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) progressDialog.dismiss();
-            cursor = Event.fetchResultCursor();
-            eventListCursorAdaptor = new EventListCursorAdaptor(EventList.this, cursor);
+            ActiveAndroid.beginTransaction();
+            try {
+                cursor = Event.fetchResultCursor();
+                eventListCursorAdaptor = new EventListCursorAdaptor(EventList.this, cursor);
+                ActiveAndroid.setTransactionSuccessful();
+            } finally {
+                ActiveAndroid.endTransaction();
+            }
         }
     }
 

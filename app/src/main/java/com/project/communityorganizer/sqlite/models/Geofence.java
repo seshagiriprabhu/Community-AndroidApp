@@ -8,6 +8,8 @@ import com.activeandroid.query.Select;
 import com.project.communityorganizer.Constants;
 import com.project.communityorganizer.JSON.models.GeofenceJSONModel;
 
+import java.util.List;
+
 /**
  * Created by
  * @author seshagiri on 19/2/15.
@@ -103,6 +105,10 @@ public class Geofence extends Model {
             geofence.save();
             return geofence;
         }
+    }
+
+    public static List<Geofence> getAllGeofenceDetails() {
+        return new Select().from(Geofence.class).execute();
     }
 }
 

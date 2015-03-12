@@ -23,10 +23,10 @@ import java.util.Date;
  */
 @Table(name="Event")
 public class Event extends Model{
-    @Column(index = true)
+    @Column(index = true, unique = true, name="event_id")
     public int event_id;
 
-    @Column(index = true)
+    @Column(index = true, name="event_name")
     public String event_name;
 
     @Column(name="event_description")

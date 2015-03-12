@@ -37,7 +37,6 @@ public class EventListCursorAdaptor extends CursorAdapter  {
         eventJSONModel = new EventJSONModel();
         eventJSONModel.event_name = cursor.getString(cursor.getColumnIndexOrThrow("event_name"));
         eventJSONModel.event_creator = cursor.getString(cursor.getColumnIndexOrThrow("Friend"));
-        System.out.println(eventJSONModel.event_creator);
         try {
             eventJSONModel.setStart_time_from_epoch(
                     cursor.getString(cursor.getColumnIndexOrThrow("start_time")));
@@ -54,7 +53,6 @@ public class EventListCursorAdaptor extends CursorAdapter  {
         if (!SaveSharedPreference.getUserEmail(context).equals(friend.getEmail()))
             viewHolder.eventCreator.setText(friend.getDisplay_name());
         else viewHolder.eventCreator.setText(friend.getDisplay_name() + " (you)");
-        friend.save();
 
         viewHolder.eventName.setText(eventJSONModel.getEvent_name());
         viewHolder.startTime.setText(eventJSONModel.getStart_time_as_String());

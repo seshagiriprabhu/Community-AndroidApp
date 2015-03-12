@@ -120,7 +120,7 @@
     <string name="date_of_birth">DATE OF BIRTH</string>
     <string name="DOB">DATE OF BIRTH</string>
     <string name="displayName">Display Name</string>
-    <string name="Create">Create</string>
+    <string name="btnCreateEvent">Create Event</string>
     <string name="end_time">To: </string>
     <string name="start_time">From: </string>
     <string name="event_details_link">Event Details</string>
@@ -141,4 +141,9 @@
     <string name="create_event">Create Event</string>
     <string name="refresh_event_list">refresh event list</string>
     <string name="refresh_friend_list">refresh friend list</string>
+    <string name="ending_time">End Time</string>
+    <string name="ending_date">End Date</string>
+    <string name="starting_time">Start Time</string>
+    <string name="starting_date">Start Date</string>
+    <string name="logotu">Logout</string>
 </resources>
