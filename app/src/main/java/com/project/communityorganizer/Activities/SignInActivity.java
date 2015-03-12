@@ -13,13 +13,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.project.communityorganizer.JSON.models.UserJSONModel;
 import com.project.communityorganizer.R;
 import com.project.communityorganizer.Services.RestService;
 import com.project.communityorganizer.Services.SaveSharedPreference;
 import com.project.communityorganizer.Services.passwordHash;
+import com.project.communityorganizer.sqlite.models.User;
 
 import java.security.NoSuchAlgorithmException;
-import static com.project.communityorganizer.sqlite.models.User.checkCredentials;
 
 /**
  * Created by
@@ -29,6 +30,10 @@ public class SignInActivity extends Activity  implements OnClickListener {
 	private EditText eMailText, passwordText;
     private Button btnCancel, btnSign;
 
+    /**
+     * {@inheritDoc}
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +128,10 @@ public class SignInActivity extends Activity  implements OnClickListener {
         btnCancel = (Button) findViewById(R.id.btnCancel);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param v
+     */
     @Override
     public void onClick(View v) {
 
@@ -132,21 +141,36 @@ public class SignInActivity extends Activity  implements OnClickListener {
      * Asynchronous task to validate user credentials from local db
      */
     private class validateUserTask extends AsyncTask<String, Integer, Boolean> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
         }
 
+        /**
+         * {@inheritDoc}
+         * @param params
+         * @return
+         */
         @Override
         protected Boolean doInBackground(String... params) {
-            if (checkCredentials(params[0], params[1])) {
+            if (User.checkCredentials(params[0], params[1])) {
                 SaveSharedPreference.setUserEmail(SignInActivity.this, params[0]);
+                UserJSONModel userJSONModel = User.getUserJSONObject(params[0]);
+                SaveSharedPreference.setUserName(SignInActivity.this,
+                        userJSONModel.getDisplay_name());
                 return true;
             }
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         * @param s
+         */
         @Override
         protected void onPostExecute(Boolean s) {
             super.onPostExecute(s);
@@ -167,15 +191,3 @@ public class SignInActivity extends Activity  implements OnClickListener {
     }
 
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    

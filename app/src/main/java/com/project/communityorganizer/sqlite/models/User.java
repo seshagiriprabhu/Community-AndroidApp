@@ -120,13 +120,9 @@ public class User extends Model{
     public static boolean checkCredentials(String email, String password) {
         User user = new Select()
                 .from(User.class)
-                .where("email = ?  and password = ?", email, password)
+                .where("email = ?", email)
                 .executeSingle();
-        if (user != null) {
-            return user.getEmail().equals(email) && user.getPassword().equals(password);
-        } else {
-            return false;
-        }
+        return user != null && user.getEmail().equals(email) && user.getPassword().equals(password);
     }
 
     /**
@@ -173,10 +169,14 @@ public class User extends Model{
                 .from(User.class)
                 .where("email = ?", email)
                 .executeSingle();
-        UserJSONModel model = new UserJSONModel(user);
-        return model;
+        return new UserJSONModel(user);
     }
 
+    /**
+     * Returns the user object
+     * @param email
+     * @return
+     */
     public  static User getUserObject(String email) {
         return new Select()
                 .from(User.class)

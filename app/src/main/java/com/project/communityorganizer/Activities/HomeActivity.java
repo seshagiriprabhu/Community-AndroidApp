@@ -4,19 +4,35 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.project.communityorganizer.Adapters.CustomListAdapter;
 import com.project.communityorganizer.R;
+import com.project.communityorganizer.Services.SaveSharedPreference;
 
 /**
  * Created by
  * @author Seshagiri on 22/2/15.
  */
 public class HomeActivity extends Activity {
+    /**
+     * {@inheritDoc}
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setActionBar();
+        initHomeMenuList(savedInstanceState);
+    }
+
+    /**
+     * Initiates the home menu list
+     * @param savedInstanceState
+     */
+    private void initHomeMenuList(Bundle savedInstanceState) {
         final String[] itemName = new String[]{
                 "Friends",
                 "Events",
@@ -44,6 +60,13 @@ public class HomeActivity extends Activity {
         CustomListAdapter adapter = new CustomListAdapter(this, itemName, imgId, itemDescription);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * {@inheritDoc}
+             * @param parent
+             * @param view
+             * @param position
+             * @param id
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
@@ -61,10 +84,46 @@ public class HomeActivity extends Activity {
                 }
             }
         });
+    }
+
+    /**
+     * Set the action bar
+     */
+    private void setActionBar() {
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Community Organizer");
             actionBar.setLogo(R.drawable.ic_action_logo);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                SaveSharedPreference.setUserName(HomeActivity.this, "");
+                SaveSharedPreference.setUserEmail(HomeActivity.this, "");
+                HomeActivity.this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
     }
 }

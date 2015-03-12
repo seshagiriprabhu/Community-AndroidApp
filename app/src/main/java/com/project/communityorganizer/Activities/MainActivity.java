@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_main);
-        if (!SaveSharedPreference.getUserEmail(MainActivity.this).equals("[]")) {
+        if (!SaveSharedPreference.getUserEmail(MainActivity.this).equals("")) {
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
             MainActivity.this.finish();
