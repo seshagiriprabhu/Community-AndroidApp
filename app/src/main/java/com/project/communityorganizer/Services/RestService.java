@@ -4,11 +4,13 @@ import com.activeandroid.ActiveAndroid;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.project.communityorganizer.Constants;
+import com.project.communityorganizer.JSON.models.EventAttendanceJSONModel;
 import com.project.communityorganizer.JSON.models.EventJSONModel;
 import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.JSON.models.GeofenceJSONModel;
 import com.project.communityorganizer.JSON.models.UserJSONModel;
 import com.project.communityorganizer.sqlite.models.Event;
+import com.project.communityorganizer.sqlite.models.EventAttendance;
 import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.Geofence;
 
@@ -134,6 +136,25 @@ public class RestService {
          */
         @GET(Constants.URL_EVENT_OPEN_LIST)
         public void fetchOpenEventList(Callback<List <EventJSONModel>> callback);
+
+        /**
+         * Event attendance registration
+         * @param eventAttendanceJSONModel
+         * @param callback
+         */
+        @POST(Constants.URL_EVENT_ATTENDANCE)
+        public void attendEvent(
+                @Body EventAttendanceJSONModel eventAttendanceJSONModel,
+                Callback<EventAttendanceJSONModel> callback);
+
+        /**
+         * Get the Event attendance list
+         * @param callback
+         */
+        @GET(Constants.URL_EVENT_ATTENDANCE_LIST)
+        public void fetchEventAttendanceList(
+                @Path("event_id") int event_id,
+                Callback<List <EventAttendanceJSONModel>> callback);
     }
 
     /**
@@ -143,6 +164,11 @@ public class RestService {
     public void fetchFriendList(String email) {
         mCommunityAppWebService.fetchFriendList(email,
                 new Callback<List<FriendJSONModel>>() {
+                    /**
+                     * {@inheritDoc}
+                     * @param friendJSONModels
+                     * @param response
+                     */
                     @Override
                     public void success(List<FriendJSONModel> friendJSONModels, Response response) {
                         ActiveAndroid.beginTransaction();
@@ -160,7 +186,10 @@ public class RestService {
                             ActiveAndroid.endTransaction();
                         }
                     }
-
+                    /**
+                     * {@inheritDoc}
+                     * @param error
+                     */
                     @Override
                     public void failure(RetrofitError error) {
 
@@ -174,6 +203,11 @@ public class RestService {
     public void fetchGeofenceList() {
         mCommunityAppWebService.fetchGeofenceList(
                 new Callback<List<GeofenceJSONModel>>() {
+                    /**
+                     * {@inheritDoc}
+                     * @param geofenceJSONModels
+                     * @param response
+                     */
                     @Override
                     public void success(List<GeofenceJSONModel> geofenceJSONModels, Response response) {
                         ActiveAndroid.beginTransaction();
@@ -189,6 +223,10 @@ public class RestService {
                             ActiveAndroid.endTransaction();
                         }
                     }
+                    /**
+                     * {@inheritDoc}
+                     * @param error
+                     */
                     @Override
                     public void failure(RetrofitError error) {
 
@@ -203,6 +241,11 @@ public class RestService {
     public void fetchOpenEventList() {
         mCommunityAppWebService2.fetchOpenEventList(
                 new Callback<List<EventJSONModel>>() {
+                    /**
+                     * {@inheritDoc}
+                     * @param eventJSONModels
+                     * @param response
+                     */
                     @Override
                     public void success(List<EventJSONModel> eventJSONModels, Response response) {
                         ActiveAndroid.beginTransaction();
@@ -210,6 +253,7 @@ public class RestService {
                             for(EventJSONModel eventJSONModel : eventJSONModels) {
                                 if (eventJSONModel != null) {
                                     Event event = Event.findOrCreateFromModel(eventJSONModel);
+                                    fetchAttendanceList(event.getEvent_id());
                                     event.save();
                                 }
                             }
@@ -220,7 +264,50 @@ public class RestService {
                             ActiveAndroid.endTransaction();
                         }
                     }
+                    /**
+                     * {@inheritDoc}
+                     * @param error
+                     */
+                    @Override
+                    public void failure(RetrofitError error) {
 
+                    }
+                }
+        );
+    }
+
+    /**
+     *
+     */
+    public void fetchAttendanceList(int event_id) {
+        mCommunityAppWebService2.fetchEventAttendanceList(event_id,
+                new Callback<List<EventAttendanceJSONModel>>() {
+                    /**
+                     * {@inheritDoc}
+                     * @param eventAttendanceJSONModels
+                     * @param response
+                     */
+                    @Override
+                    public void success(List<EventAttendanceJSONModel> eventAttendanceJSONModels,
+                                        Response response) {
+                        ActiveAndroid.beginTransaction();
+                        try {
+                            for (EventAttendanceJSONModel attendanceJSONModel: eventAttendanceJSONModels) {
+                                if (attendanceJSONModel != null) {
+                                    EventAttendance eventAttendance = EventAttendance
+                                            .findOrCreateFromModel(attendanceJSONModel);
+                                    eventAttendance.save();
+                                }
+                            }
+                            ActiveAndroid.setTransactionSuccessful();
+                        } finally {
+                            ActiveAndroid.endTransaction();
+                        }
+                    }
+                    /**
+                     * {@inheritDoc}
+                     * @param error
+                     */
                     @Override
                     public void failure(RetrofitError error) {
 
@@ -233,7 +320,11 @@ public class RestService {
      * Custom error handler
      */
     public class myErrorHandler implements ErrorHandler {
-
+        /**
+         * {@inheritDoc}
+         * @param cause
+         * @return
+         */
         @Override
         public Throwable handleError(RetrofitError cause) {
             Response r = cause.getResponse();

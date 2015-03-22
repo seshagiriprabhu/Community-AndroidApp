@@ -146,4 +146,5 @@
     <string name="starting_time">Start Time</string>
     <string name="starting_date">Start Date</string>
     <string name="logotu">Logout</string>
+    <string name="attendees">Attendees</string>
 </resources>

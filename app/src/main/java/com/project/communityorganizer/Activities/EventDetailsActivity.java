@@ -8,19 +8,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.activeandroid.ActiveAndroid;
 import com.project.communityorganizer.Constants;
 import com.project.communityorganizer.JSON.models.EventJSONModel;
 import com.project.communityorganizer.R;
 import com.project.communityorganizer.Services.SaveSharedPreference;
+import com.project.communityorganizer.sqlite.models.Event;
+import com.project.communityorganizer.sqlite.models.EventAttendance;
 import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.Geofence;
-import java.text.ParseException;
+
+import java.util.List;
 
 /**
  * Created by
  * @author Seshagiri on 25/2/15.
  */
 public class EventDetailsActivity extends Activity {
+    private EventJSONModel eventJSONModel = new EventJSONModel();
     private TextView eventName;
     private TextView eventDescription;
     private TextView eventCreator;
@@ -28,75 +33,93 @@ public class EventDetailsActivity extends Activity {
     private TextView startTime;
     private TextView endTime;
     private TextView location;
+    private TextView attendees;
 
+    /**
+     * {@inheritDoc}
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
+        setActionBar();
         findViewsById();
-        EventJSONModel eventJSONModel = new EventJSONModel();
+        setContent(savedInstanceState);
+    }
+
+    /**
+     * Set Action bar for the page
+     */
+    private void setActionBar() {
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            if (eventJSONModel != null) actionBar.setTitle("Event Details");
+            else actionBar.setTitle("Failed to fetch event details");
+            actionBar.setLogo(R.drawable.ic_action_light_event);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /**
+     * Sets the content of the activity
+     * @param savedInstanceState
+     */
+    private void setContent(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                eventJSONModel = null;
-            } else {
-                eventJSONModel.event_creator = extras.getString("event_creator");
-                eventJSONModel.event_name = extras.getString("event_name");
-                eventJSONModel.personal_feeling = extras.getString("personal_feeling");
-                eventJSONModel.geofence_id = extras.getInt("geofence_id");
-                try {
-                    eventJSONModel.setStart_time2(extras.getString("start_time"));
-                    eventJSONModel.setEnd_time2(extras.getString("end_time"));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            eventJSONModel.event_name = (String) savedInstanceState
-                    .getSerializable("event_name");
-
-
-            eventJSONModel.event_description = (String) savedInstanceState
-                    .getSerializable("event_description");
-
-
-            eventJSONModel.personal_feeling = (String) savedInstanceState
-                    .getSerializable("personal_feeling");
-
-
-            eventJSONModel.event_creator = (String) savedInstanceState
-                    .getSerializable("event_creator");
-            eventJSONModel.geofence_id = (int) savedInstanceState
-                    .getSerializable("geofence_id");
-
-            try {
-                eventJSONModel.setStart_time2((String) savedInstanceState
-                        .getSerializable("start_time"));
-                eventJSONModel.setEnd_time2((String) savedInstanceState
-                        .getSerializable("end_time"));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+            if (extras == null) eventJSONModel = null;
+            else eventJSONModel.event_id = extras.getInt("event_id");
+        } else eventJSONModel.event_id = (int) savedInstanceState.getSerializable("event_id");
 
         if (eventJSONModel != null) {
-            eventName.setText(eventJSONModel.getEvent_name());
-            eventDescription.setText(eventJSONModel.getEvent_description());
+            Event event = Event.getEventDetails(eventJSONModel.getEvent_id());
+            Friend friend = event.getEvent_creator();
+            Geofence geofence = event.getGeofence_id();
 
-            Friend friend = Friend.getFriendIdDetails(Long.valueOf(eventJSONModel.getEvent_creator()));
-            if (!SaveSharedPreference.getUserEmail(EventDetailsActivity.this).equals(friend.getEmail()))
-                eventCreator.setText(friend.getDisplay_name());
-            else eventCreator.setText(friend.getDisplay_name() + " (you)");
-            friend.save();
+            eventJSONModel.event_creator = friend.getDisplay_name()
+                    + " <" + friend.getEmail() + ">";
+            eventJSONModel.setStart_time(event.getStart_time());
+            eventJSONModel.setEnd_time(event.getEnd_time());
 
-            personalFeeling.setText(eventJSONModel.getPersonal_feeling());
-
+            eventName.setText(event.getEvent_name());
+            eventDescription.setText(event.getEvent_description());
+            personalFeeling.setText(event.getPersonal_feeling());
             startTime.setText(eventJSONModel.getStart_time_as_String());
             endTime.setText(eventJSONModel.getEnd_time_as_String());
-
-            Geofence geofence = Geofence.getGeofenceDetails(eventJSONModel.getGeofence_id());
             location.setText(geofence.getFence_name()
                     + " [" + geofence.getLatitude() + ", " + geofence.getLongitude() + "]");
+            eventCreator.setText(eventJSONModel.getEvent_creator());
+
+            if (SaveSharedPreference
+                    .getUserEmail(EventDetailsActivity.this)
+                    .equals(friend.getEmail()))
+                eventCreator.setText(eventJSONModel.getEvent_creator() + " (you)");
+
+            List<EventAttendance> eventAttendanceList =
+                    EventAttendance.getEventAttendeesList(event);
+
+            if (eventAttendanceList == null) attendees.setText(Constants.NA);
+            else {
+                String attendeesList = "";
+                int index = 1;
+
+                ActiveAndroid.beginTransaction();
+                try {
+                    for (EventAttendance eventAttendance : eventAttendanceList) {
+                        Friend friend1 = eventAttendance.getEmail();
+                        attendeesList += index++ + ". " + friend1.getDisplay_name() +
+                                " <" + friend1.getEmail() + ">";
+                        if (SaveSharedPreference.getUserEmail(EventDetailsActivity.this)
+                                .equals(friend1.getEmail())) attendeesList += " (you)";
+                        attendeesList += " ";
+                    }
+                    ActiveAndroid.setTransactionSuccessful();
+                } finally {
+                    ActiveAndroid.endTransaction();
+                }
+                attendees.setText(attendeesList);
+            }
         } else {
             eventName.setText(Constants.NA);
             eventCreator.setText(Constants.NA);
@@ -105,14 +128,7 @@ public class EventDetailsActivity extends Activity {
             startTime.setText(Constants.NA);
             endTime.setText(Constants.NA);
             location.setText(Constants.NA);
-        }
-
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            if (eventJSONModel != null) actionBar.setTitle(eventJSONModel.getEvent_name());
-            else actionBar.setTitle("Failed to fetch event details");
-            actionBar.setLogo(R.drawable.ic_action_light_event);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            attendees.setText(Constants.NA);
         }
     }
 
@@ -127,8 +143,14 @@ public class EventDetailsActivity extends Activity {
         endTime = (TextView) findViewById(R.id.endTime);
         location = (TextView) findViewById(R.id.location);
         personalFeeling = (TextView) findViewById(R.id.personalFeeling);
+        attendees = (TextView) findViewById(R.id.eventDetailsAttendees);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -136,6 +158,11 @@ public class EventDetailsActivity extends Activity {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

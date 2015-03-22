@@ -150,5 +150,27 @@
             android:layout_marginStart="3sp"
             android:id="@+id/location" />
 
+        <!-- Location -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#EE0000"
+            android:text="@string/attendees"
+            android:layout_marginTop="15sp"
+            android:layout_marginBottom="5sp"
+            android:id="@+id/textView6"
+            android:textSize="20sp"/>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3sp"
+            android:id="@+id/eventDetailsAttendees" />
+
     </LinearLayout>
 </ScrollView>

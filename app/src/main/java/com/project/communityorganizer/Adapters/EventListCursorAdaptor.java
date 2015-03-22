@@ -22,15 +22,33 @@ import java.text.ParseException;
 public class EventListCursorAdaptor extends CursorAdapter  {
     EventJSONModel eventJSONModel;
 
+    /**
+     * Constructor
+     * @param context
+     * @param c
+     */
     public EventListCursorAdaptor(Context context, Cursor c) {
         super(context, c, 0);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param context
+     * @param cursor
+     * @param parent
+     * @return
+     */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.event_list, parent, false);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param view
+     * @param context
+     * @param cursor
+     */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = new ViewHolder();
@@ -60,6 +78,9 @@ public class EventListCursorAdaptor extends CursorAdapter  {
         view.setTag(viewHolder);
     }
 
+    /**
+     * A class to hold the items of a list
+     */
     private class ViewHolder {
         public TextView eventName;
         public TextView eventCreator;
