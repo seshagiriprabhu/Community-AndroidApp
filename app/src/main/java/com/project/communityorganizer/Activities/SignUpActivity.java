@@ -8,13 +8,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.NavUtils;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,8 +24,8 @@ import com.project.communityorganizer.Constants;
 import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.JSON.models.UserJSONModel;
 import com.project.communityorganizer.R;
+import com.project.communityorganizer.Services.DeviceManager;
 import com.project.communityorganizer.Services.RestService;
-import com.project.communityorganizer.Services.SaveSharedPreference;
 import com.project.communityorganizer.Services.passwordHash;
 import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.User;
@@ -51,6 +47,7 @@ import retrofit.client.Response;
  */
 public class SignUpActivity extends Activity implements OnClickListener {
     final Context context = this;
+    DeviceManager deviceManager = new DeviceManager();
     private EditText displayNameText, eMailText, passwordText, passwordAgainText;
     private EditText DOBText;
     private Button btnSignUp, btnCancel;
@@ -61,14 +58,17 @@ public class SignUpActivity extends Activity implements OnClickListener {
     public static String REGISTRATION_DETAILS;
     public static boolean registration_status = false;
 
-
+    /**
+     * {@inheritDoc}
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         setTitle("Register User");
         findViewsById();
-        showConnectivity();
+        deviceManager.showConnectivity(getApplicationContext());
         btnClick();
         setDateTimeField();
     }
@@ -91,20 +91,6 @@ public class SignUpActivity extends Activity implements OnClickListener {
         });
     }
 
-
-    /**
-     * Check if the phone is connected to internet
-     */
-    private void showConnectivity() {
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        if (!isConnected()) {
-            Toast toast = Toast.makeText(context, Constants.NOT_CONNECTED, duration);
-            toast.show();
-        }
-    }
-
     /**
      * Identifies elements in the view by its ID
      */
@@ -121,6 +107,10 @@ public class SignUpActivity extends Activity implements OnClickListener {
         btnCancel = (Button) findViewById(R.id.btnCancel);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v == DOBText) {
@@ -150,12 +140,20 @@ public class SignUpActivity extends Activity implements OnClickListener {
             dialog.show();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected void onPreExecute() {
 
             super.onPreExecute();
         }
 
+        /**
+         * {@inheritDoc}
+         * @param url
+         * @return
+         */
         @Override
         protected Boolean doInBackground(String... url) {
             try {
@@ -166,6 +164,10 @@ public class SignUpActivity extends Activity implements OnClickListener {
             return null;
         }
 
+        /**
+         * {@inheritDoc}
+         * @param result
+         */
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
@@ -180,6 +182,11 @@ public class SignUpActivity extends Activity implements OnClickListener {
                 alertDialog.setIcon(R.drawable.ic_action_done);
                 alertDialog.setPositiveButton(R.string.OK,
                         new DialogInterface.OnClickListener() {
+                            /**
+                             * {@inheritDoc}
+                             * @param dialog
+                             * @param which
+                             */
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(SignUpActivity.this, SignInActivity.class)
@@ -192,6 +199,11 @@ public class SignUpActivity extends Activity implements OnClickListener {
                 alertDialog.setIcon(R.drawable.ic_action_delete);
                 alertDialog.setPositiveButton(R.string.OK,
                         new DialogInterface.OnClickListener() {
+                            /**
+                             * {@inheritDoc}
+                             * @param dialog
+                             * @param which
+                             */
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -224,11 +236,11 @@ public class SignUpActivity extends Activity implements OnClickListener {
         userJSONModel.setPassword(password);
 
         userJSONModel.setDate_of_birth_from_utc(DOBText.getText().toString());
-        userJSONModel.setPhone_number(getPhoneNumber());
+        userJSONModel.setPhone_number(deviceManager.getPhoneNumber(context));
         userJSONModel.setMobile_os(android.os.Build.VERSION.RELEASE);
         userJSONModel.setMobile_device(android.os.Build.MODEL);
-        userJSONModel.setPhone_uid(getDeviceId());
-        userJSONModel.setCarrier(getCarrier());
+        userJSONModel.setPhone_uid(deviceManager.getDeviceId(context));
+        userJSONModel.setCarrier(deviceManager.getCarrier(context));
 
         String sex = radioSexButton.getText().toString();
         String gender = "F";
@@ -239,6 +251,11 @@ public class SignUpActivity extends Activity implements OnClickListener {
         RestService.CommunityAppWebService appWebService = restService.getService();
         appWebService.registerUser(userJSONModel,
                 new Callback<UserJSONModel>() {
+                    /**
+                     * {@inheritDoc}
+                     * @param model
+                     * @param response
+                     */
                     @Override
                     public void success(UserJSONModel model, Response response) {
                         if (response.getStatus() == 201) {
@@ -254,13 +271,6 @@ public class SignUpActivity extends Activity implements OnClickListener {
                                 Friend friend = Friend.registerNewUser(friendJSONModel);
                                 friend.save();
 
-                                SaveSharedPreference
-                                        .setUserEmail(SignUpActivity.this,
-                                        model.getEmail());
-                                SaveSharedPreference
-                                        .setUserName(SignUpActivity.this,
-                                                model.getDisplay_name());
-
                                 restService.fetchFriendList(model.getEmail());
                                 restService.fetchGeofenceList();
                                 REGISTRATION_TITLE = "Success";
@@ -275,6 +285,10 @@ public class SignUpActivity extends Activity implements OnClickListener {
                         }
                     }
 
+                    /**
+                     * {@inheritDoc}
+                     * @param error
+                     */
                     @Override
                     public void failure(RetrofitError error) {
                         // TODO error verbose
@@ -283,16 +297,6 @@ public class SignUpActivity extends Activity implements OnClickListener {
                     }
                 });
         return true;
-    }
-
-    /**
-     *  Checks if the device is connected to internet
-     */
-    public boolean isConnected(){
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Activity.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 
     /**
@@ -336,43 +340,6 @@ public class SignUpActivity extends Activity implements OnClickListener {
                     Toast.LENGTH_LONG).show();
             return false;
         }
-    }
-
-    /**
-     * Returns the Phone UID
-     * @return String
-     */
-    private String getDeviceId() {
-        String deviceId;
-        final TelephonyManager mTelephony = (TelephonyManager)
-                getSystemService(Context.TELEPHONY_SERVICE);
-        if (mTelephony.getDeviceId() != null) {
-            deviceId = mTelephony.getDeviceId();
-        } else {
-            deviceId = Settings.Secure.getString(getApplicationContext()
-                    .getContentResolver(), Settings.Secure.ANDROID_ID);
-        }
-        return deviceId;
-    }
-
-    /**
-     * Retrieves the carrier ID of the phone
-     * @return String
-     */
-    private String getCarrier() {
-        TelephonyManager tManager = (TelephonyManager) getBaseContext()
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        return tManager.getNetworkOperatorName();
-    }
-
-    /**
-     * Retrieves the phone number in use
-     * @return String
-     */
-    private String getPhoneNumber() {
-        TelephonyManager tManager = (TelephonyManager) getBaseContext()
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        return tManager.getLine1Number();
     }
 
     /**

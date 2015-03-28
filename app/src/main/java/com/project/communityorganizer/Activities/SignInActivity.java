@@ -1,8 +1,10 @@
 package com.project.communityorganizer.Activities;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +17,8 @@ import android.content.Intent;
 
 import com.project.communityorganizer.JSON.models.UserJSONModel;
 import com.project.communityorganizer.R;
+import com.project.communityorganizer.Services.DeviceManager;
+import com.project.communityorganizer.Services.LocationService;
 import com.project.communityorganizer.Services.RestService;
 import com.project.communityorganizer.Services.SaveSharedPreference;
 import com.project.communityorganizer.Services.passwordHash;
@@ -29,7 +33,7 @@ import java.security.NoSuchAlgorithmException;
 public class SignInActivity extends Activity  implements OnClickListener {
 	private EditText eMailText, passwordText;
     private Button btnCancel, btnSign;
-
+    DeviceManager deviceManager;
     /**
      * {@inheritDoc}
      * @param savedInstanceState
@@ -39,34 +43,10 @@ public class SignInActivity extends Activity  implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         setTitle("Sign In");
+        deviceManager = new DeviceManager();
         findViewsById();
-        showConnectivity();
+        deviceManager.showConnectivity(getApplicationContext());
         btnClick();
-    }
-
-    /**
-     * Check if the phone is connected to internet
-     */
-    private void showConnectivity() {
-        Context context = getApplicationContext();
-        CharSequence notConnected = "You're not connected to internet";
-        int duration = Toast.LENGTH_SHORT;
-
-        if (!isConnected()) {
-            Toast toast = Toast.makeText(context, notConnected, duration);
-            toast.show();
-        }
-    }
-
-    /**
-     * Checks the Connectivity status of the device
-     * @return boolean
-     */
-     public boolean isConnected(){
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Activity.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
     }
 
     /**
@@ -160,8 +140,14 @@ public class SignInActivity extends Activity  implements OnClickListener {
             if (User.checkCredentials(params[0], params[1])) {
                 SaveSharedPreference.setUserEmail(SignInActivity.this, params[0]);
                 UserJSONModel userJSONModel = User.getUserJSONObject(params[0]);
-                SaveSharedPreference.setUserName(SignInActivity.this,
-                        userJSONModel.getDisplay_name());
+                SaveSharedPreference
+                        .setUserEmail(SignInActivity.this,
+                                userJSONModel.getEmail());
+                SaveSharedPreference
+                        .setUserName(SignInActivity.this,
+                                userJSONModel.getDisplay_name());
+                LocationService locationService = new LocationService(SignInActivity.this);
+                locationService.startLocationService();
                 return true;
             }
             return false;
@@ -178,6 +164,7 @@ public class SignInActivity extends Activity  implements OnClickListener {
                 RestService service = new RestService();
                 service.fetchFriendList(SaveSharedPreference.getUserEmail(SignInActivity.this));
                 service.fetchGeofenceList();
+                service.fetchOpenEventList();
                 Intent i = new Intent(SignInActivity.this, HomeActivity.class);
                 startActivity(i);
                 SignInActivity.this.finish();
