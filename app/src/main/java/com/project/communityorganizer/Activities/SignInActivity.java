@@ -1,10 +1,6 @@
 package com.project.communityorganizer.Activities;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,7 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import com.project.communityorganizer.JSON.models.UserJSONModel;
