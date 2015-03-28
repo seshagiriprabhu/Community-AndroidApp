@@ -11,11 +11,22 @@ import android.preference.PreferenceManager;
 public class SaveSharedPreference {
     static final String USER_EMAIL = "email";
     static final String USER_NAME = "username";
+    static final String LOGGED_IN = "false";
 
+    /**
+     * Returns the SharedPreference object
+     * @param context
+     * @return
+     */
     public static SharedPreferences getSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    /**
+     * Changes the USER_EMAIL
+     * @param context
+     * @param email
+     */
     public static void setUserEmail(Context context, String email) {
         if (context != null) {
             SharedPreferences.Editor editor = getSharedPreferences(context).edit();
@@ -24,6 +35,11 @@ public class SaveSharedPreference {
         }
     }
 
+    /**
+     * Sets a USER_NAME
+     * @param context
+     * @param name
+     */
     public static void setUserName(Context context, String name) {
         if (context != null) {
             SharedPreferences.Editor editor = getSharedPreferences(context).edit();
@@ -32,6 +48,24 @@ public class SaveSharedPreference {
         }
     }
 
+    /**
+     * Changes the Value of LOGGED IN STATUS
+     * @param context
+     * @param value
+     */
+    public static void setLoggedInStatus(Context context, boolean value) {
+        if (context != null) {
+            SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+            editor.putBoolean(LOGGED_IN, value);
+            editor.apply();
+        }
+    }
+
+    /**
+     * Returns the user email
+     * @param context
+     * @return
+     */
     public static String getUserEmail(Context context) {
         if (context != null) {
             return getSharedPreferences(context).getString(USER_EMAIL, "");
@@ -39,10 +73,27 @@ public class SaveSharedPreference {
         return null;
     }
 
+    /**
+     * Returns user name
+     * @param context
+     * @return
+     */
     public static String getUserName(Context context) {
         if (context != null) {
             return getSharedPreferences(context).getString(USER_NAME, "");
         }
         return null;
+    }
+
+    /**
+     * Checks if a user is logged in or not
+     * @param context
+     * @return
+     */
+    public static boolean getLoggedInValue(Context context) {
+        if (context != null) {
+            return getSharedPreferences(context).getBoolean(LOGGED_IN, false);
+        }
+        return false;
     }
 }

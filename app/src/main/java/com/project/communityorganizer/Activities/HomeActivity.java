@@ -108,6 +108,7 @@ public class HomeActivity extends Activity {
             case R.id.logout:
                 SaveSharedPreference.setUserName(HomeActivity.this, "");
                 SaveSharedPreference.setUserEmail(HomeActivity.this, "");
+                SaveSharedPreference.setLoggedInStatus(HomeActivity.this, false);
                 HomeActivity.this.finish();
                 return true;
             default:

@@ -30,7 +30,7 @@
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/logoDesc"
-                android:src="@mipmap/ic_launcher_logo"/>
+                android:src="@mipmap/ic_launcher"/>
 
             <TextView
                 android:layout_width="wrap_content"

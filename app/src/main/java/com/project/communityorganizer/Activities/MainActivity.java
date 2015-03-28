@@ -17,12 +17,17 @@ public class MainActivity extends Activity implements OnClickListener {
 	Button btnSignIn;
 	Button btnSignUp;
 
+    /**
+     * {@inheritDoc}
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActiveAndroid.initialize(this);
         setContentView(R.layout.activity_main);
-        if (!SaveSharedPreference.getUserEmail(MainActivity.this).equals("")) {
+        if (!(SaveSharedPreference.getUserEmail(MainActivity.this).equals("") &&
+            !SaveSharedPreference.getLoggedInValue(MainActivity.this))) {
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
             MainActivity.this.finish();
@@ -33,6 +38,10 @@ public class MainActivity extends Activity implements OnClickListener {
         btnSignUp.setOnClickListener(this);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param v
+     */
 	@Override
 	public void onClick(View v) {
 		Intent i;

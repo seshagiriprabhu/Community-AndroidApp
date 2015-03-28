@@ -27,7 +27,6 @@ import com.project.communityorganizer.R;
 import com.project.communityorganizer.Services.DeviceManager;
 import com.project.communityorganizer.Services.RestService;
 import com.project.communityorganizer.Services.passwordHash;
-import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.User;
 
 import org.json.JSONException;
@@ -267,10 +266,6 @@ public class SignUpActivity extends Activity implements OnClickListener {
                             try {
                                 User user = User.findOrCreateFromJson(model);
                                 user.save();
-
-                                Friend friend = Friend.registerNewUser(friendJSONModel);
-                                friend.save();
-
                                 restService.fetchFriendList(model.getEmail());
                                 restService.fetchGeofenceList();
                                 REGISTRATION_TITLE = "Success";

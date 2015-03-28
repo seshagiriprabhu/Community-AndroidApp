@@ -4,6 +4,7 @@ package com.project.communityorganizer.sqlite.models;
 import android.database.Cursor;
 import android.database.SQLException;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -15,6 +16,7 @@ import com.project.communityorganizer.JSON.models.FriendJSONModel;
 /* Java libraries */
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by
@@ -165,4 +167,29 @@ public class Friend extends Model{
         return Cache.openDatabase().rawQuery(resultRecords, null);
     }
 
+    /**
+     * A function to set the currently logged in user as the phone owner
+     * @param email
+     */
+    public static void loginProcedure(String email) {
+        List<Friend> friendList = new Select().from(Friend.class).execute();
+
+        ActiveAndroid.beginTransaction();
+        try {
+            for (Friend friend : friendList) {
+                friend.phone_owner = false;
+                friend.save();
+            }
+            ActiveAndroid.setTransactionSuccessful();
+        } finally {
+            ActiveAndroid.endTransaction();
+        }
+
+        Friend existingUser = new Select()
+                .from(Friend.class)
+                .where("email = ?", email)
+                .executeSingle();
+        existingUser.phone_owner = true;
+        existingUser.save();
+    }
 }

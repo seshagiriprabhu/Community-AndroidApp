@@ -17,6 +17,7 @@ import com.project.communityorganizer.Services.LocationService;
 import com.project.communityorganizer.Services.RestService;
 import com.project.communityorganizer.Services.SaveSharedPreference;
 import com.project.communityorganizer.Services.passwordHash;
+import com.project.communityorganizer.sqlite.models.Friend;
 import com.project.communityorganizer.sqlite.models.User;
 
 import java.security.NoSuchAlgorithmException;
@@ -77,17 +78,23 @@ public class SignInActivity extends Activity  implements OnClickListener {
     }
 
     /**
+     * To toast a message
+     * @param text
+     */
+    private void toast(String text) {
+        Toast.makeText(SignInActivity.this, text, Toast.LENGTH_LONG).show();
+    }
+
+    /**
      * Validates the form
      * @return boolean
      */
     private boolean validate() {
         if(eMailText.getText().toString().trim().equals("")) {
-            Toast.makeText(getApplicationContext(),R.string.fill_email_field,
-                    Toast.LENGTH_LONG).show();
+            toast("Email Field is empty");
             return false;
         } else if (passwordText.getText().toString().trim().equals("")) {
-            Toast.makeText(getApplicationContext(),R.string.fill_password_field,
-                    Toast.LENGTH_LONG).show();
+            toast("Password Field is empty");
             return false;
         }
         return true;
@@ -141,8 +148,11 @@ public class SignInActivity extends Activity  implements OnClickListener {
                 SaveSharedPreference
                         .setUserName(SignInActivity.this,
                                 userJSONModel.getDisplay_name());
-                LocationService locationService = new LocationService(SignInActivity.this);
-                locationService.startLocationService();
+                SaveSharedPreference
+                        .setLoggedInStatus(SignInActivity.this, true);
+                Friend.loginProcedure(userJSONModel.getEmail());
+                //LocationService locationService = new LocationService(SignInActivity.this);
+                //locationService.startLocationService();
                 return true;
             }
             return false;
@@ -165,9 +175,7 @@ public class SignInActivity extends Activity  implements OnClickListener {
                 SignInActivity.this.finish();
             } else {
                 // TODO for a registered user
-                Toast toast = Toast.makeText(SignInActivity.this,
-                        "Username and Password doesn't match", Toast.LENGTH_LONG);
-                toast.show();
+                toast("Username and Password doesn't match");
             }
         }
     }
