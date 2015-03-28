@@ -45,7 +45,7 @@ public class Event extends Model{
     public Date end_time;
 
     @Column(name="Geofence")
-    public Geofence geofence_id;
+    public GeofenceModel geofence_Model_id;
 
 
     /* Default Constructor */
@@ -79,8 +79,8 @@ public class Event extends Model{
         return end_time;
     }
 
-    public Geofence getGeofence_id() {
-        return geofence_id;
+    public GeofenceModel getGeofence_Model_id() {
+        return geofence_Model_id;
     }
 
     public Event(EventJSONModel eventJSONModel) throws ParseException {
@@ -92,7 +92,7 @@ public class Event extends Model{
         this.start_time = eventJSONModel.getStart_time();
         this.end_time = eventJSONModel.getEnd_time();
         int gid = eventJSONModel.getGeofence_id();
-        this.geofence_id = Geofence.getGeofenceDetails(gid);
+        this.geofence_Model_id = GeofenceModel.getGeofenceDetails(gid);
     }
 
     public static Event findOrCreateFromModel(EventJSONModel model) throws ParseException {
@@ -115,8 +115,8 @@ public class Event extends Model{
                 existingEvent.getEvent_name().equals(model.getEvent_name()) &&
                 existingEvent.getStart_time().equals(model.getStart_time()) &&
                 existingEvent.getEnd_time().equals(model.getEnd_time()) &&
-                existingEvent.getGeofence_id() ==
-                        Geofence.getGeofenceDetails(model.getGeofence_id()) &&
+                existingEvent.getGeofence_Model_id() ==
+                        GeofenceModel.getGeofenceDetails(model.getGeofence_id()) &&
                 existingEvent.getPersonal_feeling().equals(model.getPersonal_feeling())) {
             return existingEvent;
         } else  {
@@ -129,7 +129,7 @@ public class Event extends Model{
             event.start_time = model.getStart_time();
             event.end_time = model.getEnd_time();
             int gid = model.getGeofence_id();
-            event.geofence_id = Geofence.getGeofenceDetails(gid);
+            event.geofence_Model_id = GeofenceModel.getGeofenceDetails(gid);
             return event;
         }
     }

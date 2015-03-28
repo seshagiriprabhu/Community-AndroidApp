@@ -16,7 +16,7 @@ import com.project.communityorganizer.Services.SaveSharedPreference;
 import com.project.communityorganizer.sqlite.models.Event;
 import com.project.communityorganizer.sqlite.models.EventAttendance;
 import com.project.communityorganizer.sqlite.models.Friend;
-import com.project.communityorganizer.sqlite.models.Geofence;
+import com.project.communityorganizer.sqlite.models.GeofenceModel;
 
 import java.util.List;
 
@@ -75,7 +75,7 @@ public class EventDetailsActivity extends Activity {
         if (eventJSONModel != null) {
             Event event = Event.getEventDetails(eventJSONModel.getEvent_id());
             Friend friend = event.getEvent_creator();
-            Geofence geofence = event.getGeofence_id();
+            GeofenceModel geofenceModel = event.getGeofence_Model_id();
 
             eventJSONModel.event_creator = friend.getDisplay_name()
                     + " <" + friend.getEmail() + ">";
@@ -87,8 +87,8 @@ public class EventDetailsActivity extends Activity {
             personalFeeling.setText(event.getPersonal_feeling());
             startTime.setText(eventJSONModel.getStart_time_as_String());
             endTime.setText(eventJSONModel.getEnd_time_as_String());
-            location.setText(geofence.getFence_name()
-                    + " [" + geofence.getLatitude() + ", " + geofence.getLongitude() + "]");
+            location.setText(geofenceModel.getFence_name()
+                    + " [" + geofenceModel.getLatitude() + ", " + geofenceModel.getLongitude() + "]");
             eventCreator.setText(eventJSONModel.getEvent_creator());
 
             if (SaveSharedPreference

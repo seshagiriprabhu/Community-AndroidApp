@@ -27,7 +27,7 @@ import com.project.communityorganizer.R;
 import com.project.communityorganizer.Services.RestService;
 import com.project.communityorganizer.Services.SaveSharedPreference;
 import com.project.communityorganizer.sqlite.models.Event;
-import com.project.communityorganizer.sqlite.models.Geofence;
+import com.project.communityorganizer.sqlite.models.GeofenceModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,10 +74,10 @@ public class EventCreation extends Activity implements View.OnClickListener {
      * Adds Geofence details to the spinner
      */
     private void addItemsOnSpinner() {
-        List<Geofence> geofence = Geofence.getAllGeofenceDetails();
+        List<GeofenceModel> geofenceModel = GeofenceModel.getAllGeofenceDetails();
         List<String> geofenceList = new ArrayList<>();
-        for (Geofence geofence1: geofence) {
-            geofenceList.add(String.valueOf(geofence1.getGid()) + ", " + geofence1.getFence_name());
+        for (GeofenceModel geofenceModel1 : geofenceModel) {
+            geofenceList.add(String.valueOf(geofenceModel1.getGid()) + ", " + geofenceModel1.getFence_name());
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, geofenceList);
