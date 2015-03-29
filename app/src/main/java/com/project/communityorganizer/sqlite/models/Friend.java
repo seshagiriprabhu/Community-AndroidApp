@@ -189,7 +189,11 @@ public class Friend extends Model{
                 .from(Friend.class)
                 .where("email = ?", email)
                 .executeSingle();
-        existingUser.phone_owner = true;
-        existingUser.save();
+
+
+        if (existingUser != null) {
+            existingUser.phone_owner = true;
+            existingUser.save();
+        }
     }
 }
