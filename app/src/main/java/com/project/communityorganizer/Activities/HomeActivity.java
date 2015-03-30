@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.project.communityorganizer.Adapters.CustomListAdapter;
 import com.project.communityorganizer.R;
+import com.project.communityorganizer.Services.DeviceManager;
+import com.project.communityorganizer.Services.LocationService;
 import com.project.communityorganizer.Services.SaveSharedPreference;
 
 /**
@@ -24,6 +26,7 @@ public class HomeActivity extends Activity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setActionBar();
         initHomeMenuList(savedInstanceState);
     }
@@ -76,7 +79,7 @@ public class HomeActivity extends Activity {
                     Intent intent = new Intent(HomeActivity.this, EventList.class);
                     startActivity(intent);
                 } else if (position == 2) {
-                    Intent intent = new Intent(HomeActivity.this, Location.class);
+                    Intent intent = new Intent(HomeActivity.this, LocationActivity.class);
                     startActivity(intent);
                 } else if (position == 3) {
                     Intent intent = new Intent(HomeActivity.this, Settings.class);
@@ -109,6 +112,11 @@ public class HomeActivity extends Activity {
                 SaveSharedPreference.setUserName(HomeActivity.this, "");
                 SaveSharedPreference.setUserEmail(HomeActivity.this, "");
                 SaveSharedPreference.setLoggedInStatus(HomeActivity.this, false);
+                LocationService locationService = new LocationService(HomeActivity.this);
+                DeviceManager deviceManager = new DeviceManager();
+                if (deviceManager.isGooglePlayServicesAvailable(getApplicationContext()))
+                    locationService.stopLocationService(getApplicationContext());
+                startActivity(new Intent(HomeActivity.this, MainActivity.class));
                 HomeActivity.this.finish();
                 return true;
             default:
