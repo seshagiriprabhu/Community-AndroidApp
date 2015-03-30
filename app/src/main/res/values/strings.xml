@@ -147,4 +147,7 @@
     <string name="starting_date">Start Date</string>
     <string name="logotu">Logout</string>
     <string name="attendees">Attendees</string>
+    <string name="location_service">Location Service</string>
+    <string name="general_settings">General Settings</string>
+    <string name="data_sync_freq">DataSyncFrequency</string>
 </resources>

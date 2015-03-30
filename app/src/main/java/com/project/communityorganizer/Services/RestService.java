@@ -8,11 +8,13 @@ import com.project.communityorganizer.JSON.models.EventAttendanceJSONModel;
 import com.project.communityorganizer.JSON.models.EventJSONModel;
 import com.project.communityorganizer.JSON.models.FriendJSONModel;
 import com.project.communityorganizer.JSON.models.GeofenceJSONModel;
+import com.project.communityorganizer.JSON.models.LocationJSONModel;
 import com.project.communityorganizer.JSON.models.UserJSONModel;
 import com.project.communityorganizer.sqlite.models.Event;
 import com.project.communityorganizer.sqlite.models.EventAttendance;
 import com.project.communityorganizer.sqlite.models.Friend;
-import com.project.communityorganizer.sqlite.models.Geofence;
+import com.project.communityorganizer.sqlite.models.GeofenceModel;
+import com.project.communityorganizer.sqlite.models.Location;
 
 import java.text.ParseException;
 import java.util.List;
@@ -155,6 +157,23 @@ public class RestService {
         public void fetchEventAttendanceList(
                 @Path("event_id") int event_id,
                 Callback<List <EventAttendanceJSONModel>> callback);
+
+
+        /**
+         * Post the location update to the server
+         */
+        @POST(Constants.URL_LOCATION_ACTIVITY)
+        public void updateLocationActivity(
+                @Body LocationJSONModel locationJSONModel,
+                Callback<LocationJSONModel> callback);
+
+        /**
+         * Get Online users in a geofence
+         */
+        @GET(Constants.URL_LOCATION_ACTIVE_USER_LIST)
+        public List<LocationJSONModel> activeLocationUsers(
+                @Path("gid") int gid,
+                Callback<List <LocationJSONModel>> callback);
     }
 
     /**
@@ -175,8 +194,7 @@ public class RestService {
                         try {
                             for (FriendJSONModel friendJSONModel : friendJSONModels) {
                                 if (friendJSONModel != null) {
-                                    Friend friend = Friend.findOrCreateFromModel(friendJSONModel);
-                                    friend.save();
+                                    Friend.findOrCreateFromModel(friendJSONModel);
                                 }
                             }
                             ActiveAndroid.setTransactionSuccessful();
@@ -214,8 +232,7 @@ public class RestService {
                         try {
                             for (GeofenceJSONModel geofenceJSONModel : geofenceJSONModels) {
                                 if (geofenceJSONModel != null) {
-                                    Geofence geofence = Geofence.findOrCreateFromModel(geofenceJSONModel);
-                                    geofence.save();
+                                    GeofenceModel.findOrCreateFromModel(geofenceJSONModel);
                                 }
                             }
                             ActiveAndroid.setTransactionSuccessful();
@@ -314,6 +331,34 @@ public class RestService {
                     }
                 }
         );
+    }
+
+    /**
+     * A function to send user location updates to the server
+     */
+    public void updateUserLocationActivity(LocationJSONModel locationJSONModel) {
+        mCommunityAppWebService2.updateLocationActivity(locationJSONModel,
+                new Callback<LocationJSONModel>() {
+                    /**
+                     * {@inheritDoc}
+                     * @param locationJSONModel
+                     * @param response
+                     */
+                    @Override
+                    public void success(LocationJSONModel locationJSONModel, Response response) {
+                        Location location = Location.getLocationObject(
+                                locationJSONModel.getDate_time());
+                        if (location != null) location.delete();
+                    }
+
+                    /**
+                     * {@inheritDoc}
+                     * @param error
+                     */
+                    @Override
+                    public void failure(RetrofitError error) {
+                    }
+                });
     }
 
     /**

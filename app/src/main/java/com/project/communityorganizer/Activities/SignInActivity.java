@@ -151,8 +151,9 @@ public class SignInActivity extends Activity  implements OnClickListener {
                 SaveSharedPreference
                         .setLoggedInStatus(SignInActivity.this, true);
                 Friend.loginProcedure(userJSONModel.getEmail());
-                //LocationService locationService = new LocationService(SignInActivity.this);
-                //locationService.startLocationService();
+                LocationService service = new LocationService(getApplicationContext());
+                if (deviceManager.isGooglePlayServicesAvailable(getApplicationContext()))
+                    service.startLocationService(getApplicationContext());
                 return true;
             }
             return false;

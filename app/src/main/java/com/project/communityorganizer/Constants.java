@@ -22,6 +22,8 @@ public class Constants {
     public static final String URL_EVENT_CLOSED_LIST = "/event/list/closed";
     public static final String URL_EVENT_ATTENDANCE = "/event/attendance/";
     public static final String URL_EVENT_ATTENDANCE_LIST = "/event/{event_id}/attendance";
+    public static final String URL_LOCATION_ACTIVITY = "/location/";
+    public static final String URL_LOCATION_ACTIVE_USER_LIST = "/location/gid/{gid}/activities";
 
     public static final String EMAIL_QUERY = "email = ";
     public static final String IF_PHONE_OWNER = "phone_owner = 1";

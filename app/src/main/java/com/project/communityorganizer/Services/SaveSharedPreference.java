@@ -12,6 +12,7 @@ public class SaveSharedPreference {
     static final String USER_EMAIL = "email";
     static final String USER_NAME = "username";
     static final String LOGGED_IN = "false";
+    static final String LOCATION_SERVICE = "false";
 
     /**
      * Returns the SharedPreference object
@@ -49,7 +50,7 @@ public class SaveSharedPreference {
     }
 
     /**
-     * Changes the Value of LOGGED IN STATUS
+     * Changes the value of LOGGED IN STATUS
      * @param context
      * @param value
      */
@@ -57,6 +58,19 @@ public class SaveSharedPreference {
         if (context != null) {
             SharedPreferences.Editor editor = getSharedPreferences(context).edit();
             editor.putBoolean(LOGGED_IN, value);
+            editor.apply();
+        }
+    }
+
+    /**
+     * Changes the value of LOCATION_SERVICE
+     * @param context
+     * @param value
+     */
+    public static void setLocationService(Context context, boolean value) {
+        if (context != null) {
+            SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+            editor.putBoolean(LOCATION_SERVICE, value);
             editor.apply();
         }
     }
@@ -91,9 +105,16 @@ public class SaveSharedPreference {
      * @return
      */
     public static boolean getLoggedInValue(Context context) {
-        if (context != null) {
-            return getSharedPreferences(context).getBoolean(LOGGED_IN, false);
-        }
-        return false;
+        return context != null && getSharedPreferences(context).getBoolean(LOGGED_IN, false);
     }
+
+    /**
+     * Returns the value of LOCATION_SERVICE
+     * @param context
+     * @return
+     */
+    public static boolean getLocationServiceValue(Context context) {
+        return context != null && getSharedPreferences(context).getBoolean(LOCATION_SERVICE, false);
+    }
+
 }

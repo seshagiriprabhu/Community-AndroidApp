@@ -1,13 +1,91 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.project.communityorganizer.Activities.Location">
+    android:layout_margin="8sp">
 
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:background="@color/background"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <!-- Profile picture and display name -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:textColor="#33CC33"
+                android:text="Location"
+                android:textSize="24sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Last location"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/last_known_location_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Sample location" />
+
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8sp"
+            android:layout_marginTop="8sp"
+            android:text="Updatable location"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/updated_location_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Sample updated location" />
+
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8sp"
+            android:layout_marginTop="8sp"
+            android:text="Address for location"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/address_for_location_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Sample address for location" />
+
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8sp"
+            android:layout_marginTop="8sp"
+            android:text="Detected activity"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/activity_recent_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="No activities detected yet" />
+
+    </LinearLayout>
+</ScrollView>
+

@@ -8,6 +8,9 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 /**
  * Created by
  * @author seshagiri on 25/3/15.
@@ -140,6 +143,23 @@ public class DeviceManager {
         if (!isNetworkOnline(context)) {
             Toast toast = Toast.makeText(context, notConnected, duration);
             toast.show();
+        }
+    }
+
+    /**
+     * Checks if Google Play services is available.
+     * @return true if it is.
+     */
+    public boolean isGooglePlayServicesAvailable(Context context) {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+        if (ConnectionResult.SUCCESS == resultCode) {
+            if (Log.isLoggable("PLAY SERVICE", Log.DEBUG)) {
+                Log.d("PLAY SERVICE", "Google Play services is available.");
+            }
+            return true;
+        } else {
+            Log.e("PLAY SERVICE", "Google Play services is unavailable.");
+            return false;
         }
     }
 }

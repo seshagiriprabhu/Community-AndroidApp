@@ -6,16 +6,19 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <!-- ORM ActiveAndroid meta data -->
         <meta-data
@@ -110,7 +113,7 @@
         </activity>
         <!-- Location Activity -->
         <activity
-            android:name="com.project.communityorganizer.Activities.Location"
+            android:name=".Activities.LocationActivity"
             android:label="@string/title_activity_location"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
             <meta-data
@@ -183,5 +186,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:exported="false"
+            android:name="com.project.communityorganizer.Services.GeofenceBroadcastReceiver">
+            <intent-filter >
+                <action android:name="com.aol.android.geofence.ACTION_RECEIVE_GEOFENCE"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
