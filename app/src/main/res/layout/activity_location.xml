@@ -9,23 +9,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Profile picture and display name -->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@id/location"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <TextView
-                android:id="@id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:textColor="#33CC33"
-                android:text="Location"
-                android:textSize="24sp"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
+            android:layout_marginBottom="10sp"
+            android:textColor="#33CC33"
+            android:text="Location"
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             style="?android:attr/listSeparatorTextViewStyle"
@@ -85,6 +77,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="No activities detected yet" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Geofences"
+            tools:ignore="HardcodedText"
+            android:id="@+id/addGeofence" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop Geofences"
+            tools:ignore="HardcodedText"
+            android:id="@+id/removeGeofence" />
+
 
     </LinearLayout>
 </ScrollView>

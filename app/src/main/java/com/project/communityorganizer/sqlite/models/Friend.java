@@ -196,4 +196,15 @@ public class Friend extends Model{
             existingUser.save();
         }
     }
+
+    /**
+     * A function to return the Friend object of logged in user
+     * @return
+     */
+    public static Friend getLoggedInUser() {
+        return new Select()
+                .from(Friend.class)
+                .where("phone_owner = ?", true)
+                .executeSingle();
+    }
 }

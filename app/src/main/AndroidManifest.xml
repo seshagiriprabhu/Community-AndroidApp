@@ -186,7 +186,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        <service android:name="com.project.communityorganizer.Services.GeofenceTransitionsIntentService"/>
         <receiver
             android:exported="false"
             android:name="com.project.communityorganizer.Services.GeofenceBroadcastReceiver">

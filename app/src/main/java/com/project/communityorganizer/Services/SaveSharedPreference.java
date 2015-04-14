@@ -13,6 +13,7 @@ public class SaveSharedPreference {
     static final String USER_NAME = "username";
     static final String LOGGED_IN = "false";
     static final String LOCATION_SERVICE = "false";
+    static final String GEOFENCE = "false";
 
     /**
      * Returns the SharedPreference object
@@ -76,15 +77,25 @@ public class SaveSharedPreference {
     }
 
     /**
+     * Changes the value of GEOFENCE
+     * @param context
+     * @param value
+     */
+    public static void setGeofence(Context context, boolean value) {
+        if (context != null) {
+            SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+            editor.putBoolean(GEOFENCE, value);
+            editor.apply();
+        }
+    }
+
+    /**
      * Returns the user email
      * @param context
      * @return
      */
     public static String getUserEmail(Context context) {
-        if (context != null) {
-            return getSharedPreferences(context).getString(USER_EMAIL, "");
-        }
-        return null;
+        return getSharedPreferences(context).getString(USER_EMAIL, "");
     }
 
     /**
@@ -117,4 +128,12 @@ public class SaveSharedPreference {
         return context != null && getSharedPreferences(context).getBoolean(LOCATION_SERVICE, false);
     }
 
+    /**
+     * Returns the value of GEOFENCE
+     * @param context
+     * @return
+     */
+    public static boolean getGeofenceValue(Context context) {
+        return context != null && getSharedPreferences(context).getBoolean(GEOFENCE, false);
+    }
 }
