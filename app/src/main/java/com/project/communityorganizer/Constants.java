@@ -31,4 +31,8 @@ public class Constants {
 
     public static final String NOT_CONNECTED = "You are not connected to internet";
     public static final String NA = "NA";
+
+    public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    // Timeout for making a connection to GoogleApiClient (in milliseconds).
+    public static final long CONNECTION_TIME_OUT_MS = 100;
 }
